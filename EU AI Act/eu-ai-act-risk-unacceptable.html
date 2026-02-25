@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EU AI Act - Formulario Pratiche Proibite</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f8fb; color: #1a1a1a; }
+    .wrap { max-width: 980px; margin: 0 auto; background: #fff; border: 1px solid #d8dfeb; border-radius: 10px; padding: 20px; }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    .q { padding: 10px 12px; margin: 10px 0; border: 1px solid #e5e9f2; border-radius: 8px; background: #fbfcff; }
+    .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button, a.btn { border: 0; background: #1f5fbf; color: #fff; padding: 10px 14px; border-radius: 8px; text-decoration: none; cursor: pointer; }
+    .result { margin-top: 18px; padding: 14px; border-radius: 8px; border: 1px solid #cfd8ea; background: #f3f7ff; }
+    .risk-high { background: #fff1f0; border-color: #ffc9c2; }
+    .risk-low { background: #eef9f0; border-color: #bde6c5; }
+    .muted { color: #4f5d75; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Formulario EU AI Act - Pratiche Proibite (Unacceptable Risk)</h1>
+    <p class="muted">Basato sul Capitolo 4 (Art. 5). Se almeno una pratica proibita e' presente, il sistema e' probabilmente in classe <strong>Unacceptable Risk</strong>.</p>
+
+    <div class="q"><label><input type="checkbox" class="ban"> Tecniche subliminali/manipolative/deceptive che alterano il comportamento causando danno significativo</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Sfruttamento di vulnerabilita' (eta', disabilita', condizioni socioeconomiche) per distorcere il comportamento</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Biometric categorization per inferire attributi sensibili (es. razza, religione, orientamento)</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Social scoring (valutazione persone per trattamenti discriminatori)</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Costruzione/ampliamento database facciali con scraping indiscriminato (internet/CCTV)</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Emotion recognition in workplace/scuola fuori dalle eccezioni consentite</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Predizione di criminalita' basata su profiling individuale</label></div>
+    <div class="q"><label><input type="checkbox" class="ban"> Uso non consentito di identificazione biometrica remota in spazi pubblici</label></div>
+
+    <div class="actions">
+      <button id="eval">Calcola classificazione</button>
+      <a class="btn" href="module-02.html">Torna al Modulo 02</a>
+    </div>
+
+    <div id="out" class="result" aria-live="polite">Seleziona le risposte e premi "Calcola classificazione".</div>
+  </div>
+
+  <script>
+    document.getElementById('eval').addEventListener('click', function () {
+      const selected = [...document.querySelectorAll('.ban:checked')].length;
+      const out = document.getElementById('out');
+      out.classList.remove('risk-high', 'risk-low');
+
+      if (selected > 0) {
+        out.classList.add('risk-high');
+        out.innerHTML = '<strong>Esito:</strong> probabile <strong>UNACCEPTABLE RISK (proibito)</strong>.<br>' +
+          'Pratiche proibite selezionate: <strong>' + selected + '</strong>. Serve valutazione legale/compliance immediata e blocco operativo del caso d\'uso.';
+      } else {
+        out.classList.add('risk-low');
+        out.innerHTML = '<strong>Esito:</strong> nessuna pratica proibita rilevata in questo pre-assessment.<br>' +
+          'Prosegui con i formulari High-risk e Limited-risk per classificare il livello finale.';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+**/*
+!*/
+!.gitignore
+!*.html
+!**/*.html
+!assets/**
+!scripts/**
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
+
+# Exclude generated caches
+scripts/__pycache__/

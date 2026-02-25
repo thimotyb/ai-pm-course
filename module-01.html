@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 01 - IA nei progetti: leve e criticità</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: rgba(0, 5, 15, 0.95);
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
+      <h1>Modulo 01</h1>
+    </header>
+
+    <main>
+      <article class="card">
+        <nav class="module-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Modulo Successivo</a></nav>
+        <nav class="jump-nav"><a class="nav-btn" href="module-01.html">01 - IA nei progetti: leve e criticità</a><a class="nav-btn" href="module-02.html">02 - Come gestire un progetto con IA</a><a class="nav-btn" href="module-03.html">03 - Integrazione GenAI in processi aziendali</a><a class="nav-btn" href="module-04.html">04 - Valutare la qualità dell’output</a><a class="nav-btn" href="module-05.html">05 - Presidio e manutenzione nel quotidiano</a><a class="nav-btn" href="module-06.html">06 - Esempi pratici - Laboratori</a></nav>
+
+        <p class="module-kicker">Modulo 01</p>
+        <h2 class="module-title">IA nei progetti: leve e criticità</h2>
+
+        <section class="module-content">
+          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Leve di valore AI:</strong> automazione e produttività, augmentation uomo-AI, personalizzazione, innovazione, semplificazione dei processi.</li><li><strong>Criticità da presidiare:</strong> AI for AI&#x27;s sake, qualità dati, rischio errore, accountability, integrazione su sistemi esistenti.</li><li><strong>Scenari di integrazione:</strong> AI come add-on, AI come motore centrale del prodotto, AI come abilitatore interno.</li><li><strong>Prioritizzazione:</strong> valutare sempre user impact, business value e technical feasibility con criteri espliciti.</li><li><strong>Esecuzione:</strong> scegliere approccio cauto o rapido in base a rischio, compliance e costo del fallimento.</li><li><strong>Obiettivo didattico:</strong> progettare una distribuzione efficace del lavoro tra AI e persone, con responsabilità chiare.</li></ul></section>
+          <h3 class="module-subtitle">Definire lo spazio di valore AI</h3>
+          <p>In un progetto AI la domanda iniziale non è &quot;quale modello usiamo?&quot;, ma &quot;quale problema risolviamo e come misuriamo il miglioramento&quot;. Il valore reale emerge quando una soluzione aumenta le performance, riduce i costi operativi o migliora in modo visibile l&#x27;esperienza utente. Scoprire e definire problemi che valga la pena risolvere con l&#x27;IA è un&#x27;attività complessa che richiede di bilanciare obiettivi strategici a lungo termine e vittorie rapide (quick wins).</p>
+          <p>Per impostare correttamente la scoperta delle opportunità, il processo si articola in tre passaggi fondamentali:</p>
+          <ul><li><strong>Source opportunities:</strong> identificare aree dove l&#x27;IA può aggiungere valore partendo da insight degli utenti e avanzamenti tecnologici.</li><li><strong>Prioritize opportunities:</strong> valutare fattibilità tecnica, impatto e allineamento con gli obiettivi di business.</li><li><strong>Shape opportunities:</strong> dare forma alle opportunità esplorando approcci risolutivi e raffinando i concetti in feature concrete.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p02_01.jpg" alt="Il processo di discovery delle opportunità AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.2: Il processo per scoprire le opportunità AI</figcaption></figure>
+          <h3 class="module-subtitle">Esempio operativo: servizio streaming musicale</h3>
+          <p>Un esempio utile è la progettazione di un&#x27;app di streaming musicale orientata alla crescita dell&#x27;ascolto e alla riduzione del churn. L&#x27;opportunity tree aiuta a partire dall&#x27;obiettivo business e a scomporlo in opportunità concrete su cui intervenire con l&#x27;IA.</p>
+          <p>Nel caso streaming, il ramo &quot;engagement&quot; può includere raccomandazioni personalizzate, playlist dinamiche e suggerimenti contestuali in base al momento della giornata. Il ramo &quot;retention&quot; può invece includere rilevazione anticipata di segnali di abbandono, campagne proattive e ottimizzazione dell&#x27;esperienza di onboarding musicale.</p>
+          <p>L&#x27;utilità pratica dell&#x27;albero è che rende esplicito il collegamento tra metrica di risultato e scelte di prodotto: ogni opportunità può essere valutata su impatto utente, valore business e fattibilità tecnica prima di passare allo sviluppo.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/image.png" alt="AI opportunity tree for a music streaming app" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.3: AI opportunity tree for a music streaming app</figcaption></figure>
+          <h3 class="module-subtitle">Leve di valore: come l&#x27;AI impatta i processi</h3>
+          <p>La progettazione efficace parte dalla comprensione dei benefici attesi. Le sei tipologie principali di vantaggi includono:</p>
+          <p><strong>1. Automazione e produttività:</strong> l&#x27;IA eccelle nel gestire compiti ripetitivi che richiedono molte piccole decisioni (es. servizio clienti, rilevamento frodi). Il valore è tangibile quando il costo del processo AI (sviluppo + esecuzione + gestione errori) è significativamente inferiore al costo del processo manuale.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p05_01.jpg" alt="Equazione del costo AI per l&#x27;automazione" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.4: L&#x27;equazione dei costi per le opportunità di automazione</figcaption></figure>
+          <p><strong>2. Miglioramento e augmentation:</strong> anziché sostituire l&#x27;uomo, l&#x27;IA collabora portando i propri punti di forza (elaborazione dati su larga scala, precisione in domini definiti) a supporto delle capacità umane (comprensione del contesto, creatività, intelligenza emotiva).</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p06_01.jpg" alt="Punti di forza Umani vs AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.5: Forze umane e dell&#x27;IA a confronto nel product design</figcaption></figure>
+          <p><strong>3. Personalizzazione:</strong> adattare prodotti e servizi alle preferenze individuali utilizzando i dati sul comportamento degli utenti. Una buona personalizzazione richiede una solida base dati e un raffinamento continuo per non alienare l&#x27;utente con suggerimenti irrilevanti o invasivi.</p>
+          <p><strong>4. Ispirazione e innovazione:</strong> l&#x27;IA può trasformare i processi di innovazione accelerando il loop idea-azione e analizzando pattern complessi in grandi volumi di dati (es. scoperta di nuovi materiali o farmaci).</p>
+          <p><strong>5. Convenienza:</strong> ridurre l&#x27;attrito nei percorsi utente eliminando passaggi noiosi, come nel caso di ricerche vocali intelligenti o sistemi di scheduling automatico.</p>
+          <p><strong>6. Benefici emotivi:</strong> creare interazioni che risuonano a livello personale, come assistenti vocali che comprendono il tono o motori di raccomandazione che colgono sfumature emotive sottili.</p>
+          <h3 class="module-subtitle">Quando non usare AI: due regole pratiche</h3>
+          <p>Non tutte le decisioni sono buoni candidati per l&#x27;automazione:</p>
+          <ul><li><strong>Decisioni rare o una tantum:</strong> il costo di progettazione e mantenimento può superare il beneficio.</li><li><strong>Spiegabilità totale obbligatoria:</strong> in processi che richiedono motivazioni lineari e completamente tracciabili (es. procedure legali o creditizie ad alto impatto), approcci rule-based o ibridi possono essere più adatti.</li></ul>
+          <h3 class="module-subtitle">Criticità e Scenari di Integrazione</h3>
+          <p>Esistono tre scenari principali per integrare l&#x27;IA in un&#x27;azienda:</p>
+          <ul><li><strong>AI come Add-on:</strong> aggiornamento di un prodotto legacy (es. aggiungere funzionalità di reporting sostenibile a un tool esistente). Richiede grande attenzione alla gestione di dati frammentati e alla UX.</li><li><strong>AI come Core Value Driver:</strong> l&#x27;IA è il motore primario della proposta di valore (scenari &quot;greenfield&quot;). Necessita di investimenti in raccolta dati di alta qualità fin dall&#x27;inizio.</li><li><strong>AI come Enabler Interno:</strong> ottimizzazione dei processi operativi &quot;dietro le quinte&quot; (es. segmentazione clienti più precisa per il marketing). Richiede metriche di efficienza chiare.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p15_01.jpg" alt="Tre scenari di integrazione AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.6: Scenari di integrazione AI: Add-on, Core Driver, Internal Enabler</figcaption></figure>
+          <h3 class="module-subtitle">Case study: Miro</h3>
+          <p>Miro rappresenta un caso utile di integrazione AI in un prodotto già adottato su larga scala per collaborazione visuale. L&#x27;AI non sostituisce il flusso di lavoro principale, ma accelera attività ad alto volume cognitivo: sintesi dei contenuti, riorganizzazione delle idee, generazione di primi draft e supporto alla convergenza decisionale nei workshop.</p>
+          <p>Dal punto di vista progettuale, il valore nasce dall&#x27;inserimento dell&#x27;AI nel punto in cui il team perde più tempo: passare da molti input disordinati a una struttura condivisa e azionabile. In questo schema, la componente umana resta decisiva per priorità, qualità delle decisioni e validazione finale.</p>
+          <p>Questo case study mostra bene un principio generale: l&#x27;AI genera ROI quando riduce il tempo tra esplorazione e allineamento operativo senza compromettere controllo, trasparenza e qualità dell&#x27;output.</p>
+          <p>Link di riferimento: <a href="https://miro.com/" target="_blank" rel="noopener noreferrer">Miro</a></p>
+          <figure class="module-image"><img src="assets/chapt02_images/miro.png" alt="Case study Miro" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.7: Esempio di integrazione AI in Miro per la collaborazione di team</figcaption></figure>
+          <h3 class="module-subtitle">Tre modalità di integrazione nei prodotti</h3>
+          <ol><li><strong>AI come add-on</strong> su prodotto esistente.</li><li><strong>AI come motore centrale</strong> di un prodotto nativamente AI.</li><li><strong>AI come abilitatore interno</strong> per ottimizzare processi operativi.</li></ol>
+          <p>Nel modello add-on il vantaggio è la velocità sul mercato grazie a base utenti e processi già presenti; la sfida è integrare senza degradare UX e fiducia. Nel modello nativamente AI la priorità è costruire qualità modello e dati in tempi rapidi, evitando scalare prima della validazione. Nel modello interno il focus è ROI operativo: efficienza, sicurezza dei dati, adozione dei team e continuità di utilizzo.</p>
+          <h3 class="module-subtitle">Fonti di opportunità AI: costruire un flusso continuo</h3>
+          <p>Per avere una pipeline solida di idee non basta aspettare richieste dai clienti. Serve un sistema continuo di discovery che combini segnali interni ed esterni.</p>
+          <h4 class="module-subtitle-small">Conoscenza interna e intuizione esperta</h4>
+          <p>Team di prodotto, design, vendita e operation hanno conoscenza operativa del dominio. Questa esperienza permette di generare ipotesi ad alta velocità, purché siano validate presto con test reali.</p>
+          <h4 class="module-subtitle-small">Dogfooding e sperimentazione interna</h4>
+          <p>Usare internamente le funzionalità AI accelera i cicli di apprendimento perché i feedback arrivano subito. È un&#x27;ottima fase iniziale, ma non deve durare troppo: dopo il primo MVP è necessario validare con utenti esterni per evitare bias.</p>
+          <h4 class="module-subtitle-small">Ascolto clienti e dati comportamentali</h4>
+          <p>Interviste, ticket, review e analytics vanno letti insieme. Le dichiarazioni degli utenti sono utili, ma il comportamento osservato in prodotto è il controllo di realtà che evita decisioni basate su percezioni parziali.</p>
+          <h4 class="module-subtitle-small">Segnali esterni di mercato</h4>
+          <p>Le opportunità più difendibili spesso emergono da quattro segnali:</p>
+          <ol><li><strong>Nuovi avanzamenti tecnologici:</strong> aprono possibilità prima non fattibili.</li><li><strong>Mosse dei competitor:</strong> aiutano a capire cosa il mercato è già disposto ad adottare.</li><li><strong>Regolamentazioni:</strong> creano nuovi processi obbligatori e quindi nuovi bisogni di automazione.</li><li><strong>Posizionamento strategico:</strong> in alcuni casi l&#x27;AI rafforza il brand innovativo, ma deve sempre restare collegata a valore reale per il cliente.</li></ol>
+          <h3 class="module-subtitle">Opportunità orizzontali vs verticali</h3>
+          <p>Distinguere presto questo punto evita errori di strategia:</p>
+          <ul><li><strong>Orizzontali:</strong> risolvono bisogni trasversali a molti settori (es. scrittura assistita, supporto knowledge work).</li><li><strong>Verticali:</strong> risolvono problemi specifici di un settore (es. finanza, sanità, assicurazioni), richiedendo più competenza di dominio e spesso tuning mirato dei modelli.</li></ul>
+          <p>Operativamente, i casi orizzontali richiedono forte capacità di product scaling su mercati eterogenei; i casi verticali richiedono maggiore profondità su normativa, processi e linguaggio specialistico.</p>
+          <h4 class="module-subtitle-small">Riferimento consigliato: McKinsey 2023</h4>
+          <p>AI is presented in McKinsey&#x27;s 2023 report &quot;The Economic Potential of Generative AI: The Next Productivity Frontier&quot; (<a href="https://mng.bz/vZla" target="_blank" rel="noopener noreferrer">link</a>).</p>
+          <p>Riassunto operativo su orizzontale/verticale:</p>
+          <ul><li><strong>Orizzontale:</strong> una quota molto rilevante del valore GenAI si concentra in funzioni trasversali presenti in quasi tutte le aziende, in particolare customer operations, marketing e sales, software engineering, ricerca e sviluppo.</li><li><strong>Verticale:</strong> alcuni settori mostrano potenziale relativo più alto rispetto ai ricavi (tra cui banking, high tech, life sciences), perché combinano intensità informativa, processi knowledge-heavy e casi d&#x27;uso ad alta leva.</li><li><strong>Implicazione progettuale:</strong> se cerchi adozione rapida e scala, parti da use case orizzontali; se cerchi differenziazione difendibile, investi in use case verticali con forte integrazione di dominio e dati proprietari.</li></ul>
+          <h3 class="module-subtitle">Capabilities of Generative AI and GPTs: casi d&#x27;uso, punti deboli e rischi</h3>
+          <p>La GenAI non è una singola funzionalità ma una famiglia di capacità che copre testo, immagini, video, codice, audio e automazione cognitiva. Per progettare bene serve separare tre livelli: <strong>cosa può fare</strong>, <strong>dove conviene usarla</strong>, <strong>quali rischi comporta</strong>.</p>
+          <h4 class="module-subtitle-small">Capacità operative principali</h4>
+          <ul><li><strong>Generazione testuale:</strong> scrittura di contenuti, assistenza conversazionale, traduzione, sintesi.</li><li><strong>Generazione visiva e multimediale:</strong> creazione immagini realistiche/stilizzate, editing video, effetti e supporto alla modellazione 3D.</li><li><strong>Supporto allo sviluppo software:</strong> generazione snippet, refactoring assistito, documentazione tecnica, aiuto nel testing.</li><li><strong>Output creativi aggiuntivi:</strong> supporto a composizione musicale, script e varianti di stile.</li><li><strong>Adattabilità al contesto:</strong> modelli pre-addestrati che possono essere specializzati su task specifici tramite istruzioni, contesto e fine-tuning.</li></ul>
+          <h4 class="module-subtitle-small">Casi d&#x27;uso da presidiare in azienda</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Area</th><th>Casi d&#x27;uso concreti</th><th>Valore atteso</th></tr></thead><tbody><tr><td>Content e marketing</td><td>descrizioni prodotto, post social, campagne, tagline, varianti copy</td><td>maggiore velocità di produzione, riduzione time-to-market</td></tr><tr><td>Giornalismo e knowledge work</td><td>sintesi report, bozze articoli, supporto fact-checking preliminare</td><td>accelerazione attività redazionali e analitiche</td></tr><tr><td>Customer service</td><td>chatbot, risposte automatiche, raccomandazioni contestuali</td><td>riduzione tempi risposta e migliore copertura servizio</td></tr><tr><td>Education e learning</td><td>piani personalizzati, quiz, spiegazioni multi-formato, pratica conversazionale linguistica</td><td>apprendimento più personalizzato e scalabile</td></tr><tr><td>Creative industries</td><td>concept art, storyboard, effetti video, musica, supporto game design e dialoghi NPC</td><td>espansione capacità creativa e prototipazione rapida</td></tr><tr><td>Software engineering</td><td>generazione codice, commenti/documentazione, test case e dati sintetici</td><td>aumento produttività team e qualità dei cicli di delivery</td></tr><tr><td>Healthcare</td><td>supporto analisi immagini, aiuto a discovery farmacologica, personalizzazione trattamenti</td><td>migliore supporto decisionale clinico e priorità operative</td></tr><tr><td>Finance</td><td>reportistica automatica, sintesi dati mercato, supporto rilevazione frodi</td><td>più velocità su analisi e controllo del rischio</td></tr><tr><td>Ricerca scientifica</td><td>sintesi letteratura, ipotesi iniziali, supporto disegno sperimentale</td><td>riduzione tempo di esplorazione e revisione conoscenza</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Punti deboli tecnici e qualitativi</h4>
+          <ul><li><strong>Errori fattuali plausibili:</strong> il modello può formulare risposte fluenti ma non corrette, soprattutto su domini specialistici.</li><li><strong>Bias nei dati di addestramento:</strong> output distorti o discriminatori se non si applicano controlli di fairness.</li><li><strong>Debolezza su ragionamento profondo:</strong> buona capacità statistica, ma comprensione semantica e giudizio causale limitati.</li><li><strong>Tenuta ridotta su testi lunghi:</strong> possibili incoerenze su output estesi, con perdita di struttura logica.</li><li><strong>Rischio di omologazione contenuti:</strong> uso eccessivo può produrre testi generici e poco distintivi.</li><li><strong>Problema autenticità:</strong> distinguere contenuti umani e sintetici è sempre più difficile, con impatti su fiducia e tracciabilità.</li><li><strong>Dipendenza dalla qualità dati:</strong> senza dati e prompt di qualità, la performance degrada rapidamente.</li></ul>
+          <h4 class="module-subtitle-small">Rischi principali da includere nel framework di governance</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Categoria rischio</th><th>Descrizione operativa</th><th>Impatto potenziale</th><th>Mitigation Strategy</th></tr></thead><tbody><tr><td>Qualità e affidabilità</td><td>allucinazioni, incompletezza, errori di contesto</td><td>decisioni errate, costi operativi, danno cliente</td><td>human-in-the-loop su output critici, fact-checking obbligatorio, test e validazione su dataset reali</td></tr><tr><td>Sicurezza e abuso</td><td>phishing generativo, social engineering, deepfake, supporto a codice malevolo</td><td>frodi, incidenti cyber, danni reputazionali</td><td>controlli di sicurezza su prompt e output, policy anti-abuso, monitoraggio continuo e incident response</td></tr><tr><td>Etica e legale</td><td>proprietà intellettuale, attribuzione, disinformazione, opacità verso utenti</td><td>contenziosi, violazioni policy, perdita credibilità</td><td>linee guida etiche interne, revisione legale dei casi sensibili, trasparenza sull&#x27;uso dell&#x27;AI verso utenti e stakeholder</td></tr><tr><td>Compliance e regolazione</td><td>mancato rispetto obblighi su trasparenza, uso dati, AI governance</td><td>sanzioni, blocchi progetto, aumento rischio legale</td><td>governance policy formalizzate, accountability su ruoli e decisioni, aggiornamento continuo rispetto a normative e standard</td></tr><tr><td>Fiducia e brand</td><td>output offensivi, fuorvianti o manipolativi in touchpoint pubblici</td><td>perdita fiducia clienti e impatto commerciale</td><td>quality gate editoriali, supervisione umana nei contenuti pubblici, comunicazione trasparente quando il contenuto è AI-assisted</td></tr><tr><td>Organizzazione e lavoro</td><td>sostituzione parziale attività, mismatch competenze, adozione disordinata</td><td>resistenza interna, inefficienza, calo qualità decisionale</td><td>piano di upskilling, adozione progressiva per casi d&#x27;uso ben definiti, ownership esplicita su revisione e responsabilità finale</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Strategie chiave per usare Generative AI e GPT</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Strategia chiave</th><th>Obiettivo operativo</th><th>Azioni pratiche</th></tr></thead><tbody><tr><td>Partire da casi d&#x27;uso ben definiti</td><td>evitare iniziative &quot;AI for AI&#x27;s sake&quot; e concentrarsi su valore misurabile</td><td>partire da problemi concreti, iniziare con progetti piccoli, valutare ROI e costo totale di adozione</td></tr><tr><td>Puntare sulla collaborazione uomo-AI</td><td>usare l&#x27;AI come amplificatore del lavoro umano, non come sostituto integrale</td><td>mantenere supervisione umana continua, formare i team, preservare responsabilità decisionale umana</td></tr><tr><td>Dare priorità a controllo qualità e mitigazione dei bias</td><td>ridurre errori, allucinazioni e output distorti</td><td>test e validazione su dataset reali, verifica fattuale strutturata, controlli periodici di bias su prompt e output</td></tr><tr><td>Rafforzare trasparenza e accountability</td><td>aumentare fiducia interna/esterna e chiarezza delle responsabilità</td><td>dichiarare quando l&#x27;AI è usata, definire responsabili di processo, adottare policy di sviluppo, rilascio e monitoraggio</td></tr><tr><td>Investire in sperimentazione e apprendimento continuo</td><td>adattarsi all&#x27;evoluzione rapida di modelli, tecniche e regolazione</td><td>cicli continui di test-and-learn, aggiornamento competenze, monitoraggio normativo proattivo</td></tr><tr><td>Rafforzare basi dati e sicurezza</td><td>mantenere qualità output e ridurre rischio operativo/cyber</td><td>curare qualità dati e dataset di fine-tuning, proteggere accessi e modelli, controllare uso e abuso delle integrazioni</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Devo usare Generative AI o GPT per operazioni business critiche?</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Punto chiave</th><th>Implicazione operativa</th></tr></thead><tbody><tr><td>non affidare decisioni critiche esclusivamente a GPT/GenAI</td><td>usare i modelli come supporto, non come decisore finale</td></tr><tr><td>mancanza di comprensione causale e limiti nel giudizio contestuale</td><td>richiedere revisione esperta umana nei passaggi ad alto impatto</td></tr><tr><td>possibili bias nei dati di addestramento</td><td>applicare controlli di equità e verifiche su gruppi sensibili</td></tr><tr><td>errori fattuali plausibili in domini specialistici</td><td>introdurre fact-checking strutturato e validazione su fonti autorevoli</td></tr><tr><td>responsabilità poco chiara se la decisione è solo AI-driven</td><td>assegnare ownership esplicita su decisione, approvazione ed escalation</td></tr><tr><td>analisi di grandi volumi dati e individuazione pattern</td><td>usare output AI per pre-analisi e supporto alle ipotesi decisionali</td></tr><tr><td>generazione di scenari &quot;what-if&quot;</td><td>supportare workshop decisionali e confronto alternative</td></tr><tr><td>sintesi di report complessi</td><td>accelerare comprensione manageriale senza saltare la verifica</td></tr><tr><td>collaborazione uomo-AI con human-in-the-loop</td><td>combinare velocità AI con pensiero critico, giudizio etico e responsabilità umana</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Identificare e gestire i rischi di fallimento nell&#x27;implementazione della strategia AI</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Fallimenti comuni della strategia AI</th><th>Tattiche di mitigazione</th></tr></thead><tbody><tr><td>Obiettivi disallineati: progetti AI senza obiettivi business chiari o scollegati da problemi reali</td><td>partire da uno scopo esplicito, collegando ogni iniziativa alla missione e alle priorità aziendali</td></tr><tr><td>Qualità insufficiente delle fonti dati: dati incompleti, distorti o non affidabili</td><td>rafforzare la data governance con quality check, gestione robusta del dato e mitigazione bias lungo il ciclo di vita</td></tr><tr><td>Carenza di competenze: team senza skill adeguate su dati, dominio e AI responsabile</td><td>costruire il team corretto con assunzioni mirate, upskilling e partnership esterne</td></tr><tr><td>Sottostima della complessità: tempi, costi e difficoltà tecniche valutati in modo troppo ottimistico</td><td>impostare aspettative realistiche su roadmap, budget e performance, favorendo sperimentazione e apprendimento</td></tr><tr><td>Presidio etico tardivo: fairness, privacy e accountability trattate solo a valle</td><td>integrare etica e controlli di rischio fin dalla progettazione</td></tr><tr><td>Resistenza al cambiamento: scarso coinvolgimento di stakeholder e team operativi</td><td>comunicare in modo trasparente benefici e limiti dell&#x27;AI per creare fiducia e adozione</td></tr><tr><td>Sviluppo a silos: funzioni che lavorano isolate senza coordinamento interfunzionale</td><td>abilitare collaborazione tra data science, IT, business, risk/compliance ed esperti etici</td></tr><tr><td>Mancata capacità di pivot: persistenza su piani non efficaci nonostante feedback contrari</td><td>adottare un approccio adattivo con revisioni periodiche, correzione rotta e iterazioni guidate dai dati</td></tr><tr><td>Sponsorship esecutiva debole: supporto insufficiente del top management</td><td>ottenere commitment della leadership per risorse, priorità e rimozione degli ostacoli organizzativi</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Definire la responsabilità per i sistemi AI</h4>
+          <p>L&#x27;accountability nei sistemi AI richiede responsabilità esplicite su progettazione, rilascio, uso e gestione degli impatti. Nei contesti reali, il modello attraversa più team e fasi: senza una catena di responsabilità chiara, ogni incidente produce ritardi, conflitti e decisioni poco tracciabili.</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Livello di responsabilità</th><th>Responsabilità primaria</th></tr></thead><tbody><tr><td>Sviluppatori e data scientist</td><td>architettura tecnica, selezione dati, addestramento, valutazione iniziale, presidio di fairness e robustezza</td></tr><tr><td>Team di deploy e operation</td><td>messa in esercizio, monitoraggio in produzione, gestione effetti inattesi e allineamento all&#x27;uso previsto</td></tr><tr><td>Organizzazione (entità legale)</td><td>governance complessiva, definizione rischio accettabile, meccanismi di remediation e conformità</td></tr><tr><td>Funzioni di controllo/regolatori</td><td>definizione regole, verifica conformità, enforcement e richieste di adeguamento</td></tr></tbody></table></div>
+          <p>Meccanismi operativi da attivare:</p>
+          <ul><li><strong>trasparenza ed explainability:</strong> rendere comprensibili basi e limiti delle decisioni AI;</li><li><strong>audit trail e documentazione:</strong> tracciare dati, versioni modello, decisioni e approvazioni;</li><li><strong>processi di contestazione e riesame:</strong> permettere challenge strutturata degli esiti ad alto impatto;</li><li><strong>oversight indipendente:</strong> audit periodici su sistemi critici con verifica controlli e gap;</li><li><strong>governo legale e compliance:</strong> aggiornare policy e controlli in base all&#x27;evoluzione normativa.</li></ul>
+          <h4 class="module-subtitle-small">Regola di impiego nei processi critici</h4>
+          <p>Nei processi ad alto impatto, la GenAI va usata come <strong>copilota</strong> e non come decisore unico. Le attività in cui è molto utile sono:</p>
+          <ul><li>analisi preliminare di grandi volumi informativi;</li><li>generazione di scenari alternativi;</li><li>sintesi per facilitare decisioni manageriali.</li></ul>
+          <p>La decisione finale deve restare umana, con responsabilità esplicita su verifica fattuale, valutazione etica, gestione bias e accountability.</p>
+          <h3 class="module-subtitle">Prioritizzazione: decidere bene con criteri espliciti</h3>
+          <p>Per non cadere nella trappola dell&#x27;analisi infinita (&quot;analysis paralysis&quot;), è fondamentale usare criteri stabili e condivisi su cui confrontare le opportunità.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p20_01.jpg" alt="Ramo personalization nell&#x27;opportunity tree" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.7: Focus sul ramo personalization da valutare in prioritizzazione</figcaption></figure>
+          <p>I tre assi base restano:</p>
+          <ol><li><strong>User Impact (Impatto Utente):</strong> quanto valore crea per il cliente finale?</li><li><strong>Business Value (Valore di Business):</strong> come contribuisce agli obiettivi aziendali (es. riduzione churn, nuovi ricavi)?</li><li><strong>Technical Feasibility (Fattibilità Tecnica):</strong> abbiamo i dati, i modelli e le competenze per realizzarlo?</li></ol>
+          <p>Nel caso streaming, un motore di raccomandazione può avere alto impatto perché migliora discovery e retention; la fattibilità aumenta se esistono già dati storici su ascolti, skip, like e playlist. Al contrario, funzionalità come voice search avanzata possono avere valore ma richiedere costi e complessità più elevati nella fase iniziale.</p>
+          <p>Accanto ai tre assi generali è utile aggiungere criteri specifici al contesto:</p>
+          <ul><li><strong>Regulatory ease</strong> in settori ad alta compliance.</li><li><strong>Data readiness</strong> quando la qualità o disponibilità dati è il collo di bottiglia principale.</li><li><strong>Scalabilità e personalizzazione</strong> quando la soluzione va distribuita su clienti enterprise eterogenei.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p22_01.jpg" alt="Matrice di prioritizzazione AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.8: Esempio di matrice per la valutazione delle opportunità AI</figcaption></figure>
+          <p>I punteggi aiutano a rendere esplicito il ragionamento, ma non devono sostituire il giudizio di prodotto. La prioritizzazione migliore è quella che rende chiari rischi, assunzioni e condizioni di pivot.</p>
+          <h3 class="module-subtitle">Bilanciare quick win e investimenti a lungo termine</h3>
+          <p>Una roadmap robusta combina:</p>
+          <ul><li><strong>Quick win:</strong> rilascio veloce, apprendimento rapido, impatto immediato.</li><li><strong>Investimenti difendibili:</strong> iniziative più lunghe che costruiscono vantaggio competitivo nel tempo.</li></ul>
+          <p>Concentrarsi solo sui quick win porta risultati rapidi ma facilmente imitabili. Concentrarsi solo sul lungo termine rallenta l&#x27;apprendimento e aumenta il rischio di investimenti non validati. L&#x27;equilibrio dipende dal ruolo dell&#x27;AI nella strategia aziendale.</p>
+          <h3 class="module-subtitle">Strategie di Esecuzione: Cauta vs Rapida</h3>
+          <p>La scelta dell&#x27;approccio dipende da rischio, costo del fallimento e contesto regolatorio.</p>
+          <ul><li><strong>Approccio Cauto (Ready, Aim, Fire):</strong> ricerca approfondita, validazione forte di impatto/feasibility/compliance prima del build. È adatto quando errore e non conformità hanno costo molto alto.</li><li><strong>Approccio Rapido (Ready, Fire, Aim):</strong> prototipazione veloce, test con utenti reali, iterazioni frequenti. È adatto quando il costo iniziale è basso, il mercato è veloce e il feedback reale è il principale riduttore di incertezza.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p24_01.jpg" alt="Confronto approccio cauto vs rapido" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.9: Comparazione tra approcci Careful e Fast nella delivery AI</figcaption></figure>
+          <p>Nel flusso cauto, il team documenta in anticipo impatto, fattibilità e vincoli per ridurre il rischio di decisioni irreversibili in contesti critici.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p25_01.jpg" alt="Processo design thinking per approccio cauto" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 2.10: Processo tipico dell&#x27;approccio cauto (empathize, define, ideate, prototype, test)</figcaption></figure>
+          <p>Nel flusso rapido, il team costruisce presto un end-to-end funzionante per validare ipotesi con dati reali. Questo approccio funziona bene quando la soluzione richiede più cicli di tuning e il comportamento utente non è prevedibile solo da analisi teorica.</p>
+          <h3 class="module-subtitle">Sintesi operativa del blocco</h3>
+          <ul><li>costruire un flusso continuo di opportunità da più fonti, non solo da una;</li><li>scegliere consapevolmente tra opportunità orizzontali e verticali;</li><li>valutare con criteri stabili, trasparenti e coerenti nel tempo;</li><li>bilanciare quick win e vantaggio competitivo di lungo periodo;</li><li>adottare approccio cauto o rapido in base a rischio, compliance, costo del fallimento e cultura del team.</li></ul>
+          <h3 class="module-subtitle">Mappare lo spazio della soluzione AI</h3>
+          <p>Per non perdersi nella vastità di modelli e strumenti rilasciati quotidianamente, è necessario costruire una mappa strutturata che guidi la scoperta della soluzione. Lo spazio della soluzione si articola su tre componenti fondamentali: <strong>dati</strong>, <strong>intelligenza</strong> ed <strong>esperienza utente (UX)</strong>, tutti circondati da un layer di <strong>governance</strong>.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p02_01.jpg" alt="Mappa dello spazio della soluzione AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.1: Mappa dello spazio della soluzione nel modello mentale di un sistema AI</figcaption></figure>
+          <p>Una categorizzazione sistematica aiuta a comunicare con stakeholder tecnici e non, a valutare le competenze necessarie e a comprendere come le scelte in un ambito (es. i dati) influenzino gli altri (es. l&#x27;intelligenza o l&#x27;interfaccia).</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p03_01.jpg" alt="Categorizzazione dello spazio della soluzione AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.2: Categorizzazione dettagliata dello spazio della soluzione AI</figcaption></figure>
+          <h3 class="module-subtitle">1. Dati: il carburante del sistema</h3>
+          <p>I dati non sono più solo un tema ingegneristico, ma impattano direttamente l&#x27;esperienza utente. Devono riflettere i bisogni reali e non solo la procedura di addestramento.</p>
+          <h4 class="module-subtitle-small">La modalità dei dati (Modality)</h4>
+          <p>Le modalità rappresentano i diversi tipi di dati da cui i modelli imparano:</p>
+          <ul><li><strong>Testuale:</strong> focalizzata su elaborazione e generazione di linguaggio naturale (NLP). Include compiti come sentiment analysis, traduzione e sintesi.</li><li><strong>Visiva:</strong> gestione di immagini e video tramite computer vision per estrarre feature e riconoscere oggetti.</li><li><strong>Auditiva:</strong> riconoscimento vocale, biometria vocale e analisi delle emozioni basata sull&#x27;intonazione.</li><li><strong>Sensorimotoria:</strong> dati raccolti dal mondo fisico tramite sensori, fondamentale per robotica, droni e domotica.</li><li><strong>Codice informatico:</strong> un linguaggio altamente formalizzato che abilita l&#x27;automazione dello sviluppo e aumenta la produttività dei programmatori.</li></ul>
+          <p>Indipendentemente dalla fonte, l&#x27;IA trasforma sempre i dati grezzi in una <strong>modalità numerica</strong> (vettori) per poterli elaborare matematicamente.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p04_01.jpg" alt="Relazioni tra le modalità AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.3: Relazioni tra le modalità grezze e la trasformazione in modalità numerica</figcaption></figure>
+          <p>Questa trasformazione (preprocessing) è un atto strategico: una rappresentazione troppo grossolana, come la <em>one-hot encoding</em>, può far perdere informazioni cruciali sull&#x27;importanza e sul contesto delle parole.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p06_01.jpg" alt="Esempio di One-hot encoding" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.4: La One-hot encoding come rappresentazione numerica algebrica delle parole</figcaption></figure>
+          <p>L&#x27;attuale frontiera è l&#x27;<strong>IA Multimodale</strong>, che combina più sensi (es. vista e udito) per costruire un contesto più ricco e accurato, proprio come fa il cervello umano nel processo di apprendimento.</p>
+          <h4 class="module-subtitle-small">Dati etichettati vs Non etichettati</h4>
+          <ul><li><strong>Dati non etichettati:</strong> privi di segnali di apprendimento espliciti (usati per il clustering). Poiché i risultati sono incerti, vengono raramente usati da soli in applicazioni consumer finali.</li><li><strong>Dati etichettati:</strong> ogni punto è associato a un &quot;label&quot; che indica l&#x27;obiettivo desiderato (es. recensione &quot;positiva&quot;, immagine di &quot;gatto&quot;). Forniscono un segnale di apprendimento chiaro e preciso (apprendimento supervisionato).</li></ul>
+          <p>Un caso particolare sono i <strong>Large Language Models (LLM)</strong>: sebbene usino volumi di dati enormi, utilizzano un trucco di auto-etichettatura dove la &quot;parola successiva&quot; funge da etichetta per la sequenza che la precede, permettendo l&#x27;addestramento su scala planetaria.</p>
+          <h3 class="module-subtitle">2. Tipi di intelligenza: dai simboli agli agenti</h3>
+          <p>Il paradigma di intelligenza scelto dipende dalla natura e complessità del problema da risolvere.</p>
+          <h4 class="module-subtitle-small">IA basata su regole (Rule-based o Simbolica)</h4>
+          <p>Si basa su logica, database e ontologie create dall&#x27;uomo. È ideale quando il dominio è normativo, stabile e trasparente (es. controlli legali nel banking).</p>
+          <ul><li><strong>Vantaggi:</strong> avvio rapido per un MVP, spiegabilità totale degli output, aiuto fondamentale nella raccolta di dati strutturati per iterazioni future.</li><li><strong>Svantaggi:</strong> copertura limitata; la realtà presenta troppe sfumature e casi limite per essere racchiusa interamente in regole rigide.</li></ul>
+          <h4 class="module-subtitle-small">Machine Learning (IA Neurale)</h4>
+          <p>Qui è la macchina a imparare dai dati. Si divide in tre paradigmi principali:</p>
+          <ol><li><strong>IA Predittiva (Analitica):</strong> si focalizza su compiti ben delimitati come previsioni future, trend e rilevamento anomalie. Aiuta a digerire grandi volumi di dati per estrarre insight, ma richiede ancora un intervento umano per tradurre l&#x27;analisi in azione.</li><li><strong>IA Generativa:</strong> crea nuove informazioni (testo, immagini, codice, musica) che somigliano ai pattern di addestramento. Funge da &quot;sparring partner&quot; creativo e accelera i task di routine.</li><li><strong>IA Agentica:</strong> colma il gap tra insight e azione. Non si limita a suggerire, ma esegue task autonomamente tramite strumenti integrati (plugin software o dispositivi fisici), basandosi su catene di ragionamento generate da modelli linguistici.</li></ol>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p10_01.jpg" alt="Esempi di problemi di apprendimento" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.5: Esempi di problemi risolti da IA Predittiva, Generativa e Agentica</figcaption></figure>
+          <p>Un esempio tipico di IA Predittiva è la trasformazione di feedback non strutturati in dati numerici strutturati (sentiment score) per supportare decisioni strategiche sul prodotto.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p11_01.jpg" alt="Strutturazione di dati testuali con sentiment analysis" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.6: Esempio di come l&#x27;IA trasforma testo non strutturato in dati quantitativi</figcaption></figure>
+          <h3 class="module-subtitle">3. User Experience: l&#x27;interfaccia del valore</h3>
+          <p>L&#x27;interfaccia (UI) assicura che il valore creato dall&#x27;IA venga effettivamente consegnato all&#x27;utente in modo usabile e comprensibile.</p>
+          <h4 class="module-subtitle-small">Tipologie di interfacce AI</h4>
+          <ul><li><strong>Conversazionali:</strong> offrono massima flessibilità tramite il linguaggio naturale, ma soffrono della &quot;barriera di articolazione&quot; (gli utenti non sempre sanno cosa chiedere) e del rischio di allucinazioni.</li><li><strong>Grafiche:</strong> forniscono struttura, prevedibilità e fiducia, elementi critici soprattutto nei contesti B2B e analitici.</li><li><strong>Ibride:</strong> bilanciano flessibilità e controllo, integrando conversazione per input aperti e componenti grafici (pulsanti, menu) per azioni fisse e ben definite (es. debug, deploy).</li><li><strong>Generative:</strong> rappresentano il futuro, dove l&#x27;interfaccia si adatta dinamicamente al modello mentale dell&#x27;utente, personalizzando design e interazioni a ogni passo.</li></ul>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p16_01.jpg" alt="ChatGPT: l&#x27;interfaccia conversazionale moderna" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.7: ChatGPT come prototipo di interfaccia conversazionale</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p17_01.jpg" alt="Interfaccia grafica B2B" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.8: Innovation Monitor di Anacode: un&#x27;interfaccia grafica che fornisce grounding e fiducia</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p18_01.jpg" alt="Interfaccia Ibrida" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.9: Vercel v0.dev: esempio di interfaccia ibrida che combina chat e controlli strutturati</figcaption></figure>
+          <h4 class="module-subtitle-small">Criteri pratici per interfacce ibride e generative</h4>
+          <p>Quando un sistema AI entra in produzione, la scelta dell&#x27;interfaccia non è solo estetica: determina qualità operativa, velocità decisionale e rischio d&#x27;errore. Nelle attività ad alta variabilità conviene lasciare spazio alla conversazione, mentre nei passaggi a rischio (approvazione, deploy, modifiche dati, escalation) serve una UI guidata con azioni esplicite.</p>
+          <p>Un pattern efficace è separare:</p>
+          <ul><li><strong>zona esplorativa:</strong> prompt liberi, ipotesi, generazione di alternative;</li><li><strong>zona di controllo:</strong> pulsanti e flussi vincolati per azioni irreversibili;</li><li><strong>zona di verifica:</strong> evidenze, motivazioni, confidenza del sistema, possibilità di rollback.</li></ul>
+          <p>Questo assetto riduce la &quot;barriera di articolazione&quot;, evita prompt troppo vaghi e mantiene tracciabilità nelle decisioni di prodotto.</p>
+          <h3 class="module-subtitle">Gradi di automazione e collaborazione Uomo-IA</h3>
+          <p>La progettazione dell&#x27;ideale &quot;partnership&quot; tra umani e IA è il cuore della UX di un prodotto di successo.</p>
+          <h4 class="module-subtitle-small">I livelli di automazione</h4>
+          <p>Si distinguono tre categorie principali:</p>
+          <ol><li><strong>Assisted Intelligence:</strong> l&#x27;IA supporta e potenzia le decisioni umane senza agire indipendentemente (es. sistemi di allerta).</li><li><strong>Augmented Intelligence:</strong> l&#x27;IA automatizza parti significative del lavoro, ma richiede ancora la supervisione umana per la validazione finale.</li><li><strong>Autonomous Intelligence:</strong> l&#x27;IA opera, decide e agisce indipendentemente con intervento umano minimo o nullo.</li></ol>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p19_01.jpg" alt="Livelli di automazione AI in diversi settori" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.10: Esempi di applicazioni con diversi gradi di automazione in guida autonoma, sanità e customer service</figcaption></figure>
+          <h4 class="module-subtitle-small">Il caso guida: Guida Autonoma (Livelli SAE)</h4>
+          <p>La transizione dall&#x27;assistenza all&#x27;autonomia totale è ben esemplificata dai 6 livelli SAE per i veicoli, che vanno dall&#x27;assenza di automazione (Livello 0) alla guida autonoma totale in ogni condizione (Livello 5).</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p20_01.jpg" alt="Livelli SAE di automazione della guida" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 3.11: I livelli di automazione definiti da SAE International</figcaption></figure>
+          <h3 class="module-subtitle">Distribuzione ottimale del lavoro</h3>
+          <p>Il successo di un prodotto AI dipende dal trovare la distribuzione di lavoro (&quot;labor distribution&quot;) che massimizza i punti di forza di entrambi gli attori:</p>
+          <ul><li><strong>Punti di forza dell&#x27;IA:</strong> elaborazione dati su scala massiva, rilevamento di pattern invisibili all&#x27;uomo, oggettività decisionale (assenza di emozioni), scalabilità immediata e operatività h24.</li><li><strong>Punti di forza dell&#x27;Uomo:</strong> intuizione profonda, intelligenza emotiva e abilità sociali, comprensione del contesto strategico e aziendale, adattabilità a nuovi scenari non strutturati e giudizio etico/morale.</li></ul>
+          <p>Un prodotto AI eccellente non punta a eliminare l&#x27;uomo, ma a integrarsi nel suo workflow per liberarlo dai task ripetitivi, permettendogli di concentrarsi su attività ad alto valore aggiunto e criticità.</p>
+          <h3 class="module-subtitle">IA predittiva applicata al prodotto: framework operativo completo</h3>
+          <p>Per molte aziende, la prima leva concreta non è la generazione di contenuti, ma la capacità di trasformare dati già disponibili in decisioni operative migliori. Un flusso predittivo ben disegnato permette di segmentare utenti, anticipare churn, intercettare anomalie e aumentare conversione senza affidarsi a intuizioni isolate.</p>
+          <h4 class="module-subtitle-small">Ciclo iterativo: dal problema business all&#x27;azione</h4>
+          <p>Il lavoro efficace parte da domande di prodotto precise e misurabili. Nel caso e-commerce, la domanda non è &quot;facciamo ML?&quot;, ma:</p>
+          <ul><li>quali utenti non convertono e perché;</li><li>quali comportamenti anticipano abbandono;</li><li>quali interventi hanno impatto reale su retention e fatturato.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img03.png" alt="Ciclo iterativo per sistemi predittivi ad alto valore" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.1: Loop iterativo di delivery per IA predittiva ad alto valore</figcaption></figure>
+          <p>Il ciclo operativo utile in pratica:</p>
+          <ol><li><strong>Formulazione del problema:</strong> tradurre obiettivi di business in task di apprendimento.</li><li><strong>Preparazione dati:</strong> sourcing, trasformazione, pulizia, controllo qualità.</li><li><strong>Selezione algoritmi:</strong> scegliere approccio coerente con il tipo di segnale.</li><li><strong>Valutazione tecnica e di impatto:</strong> metriche modello + metriche di prodotto.</li><li><strong>Messa a terra operativa:</strong> campagne, UX, processi decisionali, monitoraggio.</li></ol>
+          <h4 class="module-subtitle-small">Unsupervised learning: segmentazione comportamentale</h4>
+          <p>La segmentazione non supervisionata è un ottimo punto di ingresso quando il dataset è ricco ma ancora poco strutturato. Invece di segmentare solo per demografia, conviene costruire cluster su segnali di comportamento: frequenza visite, uso raccomandazioni, profondità del funnel, valore acquisti, editing profilo.</p>
+          <p>Esempio di struttura dati utile per clustering:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>user_id</th><th>purchased_items</th><th>purchase_value</th><th>last_active</th><th>n_visits</th></tr></thead><tbody><tr><td>abhj3k</td><td>2</td><td>908</td><td>2024-04-30 08:36:24</td><td>48</td></tr><tr><td>shj67d</td><td>0</td><td>0</td><td>2023-12-26 12:56:24</td><td>24</td></tr><tr><td>i963gh</td><td>12</td><td>673</td><td>2024-05-15 23:22:11</td><td>156</td></tr></tbody></table></div>
+          <p>La qualità dei cluster dipende da scelte pratiche:</p>
+          <ul><li>feature engineering iterativo, con rimozione delle variabili poco informative;</li><li>standardizzazione delle feature per evitare distorsioni di scala;</li><li>gestione missing, duplicati, anomalie e bias noti in fase dati;</li><li>minimizzazione dei dati sensibili e verifica del consenso d&#x27;uso.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img05.png" alt="Clustering K-means e centroidi" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.2: K-means con centroidi e aggregazione dei punti dati</figcaption></figure>
+          <p>Per la scelta algoritmo:</p>
+          <ul><li><strong>K-means:</strong> molto usabile, rapido, leggibile dal team business;</li><li><strong>gerarchico:</strong> utile se vuoi esplorare granularità diverse senza fissare subito K;</li><li><strong>DBSCAN:</strong> efficace per forme irregolari e per isolare outlier.</li></ul>
+          <p>Metriche minime da presidiare:</p>
+          <ul><li><strong>Silhouette coefficient:</strong> coesione interna e separazione tra cluster;</li><li><strong>Calinski-Harabasz index:</strong> bontà della separazione complessiva.</li></ul>
+          <h4 class="module-subtitle-small">Dal clustering alla classificazione supervisionata</h4>
+          <p>Una volta individuati cluster utili, conviene stabilizzarli con classificazione supervisionata: i cluster diventano etichette e il modello assegna automaticamente i nuovi utenti al segmento corretto. In questo modo la segmentazione scala senza rilanciare clustering continuo.</p>
+          <p>Esempio di dataset etichettato:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>user_id</th><th>purchased_items</th><th>purchase_value</th><th>last_active</th><th>n_visits</th><th>search_queries</th><th>segment</th></tr></thead><tbody><tr><td>abhj3k</td><td>2</td><td>908</td><td>2024-04-30 08:36:24</td><td>48</td><td>3</td><td>Seekers</td></tr><tr><td>shj67d</td><td>0</td><td>0</td><td>2023-12-26 12:56:24</td><td>24</td><td>45</td><td>Conservatives</td></tr><tr><td>i963gh</td><td>12</td><td>673</td><td>2024-05-15 23:22:11</td><td>156</td><td>25</td><td>Indecisives</td></tr><tr><td>ty54df</td><td>20</td><td>1250</td><td>2024-05-10 14:21:07</td><td>190</td><td>5</td><td>Champions</td></tr></tbody></table></div>
+          <p>In una prima release, un classificatore interpretabile (es. regressione logistica) è spesso preferibile a modelli più opachi: facilita adozione da marketing, sales e operation.</p>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img06.png" alt="Precision e Recall: trade-off operativo" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.3: Precision e Recall nella valutazione di un classificatore</figcaption></figure>
+          <p>Regola pratica:</p>
+          <ul><li>se il costo di una campagna sbagliata è alto, alza <strong>precision</strong>;</li><li>se il costo di &quot;perdere&quot; utenti critici è alto, alza <strong>recall</strong>.</li></ul>
+          <p>Chiarimento operativo:</p>
+          <ul><li><strong>Precision:</strong> tra gli utenti che il modello segnala come target, quanti sono davvero corretti. Se vuoi ridurre i falsi positivi (contattare persone sbagliate), devi alzare precision.</li><li><strong>Recall:</strong> tra tutti gli utenti davvero rilevanti, quanti vengono intercettati dal modello. Se vuoi ridurre i falsi negativi (lasciare fuori utenti critici), devi alzare recall.</li><li><strong>Trade-off di soglia:</strong> in generale, soglia più alta aumenta precision ma riduce recall; soglia più bassa aumenta recall ma riduce precision. La scelta dipende dal costo economico e operativo dei due tipi di errore.</li></ul>
+          <p>Esempio clinico (diagnostica per immagini, individuazione tumore):</p>
+          <ul><li>modello di <strong>classificazione con regressione logistica</strong> che produce probabilità di appartenenza alle classi;</li><li>per un paziente può stimare, ad esempio: <strong>65% tumore positivo</strong> e <strong>35% tumore negativo</strong>;</li><li>con <strong>cutoff = 65%</strong>, il caso viene classificato come positivo e inviato ad approfondimento;</li><li>se usassi un cutoff più selettivo, ad esempio <strong>80%</strong> (più orientato alla precision), lo stesso paziente verrebbe classificato come negativo perché 65% &lt; 80%;</li><li>quindi, rispetto a 80%, il cutoff a 65% aumenta i casi segnalati come positivi e può aumentare i <strong>falsi positivi</strong>;</li><li>il vantaggio è che aumenta la <strong>recall</strong>, riducendo il rischio clinico di perdere persone realmente malate (falsi negativi);</li><li>il cutoff a 80% fa l&#x27;opposto: in genere migliora la <strong>precision</strong>, ma può ridurre la recall e aumentare i falsi negativi.</li></ul>
+          <h4 class="module-subtitle-small">Time series: trend, stagionalità, anomalie</h4>
+          <p>Le analisi cross-sectional spiegano lo stato attuale; le time series spiegano l&#x27;evoluzione. È la differenza tra descrivere un problema e anticiparlo.</p>
+          <p>Schema minimo di time series event-based:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Event</th><th>Timestamp</th></tr></thead><tbody><tr><td>Click</td><td>2024-08-19 12:01:35.123</td></tr><tr><td>Search</td><td>2024-08-19 12:02:18.456</td></tr><tr><td>Add to cart</td><td>2024-08-19 12:03:05.789</td></tr></tbody></table></div>
+          <p>Schema minimo di time series metric-based:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Timestamp</th><th>Recommendation clicks</th></tr></thead><tbody><tr><td>2024-08-19 12:01:35.123</td><td>150</td></tr><tr><td>2024-08-19 12:02:18.456</td><td>172</td></tr><tr><td>2024-08-19 12:03:05.789</td><td>165</td></tr></tbody></table></div>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img01.png" alt="Serie temporale grezza" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.4: La serie temporale in forma grezza è rumorosa e poco interpretabile</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img04.png" alt="Serie temporale smussata con trend crescente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.5: Dopo smoothing emerge un trend crescente leggibile</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img07.png" alt="Anomalie in serie temporale" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura 4.6: Picchi e crolli anomali da trattare con alert e risposta operativa</figcaption></figure>
+          <p>Uso operativo dei segnali nel prodotto:</p>
+          <ul><li><strong>trend:</strong> adattare ranking e visibilità catalogo su domanda emergente;</li><li><strong>stagionalità:</strong> pianificare campagne e capacità operativa su finestre note;</li><li><strong>anomalie:</strong> attivare playbook antifrode, controllo performance, incident response.</li></ul>
+          <h4 class="module-subtitle-small">Recommendation systems: personalizzazione che converte</h4>
+          <p>Le raccomandazioni sono il punto d&#x27;incontro tra AI predittiva e UX:</p>
+          <ul><li><strong>collaborative filtering:</strong> sfrutta similarità tra utenti o tra item;</li><li><strong>content-based filtering:</strong> usa attributi del prodotto coerenti con preferenze storiche;</li><li><strong>hybrid:</strong> combina i due approcci per precisione + copertura.</li></ul>
+          <p>Per mantenere valore nel tempo servono:</p>
+          <ul><li>monitoraggio continuo di CTR, conversion rate e profondità di interazione;</li><li>A/B test sulle strategie di ranking e sui parametri modello;</li><li>segnali espliciti/impliciti di feedback per migliorare l&#x27;allineamento alle preferenze.</li></ul>
+          <h4 class="module-subtitle-small">Segmenti azionabili e attivazioni marketing/prodotto</h4>
+          <p>Una segmentazione utile è quella che porta azioni chiare:</p>
+          <ul><li><strong>Seekers:</strong> quiz di stile e contenuti guidati per chiarire preferenze.</li><li><strong>Indecisives:</strong> leve di urgenza controllata (offerte a tempo, soglie promozionali).</li><li><strong>Conservatives:</strong> UX orientata alla ricerca diretta, con introduzione graduale della personalizzazione.</li><li><strong>Champions:</strong> programmi loyalty, accesso anticipato, offerte premium.</li></ul>
+          <h3 class="module-subtitle">Passi di implementazione (predittiva) da usare in team</h3>
+          <ol><li>Definire outcome business e metrica primaria prima della scelta modello.</li><li>Preparare dataset con ownership chiara su qualità, privacy e versionamento.</li><li>Avviare baseline interpretabile e fissare soglie minime di qualità.</li><li>Portare il modello nel processo operativo con azioni standard per ogni segmento.</li><li>Monitorare drift, metriche prodotto e impatto economico con cadenza regolare.</li></ol>
+          <h3 class="module-subtitle">Casi di studio aziendali da guardare e commentare</h3>
+          <p>Di seguito una selezione di casi business, con focus su aziende italiane o con operatività diretta in Italia. Ogni caso può essere discusso su quattro dimensioni: processo coinvolto, metrica di valore, prerequisiti dati e replicabilità.</p>
+          <h4 class="module-subtitle-small">Benetton Group (retail moda, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> raccomandazioni personalizzate e ottimizzazione conversione e-commerce.</li><li><strong>Valore:</strong> utenti che cliccano il pannello raccomandazioni con conversione 6x, vendite +7%, tempo sul sito quasi 3x.</li><li><strong>Link:</strong> <a href="https://cloud.google.com/customers/benetton" target="_blank" rel="noopener noreferrer">Google Cloud - Benetton</a></li></ul>
+          <h4 class="module-subtitle-small">E.ON Italia (utilities, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> marketing e onboarding con BigQuery + Vertex AI e analisi documentale.</li><li><strong>Valore:</strong> soddisfazione cliente all&#x27;87%, creazione account digitali +9%, conversioni +184% (nel case con Cognitive Suite).</li><li><strong>Link:</strong> <a href="https://cloud.google.com/customers/e-on-italia" target="_blank" rel="noopener noreferrer">Google Cloud - E.ON Italia</a></li></ul>
+          <h4 class="module-subtitle-small">Banca Alpi Marittime (banca locale, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> score automatico delle richieste di credito.</li><li><strong>Valore:</strong> circa 50% delle richieste gestite senza intervento umano, circa 10 FTE liberati, risparmi annui dichiarati.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/banca-alpi-marittime-cloud" target="_blank" rel="noopener noreferrer">IBM Case Study - Banca Alpi Marittime</a></li></ul>
+          <h4 class="module-subtitle-small">UMBRAGROUP (manifattura di precisione, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> modellazione predittiva su qualità produzione e scarti.</li><li><strong>Valore:</strong> riduzione oltre il 20% dei materiali non conformi.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/umbragroup-watson" target="_blank" rel="noopener noreferrer">IBM Case Study - UMBRAGROUP</a></li></ul>
+          <h4 class="module-subtitle-small">WINDTRE (telco, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> gestione automatizzata ticket e claim tecnici.</li><li><strong>Valore:</strong> oltre 200.000 segnalazioni gestite in automatico, tempo di risposta 10x più rapido, oltre 10.000 report al mese.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/windtre" target="_blank" rel="noopener noreferrer">IBM Case Study - WINDTRE</a></li></ul>
+          <h4 class="module-subtitle-small">Unipol Assicurazioni (insurance, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> AIOps per monitoraggio e gestione incidenti IT, con impatto sui processi operativi.</li><li><strong>Valore:</strong> risposta eventi da 20 minuti a 90 secondi, copertura monitoraggio da 26% a 100%, tempo gestione incidenti -90%.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/unipol" target="_blank" rel="noopener noreferrer">IBM Case Study - Unipol</a></li></ul>
+          <h4 class="module-subtitle-small">e-distribuzione (energia/rete elettrica, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> progetto ODIN per analisi immagini ispezioni e manutenzione predittiva della rete.</li><li><strong>Valore:</strong> rilevazione più rapida delle criticità e migliore priorità di intervento (caso qualitativo, senza KPI numerici pubblici).</li><li><strong>Link:</strong> <a href="https://www.e-distribuzione.it/archivio-news/2023/08/odin--l-intelligenza-artificiale-a-supporto-della-rete-elettrica.html" target="_blank" rel="noopener noreferrer">e-distribuzione - Progetto ODIN</a></li></ul>
+          <h4 class="module-subtitle-small">Snam (energia/gas, Italia)</h4>
+          <ul><li><strong>Processo AI:</strong> advanced analytics su Unaccounted-for Gas (UFG) per ridurre perdite e inefficienze.</li><li><strong>Valore:</strong> miglioramento dell&#x27;analisi dati e riduzione UFG (risultati soprattutto qualitativi nel case pubblico).</li><li><strong>Link:</strong> <a href="https://www.eng.it/en/insights/stories/case-studies/snam-gli-advanced-analytics-per-il-trasporto-del-gas" target="_blank" rel="noopener noreferrer">Engineering - Case Snam</a></li></ul>
+          <h3 class="module-subtitle">Traccia di commento per la discussione</h3>
+          <ul><li>Qual era il collo di bottiglia operativo prima dell&#x27;AI?</li><li>La metrica usata misura davvero valore business o solo velocità?</li><li>Quale parte del processo è rimasta in supervisione umana?</li><li>Il risultato è replicabile in altre aziende o dipende da condizioni specifiche?</li></ul>
+          <h3 class="module-subtitle">Come gestire un progetto con IA: strategia, governance e delivery</h3>
+          <p>Un progetto IA produce risultati stabili solo quando strategia e governance sono disegnate insieme fin dall&#x27;inizio. Separarle porta quasi sempre a due esiti negativi: sperimentazioni senza impatto business oppure controlli troppo rigidi che bloccano l&#x27;esecuzione.</p>
+          <p>In pratica, la gestione efficace richiede tre allineamenti continui:</p>
+          <ul><li><strong>allineamento strategico:</strong> ogni use case deve risolvere un problema aziendale esplicito;</li><li><strong>allineamento operativo:</strong> ruoli, dati, modelli e processi devono essere coordinati con responsabilità chiare;</li><li><strong>allineamento di rischio:</strong> privacy, fairness, sicurezza, compliance e spiegabilità vanno trattate come requisiti di progetto, non come check finali.</li></ul>
+          <h4 class="module-subtitle-small">Impostazione iniziale: da obiettivi a backlog IA</h4>
+          <p>Prima di parlare di modelli, conviene formalizzare:</p>
+          <ul><li>obiettivi misurabili (riduzione costi, aumento conversione, riduzione tempi decisionali, qualità servizio);</li><li>perimetro del problema (processi coinvolti, utenti impattati, sistemi toccati);</li><li>vincoli (normativi, tecnologici, organizzativi);</li><li>criteri di successo e di stop.</li></ul>
+          <p>Un criterio operativo utile è iniziare da casi ad alta fattibilità e impatto rapido, in modo da costruire credibilità interna e capacità di delivery prima di scalare su iniziative più complesse.</p>
+          <h4 class="module-subtitle-small">Fase 1: Ideazione e definizione</h4>
+          <p>La fase di ideazione deve produrre output concreti, non solo idee:</p>
+          <ul><li>mappa dei casi d&#x27;uso candidati;</li><li>ipotesi di valore per ciascun caso;</li><li>analisi pre-mortem (perché potrebbe fallire);</li><li>prima stima di rischi, costi e tempi.</li></ul>
+          <p>In questa fase sono decisive le sessioni cross-funzionali tra business, tecnologia, legale/compliance, sicurezza e operation. Il valore non nasce da brainstorming generico, ma da priorità condivise e compromessi espliciti.</p>
+          <h4 class="module-subtitle-small">Fase 2: Dati e preparazione</h4>
+          <p>La qualità del progetto dipende dalla qualità dei dati più che dalla sofisticazione del modello.</p>
+          <p>Checklist minima:</p>
+          <ul><li>disponibilità, copertura e aggiornamento dei dati;</li><li>qualità (completezza, accuratezza, coerenza temporale);</li><li>tracciabilità delle trasformazioni;</li><li>gestione dei dati sensibili e del consenso;</li><li>controlli su bias e rappresentatività.</li></ul>
+          <p>La data governance deve essere impostata come disciplina continua: ownership dei dataset, regole di accesso, standard di qualità, auditabilità e politiche di retention.</p>
+          <h4 class="module-subtitle-small">Fase 3: Sviluppo e sperimentazione</h4>
+          <p>Questa fase combina due esigenze: velocità di apprendimento e controllo del rischio.</p>
+          <p>Approccio consigliato:</p>
+          <ul><li>partire con baseline interpretabili;</li><li>confrontare alternative con metriche comparabili;</li><li>documentare ipotesi, feature, parametri e risultati;</li><li>valutare non solo performance modello, ma anche impatto operativo reale.</li></ul>
+          <p>La sperimentazione funziona quando avviene in un contesto sandbox con regole etiche e di sicurezza già attive.</p>
+          <h4 class="module-subtitle-small">Fase 4: Operazionalizzazione e monitoraggio</h4>
+          <p>Il deploy non è la fine del progetto; è l&#x27;inizio della gestione continuativa.</p>
+          <p>Elementi obbligatori:</p>
+          <ul><li>piano di rilascio graduale (pilot, estensione controllata, scala);</li><li>monitoraggio tecnico (drift dati/modello, latenza, stabilità);</li><li>monitoraggio business (KPI di risultato, adozione, ROI);</li><li>monitoraggio rischio (fairness, explainability, incidenti, compliance);</li><li>runbook di escalation e rollback.</li></ul>
+          <h4 class="module-subtitle-small">Modalità di esecuzione: iterativa, ibrida, a rollout progressivo</h4>
+          <p>Nei progetti IA funziona bene una gestione ibrida:</p>
+          <ul><li>parti infrastrutturali e di controllo con maggiore struttura;</li><li>sperimentazione modello con cicli iterativi rapidi;</li><li>rollout a fasi per ridurre rischio sistemico.</li></ul>
+          <p>Questa combinazione mantiene governabilità senza perdere velocità di apprendimento.</p>
+          <h4 class="module-subtitle-small">Ruoli chiave nel progetto</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Ruolo</th><th>Responsabilità primaria</th><th>Deliverable principali</th></tr></thead><tbody><tr><td>AI Project Manager</td><td>Coordinamento end-to-end, priorità, dipendenze, rischio</td><td>Piano di progetto, roadmap, governance meeting, stato avanzamento</td></tr><tr><td>Data Scientist</td><td>Modellazione, valutazione, tuning, interpretazione</td><td>Esperimenti, metriche, report di validazione, criteri di accettazione</td></tr><tr><td>Data Engineer</td><td>Pipeline dati, qualità, affidabilità, integrazione</td><td>Data pipeline, controlli qualità, versionamento dati, alimentazione produzione</td></tr><tr><td>Product/Business Owner</td><td>Allineamento con obiettivi di business</td><td>KPI di impatto, backlog priorizzato, decisioni di scope</td></tr><tr><td>Risk/Compliance/Security</td><td>Presidio normativo e controlli</td><td>Valutazioni di rischio, evidenze di controllo, audit trail</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">KPI da presidiare lungo il ciclo di vita</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Dimensione</th><th>KPI esempi</th></tr></thead><tbody><tr><td>Valore business</td><td>ROI, conversion rate, riduzione costi operativi, tempo ciclo</td></tr><tr><td>Qualità modello</td><td>precision, recall, error rate, stabilità nel tempo</td></tr><tr><td>Operatività</td><td>uptime, latenza, throughput, tempo medio di risoluzione incidenti</td></tr><tr><td>Rischio e fiducia</td><td>indicatori di bias, numero incidenti compliance, qualità spiegazioni, reclami utenti</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Errori ricorrenti e contromisure</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Errore frequente</th><th>Contromisura operativa</th></tr></thead><tbody><tr><td>Obiettivi non allineati al business</td><td>Definire obiettivi misurabili e criteri di successo prima dello sviluppo</td></tr><tr><td>Dati incompleti o distorti</td><td>Rafforzare data governance, quality gate e controlli bias</td></tr><tr><td>Competenze insufficienti</td><td>Piano di upskilling e mix build/buy/partner</td></tr><tr><td>Complessità sottostimata</td><td>Pianificazione realistica di tempi, costi e dipendenze</td></tr><tr><td>Etica e compliance trattate tardi</td><td>Integrazione dei controlli dalla fase di ideazione</td></tr><tr><td>Silo tra funzioni</td><td>Team cross-funzionali e decisioni condivise</td></tr><tr><td>Mancata capacità di pivot</td><td>Review periodiche e backlog adattivo</td></tr><tr><td>Scarso sponsorship esecutivo</td><td>Sponsorship esplicita con governance cadenzata</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Accountability e responsabilità decisionale</h4>
+          <p>Per evitare zone grigie, la responsabilità deve essere distribuita su livelli chiari:</p>
+          <ul><li>chi progetta il modello è responsabile della robustezza tecnica;</li><li>chi lo mette in esercizio è responsabile dell&#x27;uso conforme e del monitoraggio;</li><li>l&#x27;organizzazione è responsabile delle scelte di rischio e delle conseguenze;</li><li>funzioni di controllo e audit verificano nel tempo qualità, legalità e tracciabilità.</li></ul>
+          <p>Senza un modello di accountability esplicito, gli incidenti si trasformano in conflitti organizzativi e rallentano ogni iterazione.</p>
+          <h4 class="module-subtitle-small">Inclusione, impatto sociale e comunicazione</h4>
+          <p>La gestione di progetto non può fermarsi alla performance tecnica. Serve verificare anche:</p>
+          <ul><li>accessibilità delle interfacce e dei processi;</li><li>impatti su gruppi diversi di utenti;</li><li>trasparenza verso stakeholder interni ed esterni;</li><li>piano di comunicazione che spieghi cosa fa il sistema, come viene controllato e con quali limiti.</li></ul>
+          <p>Questo presidio aumenta fiducia, adozione e sostenibilità nel tempo.</p>
+          <h4 class="module-subtitle-small">Fattori di costo da pianificare in anticipo</h4>
+          <p>I costi reali non sono solo &quot;modello e cloud&quot;. Le principali voci sono:</p>
+          <ul><li>persone (competenze specialistiche e formazione continua);</li><li>infrastruttura (storage, calcolo, ambienti, osservabilità);</li><li>sviluppo e integrazione (pipeline, API, sistemi legacy);</li><li>governance e compliance (audit, controlli, documentazione);</li><li>gestione incidenti e rischio legale;</li><li>manutenzione evolutiva (retraining, monitoraggio, revisione policy).</li></ul>
+          <p>Una gestione matura usa categorie di costo complete per evitare sottostime strutturali.</p>
+          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Validare l&#x27;opportunità AI con impatto utente, valore business e fattibilità tecnica.</li><li>Definire il ruolo dell&#x27;AI nel processo (automazione, supporto decisionale, personalizzazione).</li><li>Allineare dati, modello e UX con un disegno chiaro della soluzione e dei rischi.</li><li>Impostare governance e accountability già in fase di progettazione.</li><li>Pianificare sperimentazione, rilascio graduale e metriche di monitoraggio continue.</li><li>Mantenere un ciclo di miglioramento con feedback operativo e revisioni periodiche.</li></ol></section>
+          <h3 class="module-subtitle">Link utili del modulo</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo</th><th>Descrizione</th><th>Link</th></tr></thead><tbody><tr><td>NIST AI Risk Management Framework (AI RMF 1.0)</td><td>Framework operativo per identificare, valutare e gestire i rischi dell&#x27;IA lungo il ciclo di vita, con funzioni pratiche di governance, mappatura, misurazione e gestione.</td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework</a></td></tr><tr><td>CMMI Institute - AI Working Group (AIWG)</td><td>Iniziativa orientata alla governance e alla maturità operativa dell&#x27;AI, con linee guida e contributi pratici per organizzazioni che adottano l&#x27;IA su scala.</td><td><a href="https://cmmiinstitute.com/aiwg" target="_blank" rel="noopener noreferrer">CMMI Institute - AIWG</a></td></tr><tr><td>Layermark - CMMI AI Maturity</td><td>Panoramica del framework di maturità AI basato su CMMI, utile per valutare il livello di adozione e strutturare il passaggio verso pratiche operative ripetibili.</td><td><a href="https://www.layermark.com/cmmi-ai-maturity/#:~:text=Your%20people%20are%20embracing%20AI,framework%20%28making%20it%20habitual%29." target="_blank" rel="noopener noreferrer">Layermark - CMMI AI Maturity</a></td></tr><tr><td>IBM watsonx.governance</td><td>Piattaforma per governare modelli e applicazioni AI con controlli su rischio, compliance, monitoraggio e tracciabilità lungo il ciclo di vita.</td><td><a href="https://www.ibm.com/it-it/products/watsonx-governance?utm_content=SRCWW&amp;p1=Search&amp;p4=2225763958546&amp;p5=b&amp;p9=171933412483&amp;gclsrc=aw.ds&amp;gad_source=1&amp;gad_campaignid=22027266681&amp;gbraid=0AAAAA-h2TOEG6p2FwUXhAWBb9VoJWl7oh&amp;gclid=Cj0KCQiAtfXMBhDzARIsAJ0jp3B8IPbtR4MbQjPs1UYbH8U-NBAz5jirNeUeB93-1Vf8VYGmpmOFH9saAjVtEALw_wcB" target="_blank" rel="noopener noreferrer">IBM watsonx.governance</a></td></tr></tbody></table></div>
+          <h3 class="module-subtitle">Lab consigliati per il Modulo 01</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Lab consigliato</th><th>Obiettivi</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Generative AI Explorer - Vertex AI</a></strong></td><td>Introduzione completa alle capacità GenAI e ai principali scenari d&#x27;uso, utile per inquadrare leve di valore e limiti iniziali.</td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568844" target="_blank" rel="noopener noreferrer">Introduction to Gemini 3</a></strong></td><td>Base operativa rapida per comprendere comportamento del modello e impostare aspettative realistiche su qualità output.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Collega direttamente qualità del prompt, rischio di errore e affidabilità, temi centrali del Modulo 01.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Aiuta a passare dalla teoria alla prototipazione controllata, utile per priorità e approccio cauto vs rapido.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Utile per mitigare allucinazioni e migliorare affidabilità, in linea con il blocco rischi e governance del modulo.</td><td>Focus</td></tr></tbody></table></div>
+        </section>
+
+
+        <nav class="module-nav footer-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Modulo Successivo</a></nav>
+      </article>
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EU AI Act - Formulario High-Risk</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f8fb; color: #1a1a1a; }
+    .wrap { max-width: 1040px; margin: 0 auto; background: #fff; border: 1px solid #d8dfeb; border-radius: 10px; padding: 20px; }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    h2 { margin: 18px 0 8px; font-size: 1.15rem; }
+    .q { padding: 8px 12px; margin: 8px 0; border: 1px solid #e5e9f2; border-radius: 8px; background: #fbfcff; }
+    .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button, a.btn { border: 0; background: #1f5fbf; color: #fff; padding: 10px 14px; border-radius: 8px; text-decoration: none; cursor: pointer; }
+    .result { margin-top: 18px; padding: 14px; border-radius: 8px; border: 1px solid #cfd8ea; background: #f3f7ff; }
+    .high { background: #fff1f0; border-color: #ffc9c2; }
+    .warn { background: #fff9ea; border-color: #ffe0a3; }
+    .ok { background: #eef9f0; border-color: #bde6c5; }
+    .muted { color: #4f5d75; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Formulario EU AI Act - High-Risk (Tabella 4-3)</h1>
+    <p class="muted">Basato sul questionario del Capitolo 4. Sezioni 1 e 2 pesano di piu' nell'esito.</p>
+
+    <h2>1) Application area</h2>
+    <div class="q"><label><input type="checkbox" class="s1"> Biometric identification/categorization</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Critical infrastructure (transport, energy, water)</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Education or vocational training</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Employment/worker management/self-employment access</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Essential private/public services and benefits</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Law enforcement</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Migration/asylum/border control</label></div>
+    <div class="q"><label><input type="checkbox" class="s1"> Administration of justice/democratic processes</label></div>
+
+    <h2>2) Specific use cases</h2>
+    <div class="q"><label><input type="checkbox" class="s2"> Safety component of products</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Critical infrastructure management/operation</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Access/assignment to educational institutions</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Recruitment/evaluation/promotion/termination</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Creditworthiness or credit scoring</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Dispatching emergency first response services</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Crime prediction/profiling for law enforcement</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Asylum/visa/residence verification systems</label></div>
+    <div class="q"><label><input type="checkbox" class="s2"> Judicial support in research/interpreting facts/law</label></div>
+
+    <h2>3) Impact assessment</h2>
+    <div class="q"><label><input type="checkbox" class="s3"> Significant harm to health/safety/fundamental rights</label></div>
+    <div class="q"><label><input type="checkbox" class="s3"> Significant impact on many EU residents</label></div>
+    <div class="q"><label><input type="checkbox" class="s3"> Difficult to opt out or avoid</label></div>
+    <div class="q"><label><input type="checkbox" class="s3"> Risk of discrimination against protected groups</label></div>
+    <div class="q"><label><input type="checkbox" class="s3"> Risk of manipulation of behavior</label></div>
+    <div class="q"><label><input type="checkbox" class="s3"> Exploitation of vulnerabilities</label></div>
+
+    <h2>4) Technical characteristics</h2>
+    <div class="q"><label><input type="checkbox" class="s4"> Large datasets in training/operation</label></div>
+    <div class="q"><label><input type="checkbox" class="s4"> Complex ML algorithms</label></div>
+    <div class="q"><label><input type="checkbox" class="s4"> High autonomy in decision making</label></div>
+    <div class="q"><label><input type="checkbox" class="s4"> Low transparency/explainability</label></div>
+
+    <div class="actions">
+      <button id="eval">Calcola classificazione</button>
+      <a class="btn" href="module-02.html">Torna al Modulo 02</a>
+    </div>
+
+    <div id="out" class="result">Seleziona le opzioni rilevanti e premi "Calcola classificazione".</div>
+  </div>
+
+  <script>
+    document.getElementById('eval').addEventListener('click', function () {
+      const c = cls => document.querySelectorAll(cls + ':checked').length;
+      const s1 = c('.s1');
+      const s2 = c('.s2');
+      const s3 = c('.s3');
+      const s4 = c('.s4');
+
+      const out = document.getElementById('out');
+      out.className = 'result';
+
+      let msg = '<strong>Conteggi:</strong> S1=' + s1 + ', S2=' + s2 + ', S3=' + s3 + ', S4=' + s4 + '.<br>';
+      if (s1 > 0 && s2 > 0) {
+        out.classList.add('high');
+        msg += '<strong>Esito:</strong> probabile <strong>HIGH-RISK</strong> (coerente con guida interpretativa del Capitolo 4).';
+      } else if (s1 > 0 && (s3 > 0 || s4 >= 2)) {
+        out.classList.add('warn');
+        msg += '<strong>Esito:</strong> possibile <strong>HIGH-RISK</strong> (dipende da contesto/implementazione). Richiesta validazione legale.';
+      } else if (s1 === 0) {
+        out.classList.add('ok');
+        msg += '<strong>Esito:</strong> al momento <strong>non emerge high-risk</strong> da questo pre-assessment.';
+      } else {
+        out.classList.add('warn');
+        msg += '<strong>Esito:</strong> area grigia. Servono analisi aggiuntive su impatto e use case specifico.';
+      }
+      out.innerHTML = msg;
+    });
+  </script>
+</body>
+</html>

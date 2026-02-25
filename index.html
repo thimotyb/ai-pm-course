@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progettare e gestire le soluzioni AI in azienda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: rgba(0, 5, 15, 0.95);
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="subtitle">Corso di Alta Formazione</p>
+      <h1>Progettare e gestire le soluzioni AI in azienda</h1>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2 class="section-title">Indice Moduli</h2>
+        <ul class="agenda-list">
+          <li class="agenda-item"><a class="agenda-link" href="module-01.html"><span class="agenda-number">01</span><span><span class="agenda-text">IA nei progetti: leve e criticità</span><p class="agenda-teaser">In un progetto AI la domanda iniziale non è &quot;quale modello usiamo?&quot;, ma &quot;quale problema risolviamo e come misuriamo il miglioramento&quot;. Il valore reale emerge quando una soluzione aumenta ...</p></span></a></li><li class="agenda-item"><a class="agenda-link" href="module-02.html"><span class="agenda-number">02</span><span><span class="agenda-text">Come gestire un progetto con IA</span><p class="agenda-teaser">Un progetto IA non è una sequenza lineare di task tecnici: è un ciclo in cui business, dati, modello, operazioni e governance si influenzano continuamente. La gestione efficace nasce quando:</p></span></a></li><li class="agenda-item"><a class="agenda-link" href="module-03.html"><span class="agenda-number">03</span><span><span class="agenda-text">Integrazione GenAI in processi aziendali</span><p class="agenda-teaser">Un language model genera testo prevedendo token plausibili in base al contesto. Questo meccanismo sembra semplice, ma in azienda determina aspetti decisivi: affidabilità delle risposte, a...</p></span></a></li><li class="agenda-item"><a class="agenda-link" href="module-04.html"><span class="agenda-number">04</span><span><span class="agenda-text">Valutare la qualità dell’output</span><p class="agenda-teaser">La qualità di una risposta AI non coincide solo con &quot;è corretta o no&quot;. In un contesto aziendale serve valutare almeno cinque dimensioni simultanee:</p></span></a></li><li class="agenda-item"><a class="agenda-link" href="module-05.html"><span class="agenda-number">05</span><span><span class="agenda-text">Presidio e manutenzione nel quotidiano</span><p class="agenda-teaser">Un sistema AI resta affidabile solo se governance e manutenzione sono integrate nelle attività ordinarie di team prodotto, engineering, risk e compliance. Il punto chiave è passare da int...</p></span></a></li><li class="agenda-item"><a class="agenda-link" href="module-06.html"><span class="agenda-number">06</span><span><span class="agenda-text">Esempi pratici - Laboratori</span><p class="agenda-teaser">| Titolo e link | Categoria |</p></span></a></li>
+        </ul>
+      </section>
+
+
+      <section class="card">
+        <h2 class="section-title">Bibliografia</h2>
+        <section class="module-content">
+          <ul><li><strong>The Art of AI Product Development</strong> — <strong>Autore:</strong> Janna Lipenkova — <strong>Casa editrice:</strong> Manning Publications</li><li><strong>Managing AI Projects</strong> — <strong>Autori:</strong> Malini Jain Runtasewee, Adrian Gonzalez Sanchez — <strong>Casa editrice:</strong> O&#x27;Reilly Media, Inc.</li><li><strong>Principles of AI Governance and Model Risk Management</strong> — <strong>Autore:</strong> James Sayles — <strong>Casa editrice:</strong> Apress</li><li><strong>The AI Engineer&#x27;s Guide to Surviving the EU AI Act</strong> — <strong>Autore:</strong> Larysa Visengeriyeva — <strong>Casa editrice:</strong> O&#x27;Reilly Media, Inc. — <strong>Link:</strong> <a href="https://learning.oreilly.com/library/view/the-ai-engineers/9781098172480/" target="_blank" rel="noopener noreferrer">O&#x27;Reilly Learning</a></li></ul>
+        </section>
+      </section>
+
+
+      <section class="site-footnote">
+        <p>Contenuto strutturato e selezionato editorialmente dal docente, generato con assistenza AI e revisionato da un editore umano</p>
+      </section>
+
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+</body>
+</html>

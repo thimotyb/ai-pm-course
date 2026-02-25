@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EU AI Act - Formulario Minimal/Low Risk</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f8fb; color: #1a1a1a; }
+    .wrap { max-width: 980px; margin: 0 auto; background: #fff; border: 1px solid #d8dfeb; border-radius: 10px; padding: 20px; }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    .q { padding: 10px 12px; margin: 10px 0; border: 1px solid #e5e9f2; border-radius: 8px; background: #fbfcff; }
+    .opt { margin-right: 16px; }
+    .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button, a.btn { border: 0; background: #1f5fbf; color: #fff; padding: 10px 14px; border-radius: 8px; text-decoration: none; cursor: pointer; }
+    .result { margin-top: 18px; padding: 14px; border-radius: 8px; border: 1px solid #cfd8ea; background: #f3f7ff; }
+    .ok { background: #eef9f0; border-color: #bde6c5; }
+    .warn { background: #fff9ea; border-color: #ffe0a3; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Formulario EU AI Act - Minimal/Low Risk</h1>
+    <p>Nel Capitolo 4, il low/minimal risk e' definito per esclusione: non proibito, non high-risk, non soggetto a obblighi di trasparenza specifici.</p>
+
+    <div class="q">1) Sono presenti pratiche proibite (Art. 5)?
+      <label class="opt"><input type="radio" name="q1" value="yes"> Si</label>
+      <label><input type="radio" name="q1" value="no"> No</label>
+    </div>
+    <div class="q">2) Il sistema e' classificabile high-risk (Art. 6 / Annex III)?
+      <label class="opt"><input type="radio" name="q2" value="yes"> Si</label>
+      <label><input type="radio" name="q2" value="no"> No</label>
+    </div>
+    <div class="q">3) Si applicano obblighi di trasparenza Art. 50 (limited-risk)?
+      <label class="opt"><input type="radio" name="q3" value="yes"> Si</label>
+      <label><input type="radio" name="q3" value="no"> No</label>
+    </div>
+    <div class="q">4) L'uso previsto puo' creare impatti significativi su diritti/sicurezza?
+      <label class="opt"><input type="radio" name="q4" value="yes"> Si</label>
+      <label><input type="radio" name="q4" value="no"> No</label>
+    </div>
+
+    <div class="actions">
+      <button id="eval">Calcola classificazione</button>
+      <a class="btn" href="module-02.html">Torna al Modulo 02</a>
+    </div>
+
+    <div id="out" class="result">Compila le risposte e premi "Calcola classificazione".</div>
+  </div>
+
+  <script>
+    function val(n) {
+      const e = document.querySelector('input[name="' + n + '"]:checked');
+      return e ? e.value : '';
+    }
+
+    document.getElementById('eval').addEventListener('click', function () {
+      const q1 = val('q1');
+      const q2 = val('q2');
+      const q3 = val('q3');
+      const q4 = val('q4');
+
+      const out = document.getElementById('out');
+      out.className = 'result';
+
+      if (!q1 || !q2 || !q3 || !q4) {
+        out.classList.add('warn');
+        out.innerHTML = 'Compila tutte le domande per ottenere un esito.';
+        return;
+      }
+
+      if (q1 === 'no' && q2 === 'no' && q3 === 'no' && q4 === 'no') {
+        out.classList.add('ok');
+        out.innerHTML = '<strong>Esito:</strong> probabile <strong>MINIMAL/LOW RISK</strong> (per esclusione).';
+      } else {
+        out.classList.add('warn');
+        let next = [];
+        if (q1 === 'yes') next.push('pratiche proibite');
+        if (q2 === 'yes') next.push('high-risk');
+        if (q3 === 'yes') next.push('limited-risk con trasparenza');
+        if (q4 === 'yes') next.push('analisi impatto approfondita');
+        out.innerHTML = '<strong>Esito:</strong> non classificabile come minimal/low-risk in questo pre-assessment.<br>' +
+          'Elementi da approfondire: <strong>' + next.join(', ') + '</strong>.';
+      }
+    });
+  </script>
+</body>
+</html>

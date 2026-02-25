@@ -1,0 +1,55 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare site artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+
+          # Publish root HTML pages (index + modules + risk forms)
+          cp -a ./*.html dist/ || true
+
+          # Publish static resources used by the pages
+          if [ -d assets ]; then
+            cp -a assets dist/assets
+          fi
+          if [ -d scripts ]; then
+            cp -a scripts dist/scripts
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

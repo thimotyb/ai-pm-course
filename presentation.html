@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Progettare e Gestire Soluzioni AI - Slide</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+
+    <!-- Theme personalizzato -->
+    <style>
+        :root {
+            --r-background-color: #00050f;
+            --r-main-font: 'Inter', sans-serif;
+            --r-heading-font: 'Inter', sans-serif;
+            --r-heading-color: #ffcc00;
+            --r-selection-background-color: #00d4ff;
+            --r-link-color: #00d4ff;
+        }
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+        .reveal h1 { border-bottom: 4px solid #ffcc00; padding-bottom: 20px; }
+        .reveal h2 { color: #00d4ff; }
+        .highlight-box {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 8px solid #00d4ff;
+            padding: 20px 40px;
+            margin: 20px 0;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .reveal img {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .columns {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .column { flex: 1; }
+        .fragment.fade-up { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+        .fragment.fade-up.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title Slide -->
+            <section data-background-gradient="radial-gradient(circle at 10% 20%, rgba(0, 31, 63, 1) 0%, rgba(0, 5, 15, 1) 90%)">
+                <h1>Progettare e Gestire<br>Soluzioni AI</h1>
+                <p style="color: #00d4ff; font-size: 1.2em;">Modulo 01: Leve, Criticità e Spazio Soluzione</p>
+                <p style="font-size: 0.8em; margin-top: 50px; opacity: 0.6;">Senior AI Product Management</p>
+            </section>
+
+            <!-- Agenda -->
+            <section>
+                <h2>Agenda del Modulo</h2>
+                <ul style="line-height: 1.8;">
+                    <li class="fragment">I 3 Pilastri della Soluzione AI</li>
+                    <li class="fragment">Modalità e Trasformazione Dati</li>
+                    <li class="fragment">Paradigmi: Predittiva, GenAI, Agentica</li>
+                    <li class="fragment">User Experience e Automazione</li>
+                    <li class="fragment">Casi Studio e Laboratori</li>
+                </ul>
+            </section>
+
+            <!-- Pilastri -->
+            <section>
+                <section>
+                    <h2>I 3 Pilastri della Soluzione</h2>
+                    <div class="columns">
+                        <div class="column">
+                            <img src="assets/chapt03_images/ch03_p02_01.jpg" alt="Solution Space">
+                        </div>
+                        <div class="column">
+                            <div class="highlight-box fragment">
+                                <strong>DATI</strong><br>Il segnale grezzo e il pre-processing.
+                            </div>
+                            <div class="highlight-box fragment">
+                                <strong>INTELLIGENZA</strong><br>La logica e i modelli (ML/Regole).
+                            </div>
+                            <div class="highlight-box fragment">
+                                <strong>ESPERIENZA (UX)</strong><br>L'interfaccia e l'automazione.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Dati -->
+            <section>
+                <h2>Modalità dei Dati</h2>
+                <p>L'IA non consuma solo testo. Consuma <strong>vettori</strong>.</p>
+                <img src="assets/chapt03_images/ch03_p04_01.jpg" style="max-height: 350px;">
+                <div class="columns">
+                    <div class="column fragment fade-up" style="font-size: 0.7em;">
+                        <ul style="list-style: none;">
+                            <li>📝 <strong>Testo</strong> (NLP)</li>
+                            <li>👁️ <strong>Visivo</strong> (Computer Vision)</li>
+                            <li>🔊 <strong>Audio</strong> (Speech)</li>
+                        </ul>
+                    </div>
+                    <div class="column fragment fade-up" style="font-size: 0.7em;">
+                        <ul style="list-style: none;">
+                            <li>🤖 <strong>Sensorimotorio</strong> (IoT)</li>
+                            <li>💻 <strong>Codice</strong> (LLM)</li>
+                            <li>🔢 <strong>Numerico</strong> (Forecast)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Intelligence Paradigms -->
+            <section>
+                <section>
+                    <h2>Paradigmi di Intelligenza</h2>
+                    <img src="assets/chapt03_images/ch03_p10_01.jpg">
+                </section>
+                <section>
+                    <h2>Dalla Regola all'Agente</h2>
+                    <div style="font-size: 0.8em;">
+                        <div class="highlight-box">
+                            <strong>1. Simbolica:</strong> Regole umane. Deterministiche e spiegabili.
+                        </div>
+                        <div class="highlight-box">
+                            <strong>2. Predittiva:</strong> Analisi statistica. Forecast e Score.
+                        </div>
+                        <div class="highlight-box">
+                            <strong>3. Generativa:</strong> Creazione contenuti. Sparring partner.
+                        </div>
+                        <div class="highlight-box">
+                            <strong>4. Agentica:</strong> Azione autonoma tramite strumenti.
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- UX -->
+            <section>
+                <h2>User Experience (UX)</h2>
+                <div class="columns">
+                    <div class="column">
+                        <ul style="font-size: 0.8em;">
+                            <li class="fragment"><strong>Conversazionale</strong> (Chat)</li>
+                            <li class="fragment"><strong>Grafica</strong> (Dashboard B2B)</li>
+                            <li class="fragment"><strong>Ibrida</strong> (Assistente + UI)</li>
+                            <li class="fragment"><strong>Generativa</strong> (UI Dinamica)</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <img src="assets/chapt03_images/ch03_p18_01.jpg" style="max-height: 400px;">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Automazione -->
+            <section>
+                <h2>Gradi di Automazione</h2>
+                <img src="assets/chapt03_images/ch03_p19_01.jpg" style="max-height: 300px;">
+                <div class="columns" style="font-size: 0.6em; margin-top: 30px;">
+                    <div class="column highlight-box">
+                        <strong>ASSISTED</strong><br>Supporto decisionale.<br>L'uomo è al centro.
+                    </div>
+                    <div class="column highlight-box">
+                        <strong>AUGMENTED</strong><br>Esecuzione assistita.<br>L'uomo valida.
+                    </div>
+                    <div class="column highlight-box">
+                        <strong>AUTONOMOUS</strong><br>Esecuzione indipendente.<br>Monitoraggio remoto.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SAE Levels -->
+            <section>
+                <h2>Il Benchmark: Livelli SAE</h2>
+                <img src="assets/chapt03_images/ch03_p20_01.jpg" style="max-height: 450px;">
+            </section>
+
+            <!-- Fine -->
+            <section data-background="#ffcc00">
+                <h1 style="color: #00050f; border-color: #00050f;">Fine Parte 1</h1>
+                <p style="color: #00050f;">Domande e Discussione</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+            backgroundTransition: 'fade',
+            plugins: [ ]
+        });
+    </script>
+</body>
+</html>

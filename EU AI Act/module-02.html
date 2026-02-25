@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 02 - Come gestire un progetto con IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: rgba(0, 5, 15, 0.95);
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
+      <h1>Modulo 02</h1>
+    </header>
+
+    <main>
+      <article class="card">
+        <nav class="module-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-01.html">Modulo Precedente</a><a class="nav-btn" href="module-03.html">Modulo Successivo</a></nav>
+        <nav class="jump-nav"><a class="nav-btn" href="module-01.html">01 - IA nei progetti: leve e criticità</a><a class="nav-btn" href="module-02.html">02 - Come gestire un progetto con IA</a><a class="nav-btn" href="module-03.html">03 - Integrazione GenAI in processi aziendali</a><a class="nav-btn" href="module-04.html">04 - Valutare la qualità dell’output</a><a class="nav-btn" href="module-05.html">05 - Presidio e manutenzione nel quotidiano</a><a class="nav-btn" href="module-06.html">06 - Esempi pratici - Laboratori</a></nav>
+
+        <p class="module-kicker">Modulo 02</p>
+        <h2 class="module-title">Come gestire un progetto con IA</h2>
+
+        <section class="module-content">
+          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> gestire un progetto IA end-to-end con approccio iterativo, governance integrata e responsabilità chiare.</li><li><strong>Asse di lavoro:</strong> ciclo tecnico, ciclo di compliance, ciclo organizzativo.</li><li><strong>Fasi operative:</strong> ideazione, dati, modellazione, validazione, deploy, manutenzione.</li><li><strong>Risultato atteso:</strong> passare da PoC a produzione con controllo di costi, rischio e performance.</li></ul></section>
+          <h3 class="module-subtitle">Il lifecycle IA come strumento di gestione</h3>
+          <p>Un progetto IA non è una sequenza lineare di task tecnici: è un ciclo in cui business, dati, modello, operazioni e governance si influenzano continuamente. La gestione efficace nasce quando:</p>
+          <ul><li>le fasi sono esplicite e condivise;</li><li>i criteri di avanzamento sono definiti prima dell&#x27;esecuzione;</li><li>i feedback di validazione rientrano nel piano senza creare blocchi organizzativi.</li></ul>
+          <h3 class="module-subtitle">Framework tecnici utili per strutturare il lavoro</h3>
+          <h4 class="module-subtitle-small">CRISP-DM per la struttura base del progetto</h4>
+          <p>CRISP-DM resta una base solida per allineare comprensione business, preparazione dati, modellazione, valutazione e rilascio.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img09.png" alt="Framework CRISP-DM per progetti data-driven" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.1: riferimento operativo per la sequenza di lavoro data-driven</figcaption></figure>
+          <h4 class="module-subtitle-small">CRISP-ML(Q): estensione quality-first di CRISP-DM</h4>
+          <p>Dopo CRISP-DM, il framework <strong>CRISP-ML(Q)</strong> aggiunge una logica più adatta ai progetti di machine learning in produzione: la qualità non è un controllo finale, ma un requisito continuo in ogni fase del ciclo.</p>
+          <p>In pratica, CRISP-ML(Q) mantiene l&#x27;approccio iterativo, ma rende espliciti:</p>
+          <ul><li>obiettivi di qualità e rischio per ciascuna fase;</li><li>criteri di validazione tecnica e operativa;</li><li>monitoraggio continuo dopo il rilascio.</li></ul>
+          <p>Le fasi principali da presidiare:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Fase</th><th>Focus operativo</th><th>Output atteso</th></tr></thead><tbody><tr><td>Business &amp; Data Understanding</td><td>definire obiettivi, vincoli, metriche e rischi</td><td>scope chiaro, KPI, criteri di successo/fallimento</td></tr><tr><td>Data Engineering</td><td>costruire pipeline dati affidabili, tracciabili e conformi</td><td>dataset versionati, qualità dati verificata</td></tr><tr><td>Model Engineering</td><td>progettare, addestrare e confrontare modelli baseline/avanzati</td><td>modello candidato con evidenze sperimentali</td></tr><tr><td>Quality Assurance</td><td>test su performance, robustezza, fairness, sicurezza</td><td>report TEVV, rischi residui e mitigazioni</td></tr><tr><td>Deployment</td><td>integrare modello in ambiente reale con controlli</td><td>rilascio governato con rollback e osservabilità</td></tr><tr><td>Monitoring &amp; Maintenance</td><td>monitorare drift, costo, incidenti e qualità nel tempo</td><td>piano di retraining, miglioramento continuo</td></tr></tbody></table></div>
+          <p>Punto chiave per l&#x27;AI PM: CRISP-ML(Q) aiuta a collegare backlog tecnico, governance del rischio e decisioni di go/no-go con evidenze misurabili.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/crisp_mlq_process.jpg" alt="CRISP-ML(Q) process overview" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.1a: overview del processo CRISP-ML(Q) (source: MLOps.org)</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/crisp_mlq_phase.jpg" alt="CRISP-ML(Q) phase detail" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.1b: dettaglio delle fasi CRISP-ML(Q) e del ciclo iterativo (source: MLOps.org)</figcaption></figure>
+          <h4 class="module-subtitle-small">Team Data Science Process per standardizzazione del team</h4>
+          <p>La standardizzazione di cartelle, documenti, ruoli e passaggi riduce attriti tra data science, engineering e stakeholder business.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img04.png" alt="Framework Team Data Science Process" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.2: esempio di processo standardizzato per team IA</figcaption></figure>
+          <h4 class="module-subtitle-small">MLOps per continuità tra sviluppo e produzione</h4>
+          <p>MLOps introduce disciplina su versionamento, tracciabilità esperimenti, model registry e monitoraggio continuo.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img12.png" alt="Lifecycle MLOps" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.3: flusso operativo per machine learning in produzione</figcaption></figure>
+          <h4 class="module-subtitle-small">Evoluzione verso LLMOps e GenAIOps</h4>
+          <p>Con i sistemi generativi, oltre al modello conta l&#x27;orchestrazione: prompt, knowledge base, retrieval, controlli di sicurezza e osservabilità.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img06.png" alt="Confronto tra MLOps e LLMOps" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.4: differenze chiave tra operazioni ML tradizionali e operazioni su LLM</figcaption></figure>
+          <h3 class="module-subtitle">Lifecycle orientati a governance, ruoli e controllo</h3>
+          <p>In questa sezione adottiamo come riferimento il <strong>NIST AI Risk Management Framework (AI RMF 1.0)</strong> per strutturare la governance in modo operativo, tracciabile e orientato alla riduzione del rischio lungo tutto il ciclo di vita.</p>
+          <p>Il NIST AI RMF è un framework risk-based che aiuta a progettare, rilasciare e gestire sistemi AI affidabili, integrando aspetti tecnici, organizzativi e di accountability.</p>
+          <p>Struttura essenziale del framework:</p>
+          <ul><li><strong>GOVERN:</strong> definizione di policy, ruoli, responsabilità, oversight e cultura del rischio.</li><li><strong>MAP:</strong> inquadramento di contesto d&#x27;uso, stakeholder, impatti e rischi potenziali.</li><li><strong>MEASURE:</strong> misurazione del rischio con metriche, test, evidenze TEVV e monitoraggio.</li><li><strong>MANAGE:</strong> trattamento del rischio con priorità, mitigazioni, escalation, riesame continuo.</li></ul>
+          <p>Queste quattro funzioni non sono fasi rigide e sequenziali: vengono iterate nel tempo e aggiornate quando cambiano dati, modelli, processi o requisiti normativi.</p>
+          <h4 class="module-subtitle-small">Trustworthy AI: 7 requisiti da integrare nel progetto</h4>
+          <p>Le linee guida europee sull&#x27;AI affidabile indicano <strong>7 requisiti chiave</strong> che un sistema deve soddisfare per essere considerato trustworthy. In pratica, è utile usare una <strong>assessment list</strong> dedicata per verificare in modo sistematico ciascun requisito.</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Requisito</th><th>Significato operativo per il team</th><th>Cosa verificare nella assessment list</th></tr></thead><tbody><tr><td>Human agency and oversight</td><td>Il sistema deve supportare decisioni umane informate, senza sostituire in modo incontrollato il giudizio umano.</td><td>Presenza di meccanismi human-in-the-loop, human-on-the-loop o human-in-command; ruoli e poteri di intervento definiti.</td></tr><tr><td>Technical robustness and safety</td><td>Il sistema deve essere resiliente, sicuro e affidabile anche in condizioni avverse.</td><td>Accuratezza, affidabilità, riproducibilità, piani di fallback e gestione incidenti per minimizzare danni intenzionali e non intenzionali.</td></tr><tr><td>Privacy and data governance</td><td>Oltre alla conformità privacy, servono regole solide di governo del dato.</td><td>Qualità e integrità dei dati, base legale d&#x27;uso, controllo accessi legittimati, tracciabilità e protezione dati personali.</td></tr><tr><td>Transparency</td><td>Dati, modello e logica di funzionamento devono essere comprensibili e tracciabili.</td><td>Meccanismi di tracciabilità, spiegazioni adeguate ai diversi stakeholder, comunicazione chiara di capacità e limiti del sistema AI.</td></tr><tr><td>Diversity, non-discrimination and fairness</td><td>Il sistema deve evitare bias ingiusti e ridurre rischi di esclusione o discriminazione.</td><td>Test fairness e bias, accessibilità anche per persone con disabilità, coinvolgimento stakeholder rilevanti lungo tutto il ciclo di vita.</td></tr><tr><td>Societal and environmental well-being</td><td>Il sistema deve generare benefici sostenibili per persone, società e ambiente, anche nel lungo periodo.</td><td>Valutazione impatti sociali e ambientali, criteri di sostenibilità, attenzione agli effetti su comunità e altri esseri viventi.</td></tr><tr><td>Accountability</td><td>Devono essere chiari responsabilità, auditabilità e rimedi in caso di danno.</td><td>Accountability su decisioni e risultati, audit di algoritmi/dati/processi, meccanismi di redress accessibili soprattutto in applicazioni critiche.</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Classificazione del rischio secondo EU AI Act</h4>
+          <p>Dal Capitolo 4 del materiale EU AI Act, la classificazione pratica dei sistemi AI si organizza in quattro livelli operativi.</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Livello di rischio</th><th>Criteri pratici di classificazione</th><th>Implicazioni operative</th><th>Formulario interattivo</th></tr></thead><tbody><tr><td><strong>Unacceptable risk (pratiche proibite)</strong></td><td>Sistemi che ricadono nelle pratiche vietate (es. manipolazione subliminale/deceptive, sfruttamento vulnerabilità, social scoring, alcune pratiche biometriche vietate, emotion recognition in contesti vietati).</td><td>Uso vietato nel mercato UE; richiede blocco o ritiro e gestione immediata del rischio legale/compliance.</td><td><a href="eu-ai-act-risk-unacceptable.html">Apri formulario pratiche proibite</a></td></tr><tr><td><strong>High risk (Art. 6 / Annex III)</strong></td><td>Sistemi in aree ad alto impatto (biometria, infrastrutture critiche, istruzione, occupazione, credito/servizi essenziali, law enforcement, migrazione, giustizia), o safety components.</td><td>Obblighi rafforzati: risk management, data governance, documentazione tecnica, logging/tracciabilità, human oversight, accuratezza, robustezza e cybersecurity.</td><td><a href="eu-ai-act-risk-high.html">Apri formulario high-risk</a></td></tr><tr><td><strong>Limited risk (Art. 50 trasparenza)</strong></td><td>Sistemi non proibiti e non high-risk ma con obblighi di trasparenza (interazione con persone, deepfakes, emotion recognition/biometric categorization con obblighi informativi).</td><td>Obblighi di trasparenza e informazione utenti, labeling contenuti sintetici, tutele di comprensione/contestazione.</td><td><a href="eu-ai-act-risk-limited.html">Apri formulario limited-risk</a></td></tr><tr><td><strong>Minimal/low risk</strong></td><td>Sistemi che non sono proibiti, non sono high-risk e non ricadono negli obblighi di trasparenza specifici.</td><td>Nessun regime equivalente all&#x27;high-risk, ma restano raccomandati governance, monitoraggio e buone pratiche di Responsible AI.</td><td><a href="eu-ai-act-risk-minimal.html">Apri formulario minimal-risk</a></td></tr></tbody></table></div>
+          <p>Nota metodologica:</p>
+          <ul><li>il documento evidenzia che la classificazione può risultare ambigua in casi borderline;</li><li>il risultato del formulario va usato come <strong>pre-assessment</strong> e poi validato con funzione legale/compliance.</li></ul>
+          <p>Breve riferimento operativo: <strong>MIT AI Risk Repository</strong> (<a href="https://airisk.mit.edu/" target="_blank" rel="noopener noreferrer">airisk.mit.edu</a>) e&#x27; un catalogo strutturato dei rischi AI (tecnici, sociali, legali, di sicurezza) utile per:</p>
+          <ul><li>individuare rapidamente categorie di rischio rilevanti per il proprio caso d&#x27;uso;</li><li>costruire checklist di controllo e priorita&#x27; di mitigazione;</li><li>allineare la classificazione del rischio con governance, audit e monitoraggio continuo.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/eu_ai_act_nonfunctional_requirements.png" alt="Requisiti non funzionali di progetto derivati da EU AI Act (Art. 9-15)" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.5d: mappa dei principali requisiti non funzionali (risk, data quality, technical documentation, logging, transparency, human oversight, robustness) derivati dagli articoli EU AI Act</figcaption></figure>
+          <p>Nota sui livelli di supervisione umana:</p>
+          <ul><li><strong>Human-in-the-loop (HITL):</strong> l&#x27;umano interviene nel flusso decisionale prima dell&#x27;azione finale; senza approvazione umana il sistema non procede.</li><li><strong>Human-on-the-loop (HOTL):</strong> il sistema opera in autonomia ma con supervisione umana esterna; l&#x27;umano monitora, corregge o interrompe quando necessario.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/human_oversight_levels.png" alt="Livelli di supervisione umana nei sistemi AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.5b: gradiente di controllo umano da Human-in-command a Human-out-of-the-loop</figcaption></figure>
+          <h4 class="module-subtitle-small">Sintesi operativa da Google Responsible AI (per applicazioni GenAI)</h4>
+          <p>La documentazione Google Responsible AI per sviluppatori GenAI suggerisce di tradurre i principi in un ciclo pratico di progettazione, test, rilascio e monitoraggio continuo.</p>
+          <p>Punti chiave da integrare nel Modulo 02:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Ambito</th><th>Indicazioni operative da applicare nel progetto</th></tr></thead><tbody><tr><td>Progettazione responsabile by design</td><td>Definire da subito casi d&#x27;uso consentiti/non consentiti, rischi attesi e guardrail tecnici prima dello sviluppo esteso.</td></tr><tr><td>Policy e limiti d&#x27;uso</td><td>Allineare il prodotto alla <strong>Generative AI Prohibited Use Policy</strong>, con controlli espliciti su prompt, output e integrazioni.</td></tr><tr><td>Valutazione e test di sicurezza</td><td>Eseguire valutazioni strutturate (incluse prove avversariali/red teaming) su sicurezza, robustezza e qualità dell&#x27;output.</td></tr><tr><td>Trasparenza verso utenti e stakeholder</td><td>Comunicare chiaramente che l&#x27;utente interagisce con un sistema AI, indicando capacità, limiti e possibili errori.</td></tr><tr><td>Governance dei dati e privacy</td><td>Applicare minimizzazione del dato, protezione dei dati sensibili, tracciabilità e regole di accesso legittimo.</td></tr><tr><td>Controllo umano ed escalation</td><td>Prevedere human-in-the-loop/on-the-loop nei passaggi critici e procedure di escalation/rollback in caso di comportamento anomalo.</td></tr><tr><td>Monitoraggio post-rilascio</td><td>Misurare incidenti, abusi, drift e qualità nel tempo, con miglioramenti iterativi su policy, prompt e filtri.</td></tr></tbody></table></div>
+          <p>Riferimenti utili richiamati da Google in quest&#x27;area:</p>
+          <ul><li><strong>Secure AI Framework (SAIF)</strong> per integrare sicurezza lungo tutto il ciclo di vita;</li><li><strong>Responsible Generative AI Toolkit</strong> per pratiche e strumenti di implementazione;</li><li>policy ufficiali su uso consentito e uso vietato dei sistemi generativi.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/google_rai_overview.png" alt="Google Responsible AI overview" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.5a: overview visuale dell&#x27;approccio Google Responsible AI (source: Google AI Developers)</figcaption></figure>
+          <p>Focus su risorse e impatto ambientale (requisito: <strong>Societal and environmental well-being</strong>):</p>
+          <ul><li>la crescita delle capacità dei modelli è stata accompagnata da una crescita molto forte del fabbisogno computazionale;</li><li>questo si traduce in maggior consumo energetico e maggiore attenzione a efficienza, ottimizzazione e scelte infrastrutturali sostenibili;</li><li>aneddoto spesso citato: Sam Altman ha commentato in modo ironico che anche messaggi come &quot;grazie&quot; e &quot;per favore&quot; hanno un costo computazionale, evidenziando che ogni token elaborato ha un impatto operativo.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/ai_compute_growth_resources.png" alt="Crescita del compute nei modelli AI e impatto sulle risorse" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.5c: crescita del fabbisogno computazionale e implicazioni su costi energetici/ambientali</figcaption></figure>
+          <p>Per l&#x27;AI PM, questi 7 requisiti sono una check di governance concreta: aiutano a trasformare principi etici in criteri di progetto, controlli verificabili ed escalation tempestive.</p>
+          <p>Per progetti a rischio elevato, è utile affiancare al ciclo tecnico un ciclo con focus su verifica, validazione, audit e responsabilità dei ruoli.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img03.png" alt="Lifecycle con attori e controlli di rischio" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.5: visione lifecycle con attori, controlli e verifiche</figcaption></figure>
+          <p>Nella figura compare spesso l&#x27;acronimo <strong>TEVV</strong>, che significa <strong>Test, Evaluation, Verification, and Validation</strong>:</p>
+          <ul><li><strong>Test:</strong> prove tecniche sul sistema o modello;</li><li><strong>Evaluation:</strong> valutazione delle performance rispetto a metriche e obiettivi;</li><li><strong>Verification:</strong> verifica che la soluzione rispetti requisiti e specifiche;</li><li><strong>Validation:</strong> conferma che la soluzione sia adatta al contesto d&#x27;uso reale e agli obiettivi business.</li></ul>
+          <p>La mappa ruoli-per-fase aiuta a evitare zone grigie di accountability e accelera decisioni operative.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img08.png" alt="Mappatura ruoli nelle fasi del progetto IA" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.6: esempio di assegnazione ruoli per fase</figcaption></figure>
+          <p>La matrice competenze-vs-esigenze consente di pianificare upskilling e hiring in modo mirato prima di entrare in delivery critico.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img02.png" alt="Matrice competenze richieste per progetto IA" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.7: strumento per analisi gap competenze e copertura attività</figcaption></figure>
+          <h3 class="module-subtitle">Gestione per fasi: guida operativa completa</h3>
+          <h4 class="module-subtitle-small">Fase 1: Ideazione e definizione del problema</h4>
+          <p>In questa fase si decide la qualità dell&#x27;intero progetto. Serve produrre output concreti:</p>
+          <ul><li>catalogo dei casi d&#x27;uso;</li><li>ipotesi di valore misurabile;</li><li>fattibilità tecnica preliminare;</li><li>analisi pre-mortem dei rischi principali;</li><li>prima priorità di roadmap.</li></ul>
+          <p>Esempio di struttura per discovery use case:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>#</th><th>Use case</th><th>Funzione</th><th>Contesto</th><th>Tipo di progetto</th></tr></thead><tbody><tr><td>1</td><td>Supporto chatbot L1</td><td>Customer Success</td><td>Esterno</td><td>GenAI con retrieval</td></tr><tr><td>2</td><td>Previsione numerica vendite</td><td>Sales</td><td>Interno</td><td>ML regressione</td></tr><tr><td>3</td><td>Social media score</td><td>Marketing</td><td>Interno</td><td>NLP sentiment</td></tr><tr><td>4</td><td>Customer segmentation</td><td>Marketing</td><td>Interno</td><td>ML clustering</td></tr></tbody></table></div>
+          <p>Valutazione impatto e risorse disponibili:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>#</th><th>Use case</th><th>Impatto</th><th>KPI atteso</th><th>Risorse disponibili</th></tr></thead><tbody><tr><td>1</td><td>Supporto chatbot L1</td><td>Riduzione costo servizio</td><td>Tempo medio gestione ticket</td><td>Team IA, cloud, sponsor business</td></tr><tr><td>2</td><td>Previsione vendite</td><td>Migliore pianificazione</td><td>Accuratezza forecast</td><td>Dati parziali</td></tr><tr><td>3</td><td>Social score</td><td>Migliore targeting</td><td>Qualità scoring</td><td>Sponsor non definito</td></tr><tr><td>4</td><td>Customer segmentation</td><td>Maggiore efficacia campagne</td><td>CTR e conversione</td><td>Dataset completo e team ML</td></tr></tbody></table></div>
+          <p>Pre-mortem iniziale dei rischi:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Categoria</th><th>Rischio</th><th>Possibile effetto</th></tr></thead><tbody><tr><td>Contesto</td><td>Vincoli regolatori non coperti</td><td>Blocco rilascio</td></tr><tr><td>Business</td><td>Caso d&#x27;uso con valore incerto</td><td>ROI insufficiente</td></tr><tr><td>Tecnico</td><td>Complessità sottostimata</td><td>Ritardi e aumento costi</td></tr><tr><td>Sicurezza</td><td>Vulnerabilità applicative</td><td>Incidenti e perdita fiducia</td></tr></tbody></table></div>
+          <p>Per prioritizzare in modo trasparente conviene usare una matrice valore/fattibilità.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img11.png" alt="Matrice 2x2 per prioritizzazione use case" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.8: prioritizzazione dei casi su valore business e fattibilità tecnica</figcaption></figure>
+          <p>La matrice produce una roadmap multi-use-case, utile per gestire capacità e dipendenze nel tempo.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img10.png" alt="Roadmap inter-use-case per pianificazione progressiva" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.9: esempio di pianificazione progressiva su più iniziative IA</figcaption></figure>
+          <h4 class="module-subtitle-small">Fase 2: Raccolta e preparazione dati</h4>
+          <p>Il focus è trasformare fonti eterogenee in dataset affidabili e tracciabili.</p>
+          <p>Attività chiave:</p>
+          <ul><li>data profiling;</li><li>data cleaning e normalizzazione;</li><li>trasformazioni e feature engineering;</li><li>controllo outlier e qualità;</li><li>documentazione pipeline.</li></ul>
+          <p>Catalogo sorgenti dati (esempio):</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>#</th><th>Sorgente</th><th>Sistema</th><th>Asset</th><th>Owner</th><th>Accesso</th></tr></thead><tbody><tr><td>a</td><td>Dati cliente</td><td>SQL</td><td>DB-7</td><td>DBA</td><td>DBMS</td></tr><tr><td>b</td><td>Dati mercato</td><td>API</td><td>Feed esterni</td><td>Backend Dev</td><td>API</td></tr><tr><td>c</td><td>Q&amp;A e documenti</td><td>Data lake</td><td>DL-2</td><td>Cloud Admin</td><td>API</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Data governance e compliance evaluation</h4>
+          <p>Nel lavoro multidisciplinare, l&#x27;AI PM deve facilitare una discussione preliminare su governance dati e compliance già in Fase 2, perché il modo in cui i dati sono organizzati e accessibili condiziona qualità, rischio e time-to-production.</p>
+          <p>Punti operativi da presidiare:</p>
+          <ul><li>visione d&#x27;insieme dell&#x27;organizzazione del dato (sistemi, ownership, policy, retention);</li><li>accesso programmatico alle fonti (API, autorizzazioni, segregazione ambienti, tracciabilità accessi);</li><li>basi legali e vincoli d&#x27;uso (consenso, finalità, minimizzazione, trasferimenti);</li><li>privacy e proprietà intellettuale (dati personali, contenuti coperti da copyright, licenze dataset);</li><li>ruoli e responsabilità tra team tecnici e funzioni di controllo.</li></ul>
+          <p>Funzioni da coinvolgere, in base alla struttura interna:</p>
+          <ul><li>data owner e data governance office;</li><li>CDO (Chief Data Officer);</li><li>legal/compliance/privacy;</li><li>security e audit interno.</li></ul>
+          <p>Per l&#x27;AI PM questo passaggio è critico perché riduce il rischio di blocchi o incidenti in esercizio e previene costi di rework nelle fasi successive.</p>
+          <p>Checklist minima di valutazione:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Ambito</th><th>Domanda di controllo</th><th>Owner principale</th></tr></thead><tbody><tr><td>Accesso dati</td><td>chi può accedere via API/DB e con quali permessi?</td><td>Data owner + Security</td></tr><tr><td>Privacy</td><td>i dataset contengono dati personali o sensibili?</td><td>Privacy/Legal</td></tr><tr><td>Copyright e licenze</td><td>i dati possono essere usati per training/fine-tuning?</td><td>Legal + Procurement</td></tr><tr><td>Tracciabilità</td><td>esistono log e audit trail su accessi e trasformazioni?</td><td>Data engineering + Audit</td></tr><tr><td>Compliance</td><td>il caso d&#x27;uso rispetta policy interne e requisiti regolatori?</td><td>Compliance + PM</td></tr></tbody></table></div>
+          <p>La valutazione qualità deve essere esplicita per fattori: volume, joinability, rilevanza, consistenza, chiarezza, tempestività.</p>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img07.png" alt="Template di valutazione qualità dati" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.10: fattori operativi per valutare idoneità dei dati al progetto</figcaption></figure>
+          <h4 class="module-subtitle-small">Fase 3: Sviluppo modello e sperimentazione</h4>
+          <p>In questa fase si definisce il <strong>modelling approach</strong> e si trasforma la strategia in esperimenti concreti. L&#x27;AI PM, anche senza entrare nel dettaglio matematico, deve guidare decisioni strutturate e facilitare il confronto tra data scientist, AI engineer, business owner e funzioni di controllo.</p>
+          <p>Decisioni chiave da strutturare con il team:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Leva decisionale</th><th>Domande da chiarire</th><th>Impatto pratico sul progetto</th></tr></thead><tbody><tr><td>Tipo di modello</td><td>il caso richiede ML classico, deep learning, NLP o LLM?</td><td>influenza skill richieste, tempi di sviluppo, qualità attesa e costi</td></tr><tr><td>Build vs leverage</td><td>conviene costruire un modello proprietario o usare modelli open/managed?</td><td>cambia investimento iniziale, complessità operativa e dipendenza da terze parti</td></tr><tr><td>Ruolo della conoscenza umana</td><td>dove serve supervisione umana (labeling, SME, few-shot, revisione output)?</td><td>determina qualità dati, affidabilità output e governance human-in-the-loop</td></tr><tr><td>Baseline vs modello avanzato</td><td>quale baseline &quot;naive&quot; usiamo per confronto oggettivo?</td><td>consente di misurare guadagno reale e giustificare evoluzioni più costose</td></tr><tr><td>Explainability vs complessità</td><td>quanta interpretabilità è necessaria per questo contesto?</td><td>impatta conformità, fiducia stakeholder e velocità di adozione</td></tr></tbody></table></div>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/explainability_accuracy_tradeoff.png" alt="Trade-off tra explainability e performance predittiva" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.11a: confronto orientativo tra famiglie di modelli su interpretabilità e accuratezza</figcaption></figure>
+          <p>Pianificazione risorse (team, infrastruttura, tooling):</p>
+          <ul><li>definire skill mix in base al tipo progetto (ML tradizionale, GenAI, agenti);</li><li>stimare capacità infrastrutturale con approccio bottom-up (GPU, memoria, storage, ambienti);</li><li>distinguere fabbisogno tra pilot e produzione, includendo scenari di picco;</li><li>pianificare budget complessivo: persone, piattaforme, licenze, observability, sicurezza.</li></ul>
+          <p>Compliance del modello e approccio risk-based:</p>
+          <ul><li>raccogliere documentazione modello (model card, specifiche provider, limiti noti);</li><li>tracciare risultati di sperimentazione e test con evidenze riusabili in audit;</li><li>valutare impatti regolatori in base a settore, geografia, uso previsto e terze parti;</li><li>integrare controlli e mitigazioni lungo tutto il lifecycle, non solo prima del go-live.</li></ul>
+          <p>Riferimenti utili in questa fase: <strong>EU AI Act</strong>, <strong>ISO/IEC 42001</strong>, policy interne di rischio e compliance.</p>
+          <p>Accesso ai modelli e stima dei costi:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Aspetto</th><th>Cosa valutare come AI PM</th></tr></thead><tbody><tr><td>Modalità di acquisto</td><td>capacity riservata, prezzo per chiamata/API, istanze dedicate, sconti mensili/annuali cloud</td></tr><tr><td>Costo unitario</td><td>costo per token/chiamata/ora GPU e resa effettiva nei vari scenari d&#x27;uso</td></tr><tr><td>Scalabilità economica</td><td>differenza costo tra carico normale e picchi, con margine operativo</td></tr><tr><td>Strategia FinOps</td><td>coinvolgere FinOps per ottimizzare consumo, prenotazioni e costo per risultato</td></tr></tbody></table></div>
+          <p>Spiegazione risultati e allineamento stakeholder:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Livello di comunicazione</th><th>Obiettivo</th></tr></thead><tbody><tr><td>Avanzamento progetto</td><td>condividere sprint, milestone, criticità e deviazioni rispetto al piano</td></tr><tr><td>Scelte modello e trade-off</td><td>spiegare perché un modello è stato scelto e quali limiti comporta</td></tr><tr><td>Risultati su use case/applicazione</td><td>mostrare impatto reale su processo e utente finale, con feedback precoce</td></tr></tbody></table></div>
+          <p>Punti di governo dell&#x27;AI PM in Fase 3:</p>
+          <ul><li>definire sprint sperimentali con criteri di ingresso/uscita chiari;</li><li>coordinare dipendenze tra team tecnici, business e controllo;</li><li>presidiare evidenze tecniche, economiche e di compliance per le decisioni di go/no-go;</li><li>mantenere leggibili i trade-off tra performance, costo, rischio e tempo.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img01.png" alt="Trade-off tra performance e limiti del modello" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.11: bilanciamento tra accuratezza, costo, interpretabilità e robustezza</figcaption></figure>
+          <h4 class="module-subtitle-small">Fase 4: Valutazione e validazione</h4>
+          <p>La validazione combina metrica tecnica, metrica business e metrica rischio.</p>
+          <p>Metriche utili per tipologia (integrazione della Table 4-6: AI Model Metrics):</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Tipo modello</th><th>Metrica</th><th>Range valori</th><th>Scopo operativo</th><th>Quando usarla / attenzione interpretativa</th></tr></thead><tbody><tr><td>Classificazione</td><td>AUC-ROC (Area Under Curve)</td><td>0-1 (più alto è meglio)</td><td>Misura la capacità del modello di distinguere tra classi</td><td>Utile per confronto tra modelli indipendente dalla soglia; da integrare con metriche a soglia fissa se il costo errore è asimmetrico.</td></tr><tr><td>Classificazione</td><td>Precision</td><td>0-1 (più alto è meglio)</td><td>Quota di positivi predetti che sono realmente positivi</td><td>Prioritaria quando i falsi positivi costano molto (es. contatti commerciali inutili, allarmi non necessari).</td></tr><tr><td>Classificazione</td><td>Recall</td><td>0-1 (più alto è meglio)</td><td>Quota di positivi reali che il modello intercetta</td><td>Prioritaria quando i falsi negativi sono critici (es. frodi, rischio clinico, sicurezza).</td></tr><tr><td>Classificazione</td><td>F1 Score</td><td>0-1 (più alto è meglio)</td><td>Bilancia precision e recall in scenari sbilanciati</td><td>Buona metrica sintetica quando precision e recall hanno peso simile; non sostituisce l&#x27;analisi del trade-off di soglia.</td></tr><tr><td>Classificazione</td><td>F2 Score</td><td>0-1 (più alto è meglio)</td><td>Come F1, ma dà più peso alla recall (utile quando i falsi negativi costano di più)</td><td>Da preferire in contesti in cui perdere casi positivi è peggio che avere qualche falso allarme in più.</td></tr><tr><td>Regressione</td><td>MAE (Mean Absolute Error)</td><td>0-∞ (più basso è meglio)</td><td>Errore medio assoluto tra valore predetto e reale</td><td>Facile da spiegare al business perché è nella stessa unità del target; meno sensibile agli outlier rispetto a MSE.</td></tr><tr><td>Regressione</td><td>MSE (Mean Squared Error)</td><td>0-∞ (più basso è meglio)</td><td>Penalizza maggiormente gli errori grandi</td><td>Utile se vuoi scoraggiare errori estremi; può essere dominata da pochi outlier e va letta insieme a MAE.</td></tr><tr><td>Regressione</td><td>R² Score</td><td>-∞ a 1 (più alto è meglio)</td><td>Indica quanta varianza dei dati è spiegata dal modello</td><td>Utile per confronto relativo tra modelli simili; non descrive l&#x27;entità assoluta dell&#x27;errore e può essere negativo.</td></tr><tr><td>NLP</td><td>BLEU</td><td>0-1 (più alto è meglio)</td><td>Confronta testo generato con riferimenti attesi (es. traduzione)</td><td>Adatta a traduzione e tasks con risposta attesa; penalizza parafrasi corrette ma lessicalmente diverse.</td></tr><tr><td>NLP</td><td>ROUGE</td><td>0-1 (più alto è meglio)</td><td>Misura sovrapposizione tra output e riferimento (es. summarization)</td><td>Adatta a sintesi automatica; da combinare con valutazione umana di qualità, copertura e non-allucinazione.</td></tr><tr><td>NLP</td><td>Perplexity</td><td>1-∞ (più basso è meglio)</td><td>Valuta quanto bene il modello predice sequenze linguistiche</td><td>Utile in fase di training/benchmark linguistico; non garantisce accuratezza fattuale o utilità applicativa.</td></tr><tr><td>Generative AI</td><td>Groundedness</td><td>0-1 (più alto è meglio)</td><td>Accuratezza fattuale rispetto alle fonti di contesto</td><td>Fondamentale in RAG e assistenti su knowledge base; dipende dalla qualità di retrieval e fonti disponibili.</td></tr><tr><td>Generative AI</td><td>Relevance</td><td>0-1 (più alto è meglio)</td><td>Aderenza della risposta alla domanda e al contesto</td><td>Da usare per qualità conversazionale; una risposta rilevante può comunque contenere errori fattuali.</td></tr><tr><td>Generative AI</td><td>Toxicity Score</td><td>0-1 (più basso è meglio)</td><td>Presenza di contenuti offensivi, nocivi o discriminatori</td><td>Necessaria in use case pubblici o HR; attenzione a bias culturali/linguistici nei classificatori di moderazione.</td></tr><tr><td>Generative AI</td><td>Diversity</td><td>0-1 (più alto è meglio)</td><td>Varietà delle risposte, riducendo ripetitività</td><td>Utile in creatività e brainstorming; troppa diversità può ridurre coerenza e standardizzazione operativa.</td></tr><tr><td>Generative AI</td><td>Coherence</td><td>0-1 (più alto è meglio)</td><td>Coerenza logica e leggibilità del testo generato</td><td>Importante per testi lunghi e processi multi-step; coerenza non equivale a veridicità del contenuto.</td></tr><tr><td>Generative AI</td><td>Fluency</td><td>0-1 (più alto è meglio)</td><td>Correttezza grammaticale e naturalezza linguistica</td><td>Buona per UX percepita; un testo fluido può comunque essere scorretto sul piano tecnico o fattuale.</td></tr><tr><td>Generative AI</td><td>Faithfulness</td><td>0-1 (più alto è meglio)</td><td>Fedeltà dell&#x27;output agli input e alle evidenze fornite</td><td>Cruciale in riassunto, extraction e Q&amp;A documentale; richiede dataset e protocolli di verifica affidabili.</td></tr><tr><td>Generative AI</td><td>Style Adherence</td><td>0-1 (più alto è meglio)</td><td>Aderenza a stile richiesto (tone of voice, formato, registro)</td><td>Utile per branding e compliance comunicativa; bilanciare con accuratezza e completezza informativa.</td></tr><tr><td>Generative AI</td><td>Informativeness</td><td>0-1 (più alto è meglio)</td><td>Quantità e utilità delle informazioni fornite nella risposta</td><td>Prioritaria in supporto decisionale e formazione; evitare verbosità che aumenta rumore e rischio allucinazioni.</td></tr></tbody></table></div>
+          <p>Oltre alle metriche standard, servono verifiche dedicate:</p>
+          <ul><li>test di sicurezza su prompt e input malevoli;</li><li>valutazioni di fairness e bias;</li><li>controlli di robustezza su scenari limite;</li><li>evidenze documentate per audit interno/esterno.</li></ul>
+          <p>Riferimento pratico per il capitolo delle misurazioni:</p>
+          <p>il <strong>Responsible AI Toolbox</strong> può essere usato come supporto operativo per implementare dashboard e controlli su qualità del modello, error analysis, interpretabilità, fairness e robustezza in fase di validazione.</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Messaggio chiave (AI PM e Responsible AI)</th></tr></thead><tbody><tr><td><strong>Questi temi si ricollegano all&#x27;idea dell&#x27;AI PM come Responsible AI Champion per il progetto e per l&#x27;organizzazione. È un modo concreto per aumentare il tuo valore nel team AI e diventare l&#x27;interfaccia tra i programmi generali di governance dell&#x27;AI e la realtà operativa del tuo progetto. In questo contesto, oltre a facilitare le discussioni etico-tecniche, puoi anche attivare il sistema di escalation prima e durante la fase di implementazione, in cui il team identifica congiuntamente i rischi specifici, definisce misure di mitigazione del rischio (ad esempio guardrail tecnici e revisioni aggiuntive) e condivide le principali criticità con la struttura o il comitato di governance AI, quando applicabile.</strong></td></tr></tbody></table></div>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/responsible_ai_dashboard.png" alt="Dashboard di valutazione Responsible AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.13: esempio di dashboard per analisi qualità, fairness e interpretabilità (source: Responsible AI Widgets)</figcaption></figure>
+          <h4 class="module-subtitle-small">Fase 5: Deploy e integrazione del sistema IA</h4>
+          <p>Il passaggio in produzione richiede governance tecnica e operativa:</p>
+          <ul><li>scelta infrastruttura (cloud, on-prem, ibrido) coerente con requisiti;</li><li>API e protocolli di integrazione ben documentati;</li><li>pipeline CI/CD e automazione MLOps;</li><li>monitoraggio continuo di performance, costo, rischio.</li></ul>
+          <p>Questa fase è quella in cui il progetto passa da &quot;funziona in test&quot; a &quot;genera valore stabile in esercizio&quot;.</p>
+          <h4 class="module-subtitle-small">Fase 6: Manutenzione e fine lifecycle</h4>
+          <p>Dopo il rilascio, il sistema entra in gestione continuativa:</p>
+          <ul><li>versionamento modello e componenti;</li><li>incident management con escalation definita;</li><li>monitoraggio drift dati/modello;</li><li>retraining policy e frequenza;</li><li>piano di decommissioning documentato.</li></ul>
+          <p>Una chiusura ordinata del lifecycle evita perdita di conoscenza e riduce rischio operativo su sistemi futuri.</p>
+          <h3 class="module-subtitle">Lifecycle di training per sistemi generativi</h3>
+          <p>Nei progetti generativi avanzati è utile leggere il lavoro in tre blocchi:</p>
+          <ol><li>pre-training;</li><li>post-training;</li><li>inferenza e personalizzazione.</li></ol>
+          <figure class="module-image"><img src="assets/chapt04_manageai_images/mai_ch04_img05.png" alt="Tecniche generative da training a inferenza" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M2.12: panoramica delle tecniche chiave lungo il ciclo generativo</figcaption></figure>
+          <p>Tecniche chiave da conoscere per la gestione:</p>
+          <ul><li><strong>pre-training:</strong> SSL, vettorizzazione, embeddings, multimodalità, data augmentation e dati sintetici, distributed training/parallelismo, Mixture of Experts (MoE), continuous pre-training;</li><li><strong>post-training:</strong> fine-tuning/instruction tuning, PEFT/LoRA, RLHF, pruning, distillation, quantization-aware training, AI red teaming;</li><li><strong>inferenza (customization):</strong> chunking, hybrid search, reranking;</li><li><strong>inferenza (optimization):</strong> semantic caching, memory handling, batch parallelism, prompt optimization, 1-bit quantization, top-k sampling, beam search optimization, container-level optimization.</li></ul>
+          <h4 class="module-subtitle-small">Approfondimento operativo delle tecniche del lifecycle</h4>
+          <p>Di seguito trovi una spiegazione più estesa, orientata a decisioni progettuali, costi e rischi.</p>
+          <h4 class="module-subtitle-small">Pre-training: cosa succede e perché conta</h4>
+          <p><strong>Self-Supervised Learning (SSL)</strong></p>
+          <ul><li>È un apprendimento &quot;senza etichette manuali&quot;: il modello costruisce da solo i target di training a partire dalla struttura del dato.</li><li>In pratica, il modello impara a predire parti mancanti/mascherate dell&#x27;input (es. parole oscurate in una frase).</li><li>Vantaggi: minore dipendenza da labeling umano, cicli più rapidi, riduzione dei costi operativi.</li><li>Impatto infrastrutturale: richiede potenza di calcolo elevata (soprattutto GPU); il fabbisogno cresce con volume dati, numero iterazioni e dimensione del modello.</li></ul>
+          <p><strong>Vettorizzazione ed embeddings</strong></p>
+          <ul><li>La vettorizzazione trasforma testo grezzo in numeri che il modello può elaborare.</li><li>Rispetto all&#x27;one-hot encoding, gli embeddings catturano somiglianza semantica: elementi simili sono vicini nello spazio vettoriale.</li><li>È il cuore tecnico di semantic search, similarità testuale e RAG.</li><li>Tipologie principali:</li></ul>
+          <ol><li><strong>Word embeddings</strong> (Word2Vec, GloVe, FastText): rappresentazioni statiche a livello parola.</li><li><strong>Sentence embeddings</strong> (SBERT, Universal Sentence Encoder): rappresentazioni del significato complessivo della frase.</li><li><strong>Contextual embeddings</strong> (transformer): rappresentazioni dinamiche che cambiano in base al contesto e gestiscono polisemia.</li></ol>
+          <p><strong>Espansione multimodale</strong></p>
+          <ul><li>I modelli multimodali integrano testo, immagini, audio, video in rappresentazioni congiunte.</li><li>Vantaggio: comprensione/generazione nativa su più modalità senza dover orchestrare troppi modelli separati.</li><li>Costo: dataset multimodali su larga scala, allineamento tra modalità e training molto oneroso.</li><li>Trade-off operativo: in inferenza aumenta spesso la latenza, perché si elaborano input ad alta dimensionalità.</li></ul>
+          <p><strong>Data augmentation (inclusi dati sintetici)</strong></p>
+          <ul><li>Approccio data-centric per aumentare robustezza e generalizzazione del modello.</li><li>Tecniche tipiche:</li></ul>
+          <ol><li><strong>Dati sintetici:</strong> creazione artificiale di esempi per colmare scarsità dati e coprire casi rari.</li><li><strong>Back-translation:</strong> traduzione in altra lingua e ritorno per ottenere parafrasi diverse.</li><li><strong>Synonym replacement:</strong> sostituzione termini con sinonimi mantenendo il significato.</li><li><strong>Noise injection:</strong> piccole perturbazioni (es. typo) per rendere il modello più robusto.</li></ol>
+          <ul><li>Beneficio chiave: riduzione overfitting e supporto a lingue/domini con dati limitati.</li><li>Attenzione: anche i dati sintetici richiedono controllo qualità e verifica bias.</li></ul>
+          <p><strong>Distributed training e parallelismo</strong></p>
+          <ul><li>Per LLM di grandi dimensioni si distribuisce il training su più GPU.</li><li>Principali strategie:</li></ul>
+          <ol><li><strong>Data parallelism:</strong> il modello è replicato su più GPU; ogni GPU lavora su mini-batch diversi, poi sincronizza i gradienti.</li><li><strong>Model parallelism:</strong> il modello è spezzato tra GPU diverse; utile quando non entra in una singola GPU.</li><li><strong>Pipeline parallelism:</strong> il training è diviso in stadi sequenziali su processori/GPU diverse.</li></ol>
+          <ul><li>Criticità: overhead di comunicazione e latenza rete; servono topologie/interconnessioni adeguate.</li></ul>
+          <p><strong>Mixture of Experts (MoE)</strong></p>
+          <ul><li>Architettura con più subnet specializzate (&quot;esperti&quot;).</li><li>Per ogni input si attiva solo un sottoinsieme di esperti (sparse activation), non tutti.</li><li>Risultato: più efficienza computazionale e memoria a parità di capacità complessiva.</li></ul>
+          <p><strong>Nota manageriale sul pre-training</strong></p>
+          <ul><li>Nella maggior parte dei progetti aziendali il pre-training è gestito dal provider.</li><li>Per l&#x27;AI PM è comunque essenziale capirne impatti indiretti: costi unitari, limiti tecnici, latenza e vincoli di scalabilità.</li></ul>
+          <h4 class="module-subtitle-small">Post-training: adattare il modello al caso reale</h4>
+          <p><strong>Fine-tuning</strong></p>
+          <ul><li>È la tecnica centrale del post-training: adatta un modello generale a task o dominio specifico aggiornando i pesi.</li><li>I pesi sono i parametri numerici che governano il comportamento del modello.</li><li>Modalità principali:</li></ul>
+          <ol><li><strong>Fine-tuning completo:</strong> aggiorna tutti i parametri, massime prestazioni ma costo elevato.</li><li><strong>PEFT/LoRA:</strong> aggiorna solo una piccola parte dei parametri (matrici aggiuntive), riducendo memoria e costi.</li></ol>
+          <p><strong>Instruction tuning</strong></p>
+          <ul><li>Forma il modello a seguire meglio istruzioni utente su tono, formato, contesto e livello di dettaglio.</li><li>È una base fondamentale per qualità conversazionale stabile in ambienti business.</li></ul>
+          <p><strong>RLHF (Reinforcement Learning from Human Feedback)</strong></p>
+          <ul><li>Dopo pre-training/fine-tuning, valutatori umani (spesso SME) giudicano output per accuratezza, rilevanza e sicurezza.</li><li>Questo feedback alimenta un reward model, poi usato in reinforcement learning per allineare il comportamento del modello.</li><li>Beneficio: risposte più utili, meno output indesiderati, maggiore allineamento alle preferenze umane.</li></ul>
+          <p><strong>Pruning</strong></p>
+          <ul><li>Riduce dimensione e complessità rimuovendo pesi, neuroni o layer poco utili.</li><li>Processo tipico:</li></ul>
+          <ol><li>identificazione componenti ridondanti;</li><li>pruning strutturale o non strutturale;</li><li>nuovo fine-tuning per recuperare accuratezza;</li><li>iterazioni progressive per controllare il trade-off compressione/prestazioni.</li></ol>
+          <ul><li>Utile per edge/mobile e scenari con hardware limitato.</li></ul>
+          <p><strong>Distillation</strong></p>
+          <ul><li>Un modello &quot;studente&quot; più piccolo apprende il comportamento di un modello &quot;docente&quot; più grande.</li><li>Obiettivo: ridurre costi di serving mantenendo qualità adeguata.</li><li>Limite: su task molto complessi o specialistici il gap di qualità può aumentare.</li></ul>
+          <p><strong>Quantization e QAT</strong></p>
+          <ul><li>Quantization: riduce precisione numerica (es. FP16, INT8) per abbassare memoria e calcolo.</li><li>QAT (Quantization-Aware Training): prepara il modello alla quantizzazione già in training, riducendo perdita di qualità in deploy.</li><li>Trade-off da governare: efficienza vs accuratezza.</li></ul>
+          <p><strong>AI Red Teaming (Safety)</strong></p>
+          <ul><li>Test avversariali e di sicurezza per stressare il modello su scenari malevoli o limite.</li><li>Non è solo &quot;post-training&quot;: può essere continuo lungo tutto il lifecycle (prima, durante e dopo il go-live).</li></ul>
+          <h4 class="module-subtitle-small">Inferenza: usare il modello in produzione</h4>
+          <p>L&#x27;inferenza è la fase in cui il modello genera output su nuovi input reali senza aggiornare i parametri. Qui contano soprattutto latenza, costo per richiesta, qualità percepita e controllo del rischio.</p>
+          <h4 class="module-subtitle-small">Customization in inferenza</h4>
+          <p><strong>Chunking</strong></p>
+          <ul><li>Spezza documenti lunghi in blocchi gestibili per retrieval e contesto.</li><li>Essenziale in RAG quando la context window del modello è limitata.</li></ul>
+          <p><strong>Hybrid search</strong></p>
+          <ul><li>Combina ricerca lessicale (keyword) e semantica (embedding).</li><li>Migliora equilibrio precision/recall: match esatti + comprensione del significato.</li></ul>
+          <p><strong>Reranking</strong></p>
+          <ul><li>Dopo il primo recupero documenti, un re-ranker riordina i candidati per rilevanza contestuale profonda.</li><li>Aumenta precisione finale, con costo computazionale aggiuntivo.</li></ul>
+          <h4 class="module-subtitle-small">Ottimizzazione in inferenza</h4>
+          <p><strong>Semantic caching</strong></p>
+          <ul><li>Riutilizza risposte precedenti per richieste semanticamente simili.</li><li>Riduce tempi e costo inferenziale nei casi ad alta ripetitività.</li></ul>
+          <p><strong>Memory handling</strong></p>
+          <ul><li>Gestisce in modo efficiente cache, stato e memoria contestuale per task lunghi o complessi.</li><li>Migliora coerenza su contenuti estesi e performance su conversazioni multi-turno.</li></ul>
+          <p><strong>Batch parallelism</strong></p>
+          <ul><li>Elabora più richieste insieme sfruttando parallelismo hardware (GPU).</li><li>Aumenta throughput, ma può introdurre attesa su singola richiesta e richiedere più memoria.</li></ul>
+          <p><strong>Prompt optimization</strong></p>
+          <ul><li>Progettazione e miglioramento sistematico dei prompt per qualità/affidabilità migliori.</li><li>Include anche compressione o riscrittura intelligente del prompt per ridurre costo e latenza.</li></ul>
+          <p><strong>1-bit quantization</strong></p>
+          <ul><li>Quantizzazione estrema per inferenza molto efficiente anche su CPU.</li><li>Può ridurre drasticamente requisiti hardware, ma richiede validazione rigorosa della qualità.</li></ul>
+          <p><strong>Top-K sampling</strong></p>
+          <ul><li>Seleziona il token successivo tra i K più probabili, introducendo variabilità controllata.</li><li>Utile quando serve creatività mantenendo coerenza.</li></ul>
+          <p><strong>Beam search optimization</strong></p>
+          <ul><li>Mantiene più sequenze candidate e sceglie quella globalmente più probabile.</li><li>Più deterministica e robusta su output lunghi/strutturati, ma più costosa.</li></ul>
+          <p><strong>Container-level optimization</strong></p>
+          <ul><li>Ottimizzazioni di deployment/container: provisioning GPU, scheduling, scaling, configurazioni runtime e sicurezza.</li><li>Obiettivo: migliorare stabilità, costo totale e performance in produzione.</li></ul>
+          <h4 class="module-subtitle-small">Implicazioni per l&#x27;AI PM</h4>
+          <ol><li>Distinguere cosa è responsabilità provider (pre-training) e cosa è leva progettuale interna (post-training/inferenza).</li><li>Pianificare costi in scenari crescenti (pilot, ramp-up, produzione) con stime bottom-up.</li><li>Collegare ogni tecnica a KPI concreti: qualità, latenza, costo, sicurezza, compliance.</li><li>Introdurre escalation preventiva su rischi (guardrail tecnici, review aggiuntive, comitato governance).</li></ol>
+          <h4 class="module-subtitle-small">Spiegazione dei termini (glossario operativo)</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Fase</th><th>Termine</th><th>Che cos&#x27;è</th><th>Perché conta nella gestione</th></tr></thead><tbody><tr><td>Pre-training</td><td>SSL (Self-Supervised Learning)</td><td>Addestramento che usa etichette generate automaticamente dai dati stessi.</td><td>Riduce costo di etichettatura e abilita training su grandi volumi.</td></tr><tr><td>Pre-training</td><td>Vettorizzazione</td><td>Trasformazione di testo, immagini o segnali in vettori numerici elaborabili dal modello.</td><td>È la base tecnica che rende possibile training, retrieval e confronto semantico.</td></tr><tr><td>Pre-training</td><td>Embeddings</td><td>Rappresentazioni numeriche dense di parole, frasi, immagini o altri oggetti.</td><td>Determinano qualità di ricerca semantica, similarità e retrieval.</td></tr><tr><td>Pre-training</td><td>Multimodalità</td><td>Addestramento su più tipi di dati (testo, immagini, audio, video).</td><td>Abilita casi d&#x27;uso più ricchi e maggiore copertura di contesto.</td></tr><tr><td>Pre-training</td><td>Data augmentation</td><td>Tecniche per aumentare/variare i dati di training senza nuova raccolta massiva.</td><td>Migliora robustezza e generalizzazione del modello.</td></tr><tr><td>Pre-training</td><td>Dati sintetici</td><td>Dati artificiali generati per integrare dataset reali dove mancano volumi o casi rari.</td><td>Aiuta copertura scenari e test, ma richiede controllo qualità e bias.</td></tr><tr><td>Pre-training</td><td>Distributed training</td><td>Addestramento distribuito su più GPU/macchine in parallelo.</td><td>Riduce tempi di training ma aumenta complessità e costi infrastrutturali.</td></tr><tr><td>Pre-training</td><td>Mixture of Experts (MoE)</td><td>Architettura con più sotto-modelli specializzati attivati in modo selettivo.</td><td>Aumenta capacità del modello ottimizzando costo computazionale per richiesta.</td></tr><tr><td>Pre-training</td><td>Continuous pre-training</td><td>Ulteriore pre-training continuo su nuovi dati, senza entrare subito in fine-tuning task-specifico.</td><td>Mantiene il modello aggiornato su dominio e linguaggio in evoluzione.</td></tr><tr><td>Post-training</td><td>Fine-tuning</td><td>Adattamento del modello generale a dominio, task o stile specifico.</td><td>Aumenta qualità su casi reali aziendali.</td></tr><tr><td>Post-training</td><td>Instruction tuning</td><td>Variante di fine-tuning orientata a migliorare l&#x27;esecuzione di istruzioni utente.</td><td>Aumenta controllabilità e coerenza nei task conversazionali.</td></tr><tr><td>Post-training</td><td>PEFT/LoRA</td><td>Tecniche di fine-tuning leggero che aggiornano solo una piccola parte dei parametri.</td><td>Riduce costo computazionale e accelera iterazioni.</td></tr><tr><td>Post-training</td><td>RLHF</td><td>Allineamento del modello con feedback umano tramite reinforcement learning.</td><td>Migliora utilità percepita, tono e sicurezza dell&#x27;output.</td></tr><tr><td>Post-training</td><td>Pruning</td><td>Rimozione di pesi/connessioni poco utili nel modello.</td><td>Riduce dimensione e latenza con impatto controllato su performance.</td></tr><tr><td>Post-training</td><td>Distillation</td><td>Addestramento di un modello più piccolo a partire da uno più grande (teacher-student).</td><td>Mantiene buona qualità con costi di serving più bassi.</td></tr><tr><td>Post-training</td><td>Quantization</td><td>Riduzione della precisione numerica dei pesi (es. FP16/INT8).</td><td>Diminuisce memoria e costo inferenza, utile per produzione scalabile.</td></tr><tr><td>Post-training</td><td>Quantization-Aware Training (QAT)</td><td>Addestramento che prepara il modello alla quantizzazione già durante la fase di training.</td><td>Riduce perdita di qualità quando il modello viene compresso per la produzione.</td></tr><tr><td>Post-training</td><td>AI Red Teaming (Safety)</td><td>Test avversariali e di sicurezza per forzare il modello su casi pericolosi o limite.</td><td>Identifica vulnerabilità prima del rilascio e riduce rischio di abuso.</td></tr><tr><td>Inferenza</td><td>Chunking</td><td>Suddivisione documenti in blocchi più piccoli per retrieval e contesto.</td><td>Migliora reperimento informazioni e qualità risposte su knowledge base estese.</td></tr><tr><td>Inferenza</td><td>Hybrid search</td><td>Combinazione tra ricerca lessicale (keyword) e semantica (embedding).</td><td>Bilancia precisione su termini esatti e recall su significato.</td></tr><tr><td>Inferenza</td><td>Reranking</td><td>Riordinamento dei risultati recuperati con un modello più preciso.</td><td>Aumenta rilevanza finale delle fonti passate al modello.</td></tr><tr><td>Inferenza</td><td>Semantic caching</td><td>Riuso di risposte precedenti per richieste semanticamente simili.</td><td>Riduce latenza e costi operativi su prompt ricorrenti.</td></tr><tr><td>Inferenza</td><td>Memory handling</td><td>Gestione efficiente della memoria contestuale (cache e stato) durante la generazione.</td><td>Migliora performance su task lunghi e riduce degrado su finestre di contesto ampie.</td></tr><tr><td>Inferenza</td><td>Batch parallelism</td><td>Elaborazione simultanea di più richieste in batch.</td><td>Aumenta throughput e ottimizza uso hardware su carichi elevati.</td></tr><tr><td>Inferenza</td><td>Prompt optimization</td><td>Progettazione e miglioramento sistematico dei prompt per output migliori.</td><td>Riduce errori e variabilità senza dover riaddestrare il modello.</td></tr><tr><td>Inferenza</td><td>1-bit quantization</td><td>Quantizzazione estrema che riduce drasticamente precisione numerica per efficienza massima.</td><td>Può abbassare molto costo e latenza, con trade-off da validare sulla qualità.</td></tr><tr><td>Inferenza</td><td>Top-K sampling</td><td>Decodifica che campiona il prossimo token tra i K più probabili.</td><td>Controlla creatività/varianza dell&#x27;output e limita risposte troppo casuali.</td></tr><tr><td>Inferenza</td><td>Beam search optimization</td><td>Decodifica che esplora più sequenze candidate e seleziona quelle globalmente migliori.</td><td>Aumenta coerenza su output complessi, a costo di maggiore computazione.</td></tr><tr><td>Inferenza</td><td>Container-level optimization</td><td>Ottimizzazioni di deployment a livello container/runtime (scaling, scheduling, risorse).</td><td>Migliora stabilità operativa, costi e tempi di risposta in produzione.</td></tr><tr><td>Inferenza</td><td>Parallelismo</td><td>Esecuzione simultanea di più richieste/elaborazioni in serving.</td><td>Aumenta throughput e supporta carichi elevati in produzione.</td></tr></tbody></table></div>
+          <p>Per il project manager, conoscere queste leve significa stimare meglio tempi, costi, rischi e dipendenze tra team.</p>
+          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Definire use case e KPI business prima di aprire la sprint tecnica.</li><li>Verificare data readiness con criteri qualità espliciti.</li><li>Impostare baseline e target metrici realistici per ogni iterazione.</li><li>Integrare sicurezza, fairness e compliance nel piano di validazione.</li><li>Pianificare deploy graduale con monitoraggio e rollback.</li><li>Definire manutenzione, retraining e decommissioning fin dall&#x27;inizio.</li></ol></section>
+          <h3 class="module-subtitle">Lab consigliati per il Modulo 02</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Lab consigliato</th><th>Obiettivi</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610456" target="_blank" rel="noopener noreferrer">Deploy and Manage Generative AI Models</a></strong></td><td>Collegare lifecycle tecnico e operativo: deploy, gestione versioni, monitoraggio e continuità in produzione.</td><td>Path</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Impostare prototipi in modo strutturato e trasformarli in sperimentazioni utili al ciclo progetto.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Migliorare qualità output e ridurre errori operativi tramite design, test e iterazione dei prompt.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610391" target="_blank" rel="noopener noreferrer">Build and Deploy an Agent with Agent Engine in Vertex AI</a></strong></td><td>Comprendere il passaggio da sviluppo a rilascio in esercizio con dipendenze, integrazioni e controllo del rischio.</td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599605" target="_blank" rel="noopener noreferrer">Get Started with Agent Development Kit (ADK)</a></strong></td><td>Applicare un flusso pratico di sviluppo e manutenzione agenti in logica iterativa e cross-funzionale.</td><td>Lab</td></tr></tbody></table></div>
+          <h3 class="module-subtitle">Link utili del modulo</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo</th><th>Descrizione</th><th>Link</th></tr></thead><tbody><tr><td>IBM SPSS Modeler - CRISP-DM Help Overview</td><td>Panoramica operativa della metodologia CRISP-DM in SPSS Modeler, utile per strutturare fasi, deliverable e governance del progetto IA.</td><td><a href="https://www.ibm.com/docs/it/spss-modeler/19.0.0?topic=dm-crisp-help-overview" target="_blank" rel="noopener noreferrer">IBM Docs - CRISP-DM Help Overview</a></td></tr><tr><td>Azure MLOps Accelerator - Adopting Data Science Process</td><td>Guida pratica su ruoli, competenze e responsabilità nel ciclo MLOps per adottare un processo data science strutturato in team cross-funzionali.</td><td><a href="https://microsoft.github.io/azureml-ops-accelerator/1-MLOpsFoundation/2-SkillsRolesAndResponsibilities/1-AdoptingDSProcess.html" target="_blank" rel="noopener noreferrer">Azure MLOps Accelerator - Adopting DS Process</a></td></tr><tr><td>CRISP-ML(Q) Framework</td><td>Estensione di CRISP-DM orientata al machine learning con enfasi su qualità del modello, monitoraggio e gestione del rischio lungo il lifecycle.</td><td><a href="https://ml-ops.org/content/crisp-ml" target="_blank" rel="noopener noreferrer">CRISP-ML(Q) - MLOps.org</a></td></tr><tr><td>NIST AI Risk Management Framework (AI RMF 1.0)</td><td>Framework di riferimento per identificare, valutare e gestire i rischi AI lungo l&#x27;intero ciclo di vita con un approccio governance-first.</td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework</a></td></tr><tr><td>Ethics Guidelines for Trustworthy AI (EU)</td><td>Linee guida europee sull&#x27;AI affidabile con principi etici, requisiti pratici e indicazioni per l&#x27;implementazione responsabile nei progetti IA.</td><td><a href="https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai" target="_blank" rel="noopener noreferrer">European Commission - Ethics Guidelines for Trustworthy AI</a></td></tr><tr><td>Google Responsible AI (Generative AI)</td><td>Documentazione pratica di Google sui principi e controlli per sviluppare applicazioni generative in modo responsabile, sicuro e verificabile.</td><td><a href="https://ai.google.dev/responsible/docs" target="_blank" rel="noopener noreferrer">Google AI - Responsible AI Docs</a></td></tr><tr><td>MIT AI Risk Repository</td><td>Repository strutturato dei rischi AI utile per identificare pattern di rischio e allineare controlli di governance/mitigazione.</td><td><a href="https://airisk.mit.edu/" target="_blank" rel="noopener noreferrer">MIT AI Risk Repository</a></td></tr><tr><td>Video - Come usare AI Risk Repository</td><td>Video introduttivo per comprendere struttura, logica di classificazione e uso operativo del risk repository nei progetti AI.</td><td><a href="https://www.youtube.com/watch?v=fCj-wJz6VCY" target="_blank" rel="noopener noreferrer">YouTube - AI Risk Repository walkthrough</a></td></tr><tr><td>ISO/IEC 42001 - AI Management System</td><td>Standard internazionale per impostare un sistema di gestione dell&#x27;AI con requisiti organizzativi, controlli e miglioramento continuo.</td><td><a href="https://www.iso.org/es/contents/data/standard/08/11/81118.html" target="_blank" rel="noopener noreferrer">ISO/IEC 42001 - Standard</a></td></tr><tr><td>ISO Standard 83002</td><td>Riferimento ISO su governance e gestione del rischio AI da usare come supporto nella definizione di controlli e policy operative.</td><td><a href="https://www.iso.org/standard/83002.html" target="_blank" rel="noopener noreferrer">ISO Standard 83002</a></td></tr><tr><td>Operationalizing AI (O&#x27;Reilly)</td><td>Guida pratica per portare sistemi AI in produzione con focus su MLOps, processi operativi, monitoraggio e gestione del rischio.</td><td><a href="https://learning.oreilly.com/library/view/operationalizing-ai/9781098101329/" target="_blank" rel="noopener noreferrer">Operationalizing AI - O&#x27;Reilly</a></td></tr><tr><td>Responsible AI Toolbox</td><td>Raccolta di strumenti pratici per valutare e monitorare qualità, fairness, interpretabilità e analisi degli errori nei modelli AI durante validazione e monitoraggio.</td><td><a href="https://responsibleaitoolbox.ai/" target="_blank" rel="noopener noreferrer">Responsible AI Toolbox</a></td></tr><tr><td>Responsible AI Dashboard Tour (Tabular)</td><td>Notebook ufficiale con tour guidato del Responsible AI Dashboard su dati tabellari: setup, metriche, fairness, error analysis e interpretabilità.</td><td><a href="https://github.com/microsoft/responsible-ai-toolbox/blob/main/notebooks/responsibleaidashboard/tabular/tour.ipynb" target="_blank" rel="noopener noreferrer">Responsible AI Dashboard Tour - Notebook</a></td></tr></tbody></table></div>
+        </section>
+
+
+        <nav class="module-nav footer-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-01.html">Modulo Precedente</a><a class="nav-btn" href="module-03.html">Modulo Successivo</a></nav>
+      </article>
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+</body>
+</html>

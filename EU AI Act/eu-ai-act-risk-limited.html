@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EU AI Act - Formulario Limited-Risk</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f8fb; color: #1a1a1a; }
+    .wrap { max-width: 1040px; margin: 0 auto; background: #fff; border: 1px solid #d8dfeb; border-radius: 10px; padding: 20px; }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    .q { padding: 10px 12px; margin: 10px 0; border: 1px solid #e5e9f2; border-radius: 8px; background: #fbfcff; }
+    .opt { margin-right: 16px; }
+    .actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button, a.btn { border: 0; background: #1f5fbf; color: #fff; padding: 10px 14px; border-radius: 8px; text-decoration: none; cursor: pointer; }
+    .result { margin-top: 18px; padding: 14px; border-radius: 8px; border: 1px solid #cfd8ea; background: #f3f7ff; }
+    .high { background: #fff1f0; border-color: #ffc9c2; }
+    .warn { background: #fff9ea; border-color: #ffe0a3; }
+    .ok { background: #eef9f0; border-color: #bde6c5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Formulario EU AI Act - Limited-Risk (Tabella 4-4)</h1>
+
+    <div class="q">1) Il sistema e' inteso per interagire con persone?
+      <label class="opt"><input type="radio" name="q1" value="yes"> Si</label>
+      <label><input type="radio" name="q1" value="no"> No</label>
+    </div>
+
+    <div class="q">2) Rientra in almeno una categoria?
+      <div><label><input type="checkbox" class="q2"> Chatbot</label></div>
+      <div><label><input type="checkbox" class="q2"> Emotion recognition</label></div>
+      <div><label><input type="checkbox" class="q2"> Biometric categorization</label></div>
+      <div><label><input type="checkbox" class="q2"> Generazione/manipolazione contenuti sintetici (deepfakes inclusi)</label></div>
+    </div>
+
+    <div class="q">3) Esclusione dal limited-risk (almeno uno)?
+      <div><label><input type="checkbox" class="q3"> Gia' classificato high-risk</label></div>
+      <div><label><input type="checkbox" class="q3"> Uso general-purpose senza intended purpose chiaro</label></div>
+      <div><label><input type="checkbox" class="q3"> Pratica proibita (Art. 5)</label></div>
+    </div>
+
+    <div class="q">4) Potenziale influenza su comportamento o decisioni?
+      <label class="opt"><input type="radio" name="q4" value="yes"> Si</label>
+      <label><input type="radio" name="q4" value="no"> No</label>
+    </div>
+    <div class="q">5) Trasparenza sulla natura AI prevista?
+      <label class="opt"><input type="radio" name="q5" value="yes"> Si</label>
+      <label><input type="radio" name="q5" value="no"> No</label>
+    </div>
+    <div class="q">6) Utenti in grado di capire che interagiscono con AI?
+      <label class="opt"><input type="radio" name="q6" value="yes"> Si</label>
+      <label><input type="radio" name="q6" value="no"> No</label>
+    </div>
+    <div class="q">7) Disclaimer chiari su limiti/rischi?
+      <label class="opt"><input type="radio" name="q7" value="yes"> Si</label>
+      <label><input type="radio" name="q7" value="no"> No</label>
+    </div>
+    <div class="q">8) Labeling contenuti sintetici in place?
+      <label class="opt"><input type="radio" name="q8" value="yes"> Si</label>
+      <label><input type="radio" name="q8" value="no"> No</label>
+    </div>
+    <div class="q">9) Informazione utenti per biometric/emotion systems?
+      <label class="opt"><input type="radio" name="q9" value="yes"> Si</label>
+      <label><input type="radio" name="q9" value="no"> No</label>
+    </div>
+    <div class="q">10) Processo reclami/concerns disponibile?
+      <label class="opt"><input type="radio" name="q10" value="yes"> Si</label>
+      <label><input type="radio" name="q10" value="no"> No</label>
+    </div>
+
+    <div class="actions">
+      <button id="eval">Calcola classificazione</button>
+      <a class="btn" href="module-02.html">Torna al Modulo 02</a>
+    </div>
+
+    <div id="out" class="result">Compila le risposte e premi "Calcola classificazione".</div>
+  </div>
+
+  <script>
+    function radioVal(name) {
+      const e = document.querySelector('input[name="' + name + '"]:checked');
+      return e ? e.value : '';
+    }
+
+    document.getElementById('eval').addEventListener('click', function () {
+      const q1 = radioVal('q1') === 'yes';
+      const q2 = document.querySelectorAll('.q2:checked').length;
+      const q3 = document.querySelectorAll('.q3:checked').length;
+
+      const transparency = ['q4','q5','q6','q7','q8','q9','q10'];
+      const gaps = transparency.filter(q => radioVal(q) === 'no');
+
+      const out = document.getElementById('out');
+      out.className = 'result';
+
+      let html = '';
+      if (q3 > 0) {
+        out.classList.add('high');
+        html += '<strong>Esito:</strong> probabilmente <strong>NON limited-risk</strong> (puo\' essere high-risk o proibito).<br>';
+      } else if (q1 && q2 > 0) {
+        out.classList.add('ok');
+        html += '<strong>Esito:</strong> probabile <strong>LIMITED-RISK</strong> con obblighi di trasparenza (Art. 50).<br>';
+      } else {
+        out.classList.add('warn');
+        html += '<strong>Esito:</strong> non emergono elementi sufficienti per limited-risk in questo pre-assessment.<br>';
+      }
+
+      if (gaps.length > 0) {
+        out.classList.add('warn');
+        html += 'Gap trasparenza rilevati (risposte No su Q4-Q10): <strong>' + gaps.join(', ') + '</strong>.';
+      } else {
+        html += 'Nessun gap trasparenza esplicito rilevato su Q4-Q10.';
+      }
+      out.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

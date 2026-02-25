@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 03 - Integrazione GenAI in processi aziendali</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: rgba(0, 5, 15, 0.95);
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
+      <h1>Modulo 03</h1>
+    </header>
+
+    <main>
+      <article class="card">
+        <nav class="module-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Modulo Precedente</a><a class="nav-btn" href="module-04.html">Modulo Successivo</a></nav>
+        <nav class="jump-nav"><a class="nav-btn" href="module-01.html">01 - IA nei progetti: leve e criticità</a><a class="nav-btn" href="module-02.html">02 - Come gestire un progetto con IA</a><a class="nav-btn" href="module-03.html">03 - Integrazione GenAI in processi aziendali</a><a class="nav-btn" href="module-04.html">04 - Valutare la qualità dell’output</a><a class="nav-btn" href="module-05.html">05 - Presidio e manutenzione nel quotidiano</a><a class="nav-btn" href="module-06.html">06 - Esempi pratici - Laboratori</a></nav>
+
+        <p class="module-kicker">Modulo 03</p>
+        <h2 class="module-title">Integrazione GenAI in processi aziendali</h2>
+
+        <section class="module-content">
+          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> integrare modelli linguistici nei processi aziendali con equilibrio tra qualità, costo, controllo e velocità.</li><li><strong>Focus manageriale:</strong> scegliere il pattern di integrazione corretto, impostare valutazione robusta e guidare il miglioramento continuo.</li><li><strong>Output atteso:</strong> una roadmap pratica per selezione modello, messa in produzione, monitoraggio e ottimizzazione.</li></ul></section>
+          <h3 class="module-subtitle">Come funziona un language model e perché impatta il prodotto</h3>
+          <p>Un language model genera testo prevedendo token plausibili in base al contesto. Questo meccanismo sembra semplice, ma in azienda determina aspetti decisivi: affidabilità delle risposte, aderenza alle regole, latenza, costi operativi, qualità percepita dagli utenti.</p>
+          <p>Per un team di prodotto è fondamentale distinguere due livelli:</p>
+          <ol><li><strong>Capacità generali del modello</strong> (linguaggio, ragionamento, comprensione istruzioni).</li><li><strong>Capacità operative nel tuo contesto</strong> (tono brand, accuratezza sui dati interni, robustezza su casi reali).</li></ol>
+          <p>La differenza tra questi due livelli spiega perché un modello brillante in demo può fallire in produzione.</p>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img01.png" alt="Confronto tra risposta linguistica grezza e risposta conversazionale" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.1: un modello addestrato solo sul completamento linguistico può produrre output corretti ma poco utili alla conversazione</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img07.png" alt="Confronto con modello ottimizzato per dialogo naturale" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.2: dopo ottimizzazioni orientate all&#x27;interazione umana la qualità conversazionale aumenta sensibilmente</figcaption></figure>
+          <h3 class="module-subtitle">Dati di training: dove nascono qualità e rischio</h3>
+          <p>Le prestazioni di un sistema GenAI dipendono in modo diretto dai dati di addestramento. Prima dell&#x27;integrazione bisogna valutare almeno cinque dimensioni:</p>
+          <ol><li><strong>Scala e diversità:</strong> più copertura significa maggiore versatilità, ma non garantisce precisione in domini verticali.</li><li><strong>Bias e stereotipi:</strong> il modello può riflettere squilibri presenti nei dati e generare risposte discriminatorie.</li><li><strong>Rumore e qualità:</strong> fonti non verificate possono introdurre errori plausibili ma falsi.</li><li><strong>Knowledge cutoff:</strong> senza basi aggiornate il modello non conosce eventi recenti.</li><li><strong>Privacy e proprietà intellettuale:</strong> occorre verificare uso di dati sensibili e vincoli legali.</li></ol>
+          <p>Per questo la scelta del modello non è mai solo tecnica: è una decisione di governance che richiede coinvolgimento congiunto di prodotto, legale, sicurezza e data team.</p>
+          <h3 class="module-subtitle">Obiettivo di training e comportamento del modello</h3>
+          <p>I modelli possono essere ottimizzati con obiettivi diversi. Comprendere l&#x27;obiettivo aiuta a prevedere punti forti e limiti:</p>
+          <ul><li><strong>Autoregressivo:</strong> predice il prossimo token; ottimo per generazione e dialogo.</li><li><strong>Autoencoding:</strong> ricostruisce token mancanti usando contesto bidirezionale; utile per compiti analitici.</li><li><strong>Sequence-to-sequence:</strong> trasforma un input in un output strutturalmente diverso; efficace su traduzione, sintesi, trasformazioni.</li></ul>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img12.png" alt="Obiettivo di language modeling basato sul contesto" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.3: il modello stima il token successivo usando il contesto disponibile</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img13.png" alt="Relazioni semantiche bidirezionali nella frase" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.4: le dipendenze linguistiche non sono solo in avanti, ma anche all&#x27;indietro</figcaption></figure>
+          <h3 class="module-subtitle">Allucinazioni: gestione operativa del rischio</h3>
+          <p>Le allucinazioni sono output fluenti ma errati: fatti inventati, citazioni inesistenti, nessi causali non dimostrati, contraddizioni logiche. In contesti aziendali questo rischio impatta reputazione, compliance e decisioni.</p>
+          <p>Contromisure da standardizzare:</p>
+          <ol><li>validazione con fonti autorevoli;</li><li>retrieval su basi documentali affidabili;</li><li>istruzioni di sistema più restrittive;</li><li>revisioni umane su casi ad alto impatto;</li><li>dataset correttivi per ridurre errori ricorrenti.</li></ol>
+          <h3 class="module-subtitle">Pattern di integrazione: scegliere l&#x27;architettura giusta</h3>
+          <p>L&#x27;integrazione GenAI non è unica: dipende da input, output, livello di rischio e criticità del processo. I tre pattern più utili sono:</p>
+          <ol><li><strong>Interazione diretta utente-modello</strong> per casi aperti e creativi.</li><li><strong>Uso programmatico</strong> con output eseguibile (funzioni, query, comandi).</li><li><strong>Task predefiniti backend</strong> per processi controllati e auditabili.</li></ol>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img09.png" alt="Tre pattern tipici d&#x27;uso dei language model" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.5: i pattern d&#x27;uso variano per apertura di input/output e complessità di controllo</figcaption></figure>
+          <h4 class="module-subtitle-small">Pattern 1: interazione diretta</h4>
+          <p>È il pattern più diffuso nei chatbot e assistenti di produttività, ma anche il più delicato: input imprevedibili, ampio spazio di output, maggiore esposizione a prompt avversariali e contenuti non conformi.</p>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img15.png" alt="Interazione diretta tra utente e modello" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.6: esposizione diretta del modello all&#x27;utente finale</figcaption></figure>
+          <p>Per ridurre costo e rischio si possono usare orchestrazioni multi-modello:</p>
+          <ul><li><strong>Router LM:</strong> instrada la richiesta verso il modello più adatto.</li><li><strong>Cascade LM:</strong> parte da modelli economici e scala a modelli più potenti solo quando serve.</li><li><strong>Human-in-the-loop:</strong> inoltra casi complessi a operatori umani.</li></ul>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img05.png" alt="Pattern router per instradamento richieste" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.7: il router seleziona modello o operatore in base al tipo di richiesta</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img11.png" alt="Pattern cascade con escalation progressiva" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.8: la richiesta passa a modelli più avanzati finché non raggiunge confidenza adeguata</figcaption></figure>
+          <h4 class="module-subtitle-small">Pattern 2: uso programmatico</h4>
+          <p>Qui il modello genera output strutturati o codice che viene eseguito da sistemi downstream. È potente ma richiede guardrail stringenti:</p>
+          <ul><li>schema obbligatorio (JSON, function-calling, output contract);</li><li>validazione sintattica e semantica prima dell&#x27;esecuzione;</li><li>policy di autorizzazione per evitare azioni distruttive;</li><li>log completo per audit e incident analysis.</li></ul>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img08.png" alt="Generazione di codice con esecuzione automatica a valle" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.9: output del modello usato come input operativo di altri componenti</figcaption></figure>
+          <h4 class="module-subtitle-small">Pattern 3: task predefiniti in backend</h4>
+          <p>Il modello lavora su compiti circoscritti (classificazione, sintesi, estrazione, sentiment), con input controllati e validazione a monte e a valle. Spesso è il pattern migliore per scenari enterprise B2B dove affidabilità e tracciabilità sono prioritarie.</p>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img04.png" alt="Uso del modello in pipeline offline con controlli aggiuntivi" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.10: esecuzione offline per aumentare controllo qualità e ridurre rischio operativo</figcaption></figure>
+          <h3 class="module-subtitle">Panorama modelli: come orientarsi senza dispersione</h3>
+          <p>Per selezionare il modello è utile classificare le opzioni in cinque famiglie operative:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Categoria</th><th>Vantaggi principali</th><th>Limiti principali</th><th>Quando usarla</th></tr></thead><tbody><tr><td>LLM commerciali via API</td><td>time-to-market rapido, ottime prestazioni generaliste</td><td>costi variabili, minore controllo interno</td><td>avvio progetto, test di fattibilità, MVP</td></tr><tr><td>Modelli open source</td><td>maggiore controllo, possibilità di personalizzazione profonda</td><td>maggiore complessità infrastrutturale</td><td>casi con requisiti di privacy, governance o costo unitario</td></tr><tr><td>Modelli reasoning</td><td>maggiore trasparenza su passaggi logici in alcuni task</td><td>latenza e costo spesso superiori</td><td>compiti con elevata richiesta di spiegabilità</td></tr><tr><td>Small language model</td><td>efficienza, bassa latenza, deploy locale più semplice</td><td>capacità inferiore su task complessi</td><td>automazioni verticali e ad alto volume</td></tr><tr><td>Modelli multimodali</td><td>uniscono testo, immagine, audio/video</td><td>infrastruttura più pesante</td><td>casi d&#x27;uso multicanale e workflow creativi avanzati</td></tr></tbody></table></div>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img14.png" alt="Esempio di modello con ragionamento esplicito" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.11: modello reasoning con passaggi argomentativi più leggibili</figcaption></figure>
+          <h3 class="module-subtitle">Lifecycle operativo del language model</h3>
+          <p>La gestione efficace segue un ciclo iterativo, non lineare:</p>
+          <ol><li>selezione iniziale;</li><li>valutazione tecnica e business;</li><li>personalizzazione;</li><li>rilascio controllato;</li><li>raccolta feedback;</li><li>ottimizzazione continua.</li></ol>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img03.png" alt="Ciclo iterativo di sviluppo e miglioramento del modello" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.12: lifecycle di integrazione e ottimizzazione continua</figcaption></figure>
+          <h3 class="module-subtitle">Selezione modello: criteri decisionali concreti</h3>
+          <p>Un framework utile per il team:</p>
+          <ol><li><strong>Vincoli non negoziabili:</strong> compliance, localizzazione dati, policy interne.</li><li><strong>Obiettivi utente:</strong> qualità percepita, affidabilità, tempo di risposta.</li><li><strong>Obiettivi economici:</strong> costo per richiesta, costo mensile, costo di gestione.</li><li><strong>Scalabilità tecnica:</strong> throughput, disponibilità, piano di fallback.</li><li><strong>Evoluzione prevista:</strong> possibilità di passare a setup multi-modello nel tempo.</li></ol>
+          <p>Una pratica efficace è partire con una shortlist di 2-3 modelli, testati sul dataset reale del processo target e su prompt rappresentativi del traffico effettivo.</p>
+          <h3 class="module-subtitle">Valutazione: benchmark pubblici + metriche personalizzate</h3>
+          <p>I benchmark pubblici sono un punto di partenza, non il punto d&#x27;arrivo. Servono per confronto iniziale, ma non sostituiscono la misurazione su casi reali aziendali.</p>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img10.png" alt="Esempio di confronto modelli su benchmark pubblici" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13: benchmark comparativi utili per la prima scrematura</figcaption></figure>
+          <p>Metriche da presidiare in combinazione:</p>
+          <ul><li><strong>accuratezza fattuale</strong> (groundedness, error rate);</li><li><strong>aderenza al compito</strong> (task completion);</li><li><strong>qualità linguistica</strong> (coerenza, leggibilità, tono);</li><li><strong>rischio</strong> (violazioni policy, contenuti impropri, fallimenti critici);</li><li><strong>performance tecnica</strong> (latenza, stabilità, costo per richiesta).</li></ul>
+          <p>Per rendere la valutazione robusta conviene adottare un approccio ibrido:</p>
+          <ol><li>valutazione automatica su volumi elevati;</li><li>revisione umana su campioni strategici;</li><li>stress test su edge case e prompt avversariali.</li></ol>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img02.png" alt="Tradeoff velocità-affidabilità nei metodi di valutazione" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.14: bilanciamento tra velocità di valutazione e affidabilità del giudizio</figcaption></figure>
+          <h3 class="module-subtitle">Personalizzazione: prompt, retrieval, fine-tuning</h3>
+          <p>Le tre leve principali hanno difficoltà e impatto differenti:</p>
+          <ol><li><strong>Prompt engineering:</strong> rapido, economico, utile per regolare stile e formato.</li><li><strong>RAG:</strong> migliora accuratezza e aggiornamento attingendo a fonti controllate.</li><li><strong>Fine-tuning:</strong> più impegnativo, ma decisivo per comportamento stabile e dominio specifico.</li></ol>
+          <figure class="module-image"><img src="assets/chapt05_images/ch05_img06.png" alt="Livelli di personalizzazione: prompt, RAG, fine-tuning" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.15: tecniche di personalizzazione in ordine crescente di profondità tecnica</figcaption></figure>
+          <h3 class="module-subtitle">Feedback in produzione e ottimizzazione continua</h3>
+          <p>La qualità reale emerge in esercizio. Occorre impostare un loop continuo:</p>
+          <ol><li>raccogliere feedback espliciti (rating, segnalazioni, revisione operatori);</li><li>osservare segnali impliciti (abbandono flusso, correzioni manuali, tempo task);</li><li>classificare errori per priorità di impatto;</li><li>introdurre dati correttivi e nuove regole di orchestrazione;</li><li>rieseguire test di regressione prima di ogni rilascio.</li></ol>
+          <p>Quando possibile, automatizzare monitoraggio, validazione e aggiornamenti con pratiche LLMOps riduce il tempo tra problema osservato e miglioramento rilasciato.</p>
+          <h3 class="module-subtitle">Sintesi operativa intermedia del Modulo 03</h3>
+          <ol><li>Definire pattern di integrazione per ogni processo (diretto, programmatico, backend).</li><li>Esplicitare rischi e guardrail prima del go-live.</li><li>Selezionare modelli con criteri condivisi tra business, engineering e compliance.</li><li>Validare su benchmark e su dataset reale del dominio.</li><li>Attivare metriche continue su qualità, rischio, latenza e costo.</li><li>Pianificare iterazioni periodiche su prompt, retrieval e tuning.</li></ol>
+          <h3 class="module-subtitle">Prompt Engineering per processi aziendali</h3>
+          <p>Quando il modello è già scelto, la leva più rapida per migliorare qualità e controllo è il prompt engineering. In pratica significa progettare istruzioni, contesto ed esempi in modo sistematico, così da trasformare output generici in output coerenti con obiettivi di business, tono, vincoli normativi e formato operativo.</p>
+          <p>L&#x27;approccio corretto non è scrivere prompt &quot;ispirati&quot;, ma costruire un ciclo disciplinato: ipotesi, test, misurazione, revisione e standardizzazione.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img06.png" alt="Panoramica delle principali tecniche di prompting" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.16: mappa delle tecniche di prompting dal livello base a quello avanzato</figcaption></figure>
+          <h3 class="module-subtitle">Livello base: zero-shot prompting</h3>
+          <p>Lo zero-shot è il punto di partenza: si chiede al modello di svolgere un compito senza esempi dimostrativi. È ideale per attività semplici o già ben rappresentate nelle capacità native del modello.</p>
+          <p>Esempi tipici in azienda:</p>
+          <ul><li>classificare rapidamente ticket cliente per priorità;</li><li>sintetizzare note riunione in azioni operative;</li><li>produrre una prima bozza di comunicazione interna.</li></ul>
+          <p>Il limite dello zero-shot è la variabilità: se il task richiede stile specifico, rigore formale o precisione su dominio verticale, spesso serve una struttura più ricca.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img07.png" alt="Schema di prompt input-output per task semplice" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.17: struttura essenziale del prompting zero-shot</figcaption></figure>
+          <h3 class="module-subtitle">Struttura modulare del prompt</h3>
+          <p>Per rendere il prompting ripetibile serve scomporre ogni prompt in componenti standard:</p>
+          <ol><li><strong>Contesto:</strong> ruolo, scenario, obiettivo e vincoli.</li><li><strong>Istruzione:</strong> cosa fare, in che ordine, con quale livello di dettaglio.</li><li><strong>Esempi:</strong> dimostrazioni di output desiderato.</li><li><strong>Variabili input:</strong> dati dinamici del caso reale.</li><li><strong>Formato output:</strong> schema finale (testo continuo, tabella, JSON, checklist).</li><li><strong>Constraint:</strong> limiti su lunghezza, tono, lessico, confidenza, esclusioni.</li></ol>
+          <p>Questa modularità rende più semplice collaborare tra team, mantenere coerenza e ridurre regressioni durante gli aggiornamenti.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img02.png" alt="Schema di few-shot prompting con esempi" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.18: i prompt con esempi guidano il modello per analogia</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img01.png" alt="Visuale di workflow per selezione esempi in few-shot automatico" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.19: pipeline di recupero automatico degli esempi più utili</figcaption></figure>
+          <h3 class="module-subtitle">Few-shot prompting: quando e come usarlo</h3>
+          <p>Il few-shot migliora la qualità quando lo stile o la logica del compito non emergono bene con una sola istruzione. Funziona bene per:</p>
+          <ul><li>contenuti marketing con tono preciso;</li><li>classificazioni con etichette aziendali specifiche;</li><li>trasformazioni di testo con regole redazionali definite.</li></ul>
+          <p>Tre attenzioni operative:</p>
+          <ol><li><strong>Costo token:</strong> troppi esempi aumentano latenza e costo.</li><li><strong>Bias da ordine/esempi:</strong> sequenza e distribuzione influenzano il risultato.</li><li><strong>Manutenzione:</strong> esempi vecchi degradano la qualità nel tempo.</li></ol>
+          <p>Per scalare, conviene costruire una libreria versionata di esempi e recuperare in automatico solo i più pertinenti al caso corrente.</p>
+          <h3 class="module-subtitle">Reasoning guidato: chain-of-thought, self-consistency, reflection</h3>
+          <p>Per task complessi il modello deve &quot;pensare a passi&quot;. Invece di chiedere subito l&#x27;output finale, si imposta un percorso ragionato che riduce errori logici.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img04.png" alt="Schema di chain-of-thought per decomposizione del compito" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.20: scomporre il problema in step aumenta affidabilità sui task multi-passaggio</figcaption></figure>
+          <p>Con <strong>self-consistency</strong> si generano più varianti e si seleziona la migliore tramite voto, scoring o valutazione comparativa. È utile per creatività controllata e per casi in cui serve scegliere l&#x27;opzione più robusta.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img03.png" alt="Schema di self-consistency con confronto di più varianti" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.21: più campioni, valutazione strutturata, selezione dell&#x27;output migliore</figcaption></figure>
+          <p>Il <strong>double diamond</strong> aiuta a usare la self-consistency in modo manageriale: prima si esplora lo spazio problema, poi lo spazio soluzioni, convergendo in modo esplicito su una scelta.</p>
+          <figure class="module-image"><img src="assets/chapt06_images/ch06_img05.png" alt="Double diamond per divergenza e convergenza nel processo creativo" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.22: metodo pratico per passare da molte ipotesi a una decisione finale</figcaption></figure>
+          <p>La <strong>reflection</strong> completa il ciclo: il modello valuta il proprio output su criteri prefissati (chiarezza, completezza, azionabilità), individua gap e propone revisione. In produzione, questo passaggio migliora la qualità senza dover sempre cambiare modello.</p>
+          <h3 class="module-subtitle">Prompting per output strutturati e automazione</h3>
+          <p>Nei processi aziendali, spesso l&#x27;output deve essere riusabile da sistemi downstream. Per questo il prompt deve specificare schema e vincoli di formato:</p>
+          <ul><li>campi obbligatori;</li><li>tipi di dato attesi;</li><li>valori ammessi;</li><li>regole di fallback in caso di informazione mancante.</li></ul>
+          <p>Questa impostazione abilita integrazione con workflow automatici, dashboard, reportistica e controlli qualità.</p>
+          <h3 class="module-subtitle">Best practice operative di team</h3>
+          <p>Per evitare caos nel prompting, impostare uno standard di lavoro:</p>
+          <ol><li><strong>Conoscere bene il modello:</strong> limiti, bias, knowledge cutoff, latenza e costi.</li><li><strong>Lavorare in modo interdisciplinare:</strong> prodotto, dominio, engineering, compliance.</li><li><strong>Scrivere prompt specifici e contestualizzati:</strong> ridurre ambiguità e supposizioni.</li><li><strong>Versionare tutto:</strong> prompt, esempi, metriche, dataset di test e risultati.</li><li><strong>Valutare in modo continuo:</strong> test suite con casi normali, edge case e input avversariali.</li><li><strong>Monitorare in produzione:</strong> intercettare domain shift e aggiornare template/esempi.</li></ol>
+          <h3 class="module-subtitle">Dalla sperimentazione alla governance del prompting</h3>
+          <p>Nelle fasi iniziali è normale lavorare in modo esplorativo. Ma quando il sistema entra in produzione, il prompting va gestito come asset critico:</p>
+          <ul><li>repository centralizzato di template;</li><li>naming convention e ownership chiari;</li><li>processo di review e approvazione;</li><li>metriche di qualità collegate a KPI di business;</li><li>rollback rapido in caso di regressioni.</li></ul>
+          <p>In questo modo il prompting smette di essere un&#x27;attività artigianale e diventa una capacità organizzativa stabile, misurabile e scalabile.</p>
+          <h3 class="module-subtitle">Punti operativi per integrazione Prompt Engineering</h3>
+          <ol><li>Definire template base per i principali processi (supporto, vendita, operation, compliance).</li><li>Stabilire criteri di qualità misurabili per ogni template.</li><li>Costruire una libreria di esempi con tag per dominio, tono e complessità.</li><li>Introdurre strategie di reasoning solo dove il beneficio supera il costo.</li><li>Richiedere output strutturati quando il risultato alimenta sistemi automatici.</li><li>Pianificare monitoraggio continuo con correzione periodica di prompt e dataset esempi.</li></ol>
+          <h3 class="module-subtitle">Search semantico e RAG: integrare conoscenza aziendale nel flusso GenAI</h3>
+          <p>Quando i contenuti generati risultano troppo generici, il problema non è solo il modello: manca l&#x27;accesso strutturato alla conoscenza interna dell&#x27;azienda. La Retrieval-Augmented Generation (RAG) risolve questo gap collegando i prompt a dati proprietari aggiornati.</p>
+          <p>In pratica:</p>
+          <ol><li>recuperi i documenti più rilevanti per la richiesta;</li><li>li inserisci nel contesto del prompt;</li><li>generi una risposta ancorata alle fonti recuperate.</li></ol>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img09.png" alt="Dal search semantico a un sistema RAG completo" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.24: evoluzione dall&#x27;information retrieval alla generazione con contesto recuperato</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img10.png" alt="Lifecycle operativo di un sistema RAG" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.25: fasi iterative per progettare, valutare e ottimizzare la pipeline RAG</figcaption></figure>
+          <h3 class="module-subtitle">Perché il prompting da solo non basta nel tempo</h3>
+          <p>Il prompting migliora stile e struttura, ma non crea nuova conoscenza affidabile. Quando l&#x27;utente richiede dati specifici di settore, procedure interne o informazioni recenti, serve una pipeline che recuperi fonti pertinenti prima della generazione.</p>
+          <p>Segnali tipici che indicano necessità di RAG:</p>
+          <ul><li>output fluenti ma poco specifici sul dominio;</li><li>alto lavoro di post-editing da parte dei team;</li><li>riferimenti incompleti o non aggiornati;</li><li>difficoltà nel riuso della conoscenza distribuita tra wiki, CRM, drive e ticketing.</li></ul>
+          <h3 class="module-subtitle">Embeddings: la base del recupero semantico</h3>
+          <p>Il search semantico rappresenta testi e query come vettori (embeddings). La vicinanza tra vettori riflette la somiglianza di significato, non solo la corrispondenza lessicale.</p>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img11.png" alt="Parole simili vicine nello spazio vettoriale" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.26: similarità semantica come distanza tra embeddings</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img04.png" alt="Frasi raggruppate per prossimità semantica" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.27: clustering di frasi con contenuto affine nello spazio embedding</figcaption></figure>
+          <p>Per un team prodotto questo implica una decisione importante: scegliere modello embedding, granularità dei chunk e strategia di indicizzazione incide direttamente su precisione, costo e latenza.</p>
+          <h3 class="module-subtitle">Costruzione della base documentale</h3>
+          <p>La pipeline minima di retrieval include:</p>
+          <ol><li>ingestione da sorgenti aziendali;</li><li>pulizia e normalizzazione dei documenti;</li><li>chunking dei testi;</li><li>generazione embeddings;</li><li>salvataggio in database vettoriale.</li></ol>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img02.png" alt="Processo di costruzione dell&#x27;embedding database" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.28: passaggi per trasformare documenti eterogenei in indice interrogabile</figcaption></figure>
+          <p>Scelte operative da governare:</p>
+          <ul><li><strong>chunking:</strong> troppo corto perde contesto, troppo lungo introduce rumore;</li><li><strong>database vettoriale:</strong> differenze su scalabilità, filtri, costi operativi;</li><li><strong>metadati:</strong> fondamentali per filtrare per lingua, data, prodotto, business unit.</li></ul>
+          <h3 class="module-subtitle">Come funziona il search semantico in produzione</h3>
+          <p>La query utente viene embedded e confrontata con i vettori indicizzati; il sistema restituisce i top-k chunk più pertinenti.</p>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img03.png" alt="Pipeline di semantic search" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.29: retrieval top-k per similarità semantica tra query e chunk</figcaption></figure>
+          <p>Valutazione minima del retrieval:</p>
+          <ul><li><strong>precision@k:</strong> quota di risultati rilevanti nei primi k;</li><li><strong>recall@k:</strong> copertura dei documenti rilevanti;</li><li><strong>MRR:</strong> qualità della posizione del primo risultato corretto.</li></ul>
+          <h3 class="module-subtitle">Ottimizzazione del retrieval</h3>
+          <p>Dopo la baseline, il recupero va affinato in modo sistematico:</p>
+          <ol><li><strong>chunking avanzato</strong> per preservare confini semantici;</li><li><strong>contestualizzazione dei chunk</strong> con brevi prefissi descrittivi;</li><li><strong>ricerca ibrida</strong> (semantica + lessicale) per aumentare precisione su termini esatti;</li><li><strong>filtri metadato</strong> per restringere il dominio utile;</li><li><strong>reranking</strong> per ordinare meglio risultati quasi equivalenti.</li></ol>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img05.png" alt="Recap del sistema di search e aree di miglioramento" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.30: mappa delle principali leve di ottimizzazione del retrieval</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img06.png" alt="Integrazione tra ricerca semantica e lessicale" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.31: la strategia ibrida migliora il bilanciamento tra richiamo e precisione</figcaption></figure>
+          <h3 class="module-subtitle">Dalla ricerca al RAG end-to-end</h3>
+          <p>Il passo successivo è collegare retrieval e generazione in un unico flusso:</p>
+          <ol><li>query utente;</li><li>recupero chunk rilevanti;</li><li>costruzione prompt aumentato;</li><li>generazione risposta con riferimenti alle fonti.</li></ol>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img08.png" alt="Schema di sistema RAG end-to-end" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.32: pipeline completa dalla richiesta utente alla risposta grounding-aware</figcaption></figure>
+          <p>Nella costruzione prompt conviene separare:</p>
+          <ul><li><strong>system instruction:</strong> regole di comportamento e uso delle fonti;</li><li><strong>task instruction:</strong> output atteso e livello di dettaglio;</li><li><strong>context block:</strong> estratti recuperati e metadati citabili;</li><li><strong>constraints:</strong> vincoli su citazioni, tono, formato e limiti di inferenza.</li></ul>
+          <h3 class="module-subtitle">Valutazione del RAG: componenti + end-to-end</h3>
+          <p>La qualità va misurata su due livelli:</p>
+          <ol><li><strong>component-level:</strong> retrieval e generazione valutati separatamente;</li><li><strong>end-to-end:</strong> risposta finale valutata rispetto alla query reale.</li></ol>
+          <p>Metriche prioritarie:</p>
+          <ul><li><strong>context relevance:</strong> pertinenza dei chunk recuperati;</li><li><strong>groundedness:</strong> aderenza dell&#x27;output alle fonti;</li><li><strong>answer relevance:</strong> capacità di rispondere davvero alla richiesta.</li></ul>
+          <p>Per scalare i test si può usare valutazione assistita da LLM, mantenendo un campione con revisione umana per intercettare bias del giudice automatico.</p>
+          <h3 class="module-subtitle">Ottimizzare il RAG in modo continuo</h3>
+          <p>Una volta in produzione, le leve più efficaci sono:</p>
+          <ol><li><strong>query enhancement:</strong> riscrittura/espansione query troppo vaghe;</li><li><strong>prompt adaptation:</strong> vincoli dinamici in base al caso d&#x27;uso (esplorativo vs strettamente documentale);</li><li><strong>context curation:</strong> deduplicazione e fusione dei contenuti recuperati;</li><li><strong>multi-turn retrieval:</strong> recuperi iterativi per compiti complessi;</li><li><strong>GraphRAG:</strong> uso di relazioni esplicite tra entità per query multi-hop;</li><li><strong>fine-tuning mirato:</strong> quando serve profondità di dominio non ottenibile con retrieval e prompt.</li></ol>
+          <figure class="module-image"><img src="assets/chapt07_images/ch07_img01.png" alt="Leve di ottimizzazione di un sistema RAG" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.34: aree prioritarie per aumentare qualità, affidabilità e coerenza delle risposte</figcaption></figure>
+          <h3 class="module-subtitle">Punti operativi per integrazione RAG</h3>
+          <ol><li>Definire use case e livelli di rischio prima della scelta architetturale.</li><li>Stabilire strategia chunking, metadati e aggiornamento indice.</li><li>Misurare retrieval con metriche quantitative già nella fase prototipale.</li><li>Separare template prompt per casi con forte grounding e casi esplorativi.</li><li>Introdurre monitoraggio continuo di groundedness e answer relevance.</li><li>Pianificare cicli periodici di ottimizzazione su query, retrieval e generazione.</li></ol>
+          <h3 class="module-subtitle">Agentic AI: automatizzare workflow complessi</h3>
+          <p>Con i sistemi agentici l&#x27;IA non si limita a generare testo, ma orchestra azioni su strumenti esterni per completare task multi-step. Questo abilita automazioni che prima richiedevano passaggi manuali distribuiti tra più applicazioni.</p>
+          <p>In un flusso enterprise la differenza pratica è questa:</p>
+          <ul><li>workflow manuale: l&#x27;utente coordina ricerca, analisi, decisione e comunicazione;</li><li>workflow agentico: l&#x27;utente imposta obiettivo e vincoli, l&#x27;agente gestisce esecuzione e ritorna output strutturato.</li></ul>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img08.png" alt="Workflow umano vs workflow con agente LM" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.35: confronto tra esecuzione manuale e orchestrazione automatizzata tramite agente</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img10.png" alt="Esempio di task prompt per agente di product management" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.36: prompt iniziale che definisce obiettivo, contesto e vincoli operativi dell&#x27;agente</figcaption></figure>
+          <h3 class="module-subtitle">Tool access: la base dell&#x27;azione nel mondo reale</h3>
+          <p>Un agente diventa utile quando può usare strumenti esterni in modo controllato. Le categorie operative principali sono:</p>
+          <ol><li><strong>Strumenti di lettura dati</strong>: search, basi documentali, CRM, ticketing, data warehouse.</li><li><strong>Strumenti di analisi</strong>: SQL, modelli predittivi, motori di regole, calcolo.</li><li><strong>Strumenti di azione</strong>: email, Slack, sistemi di workflow, update documentali.</li><li><strong>Strumenti umani (HITL)</strong>: richiesta di validazione quando confidenza o impatto non sono adeguati.</li></ol>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img12.png" alt="Template roadmap usato come output target dell&#x27;agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.37: esempio di artefatto finale che l&#x27;agente deve produrre e mantenere</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img11.png" alt="Integrazione di più categorie di tool nell&#x27;agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.38: estensione progressiva del tool stack per coprire raccolta, analisi e coordinamento</figcaption></figure>
+          <h3 class="module-subtitle">Modello di automazione progressiva</h3>
+          <p>Nei contesti reali conviene partire con automazione parziale, poi aumentare autonomia quando qualità e affidabilità diventano stabili.</p>
+          <p>Approccio consigliato:</p>
+          <ol><li>avvio con task a basso rischio e output review obbligatoria;</li><li>automazione di task ripetitivi con validazione a campione;</li><li>introduzione di azioni write-enabled solo con guardrail forti;</li><li>monitoraggio continuo di errori, escalation e rollback.</li></ol>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img14.png" alt="Riduzione progressiva del coinvolgimento umano con aumento affidabilità" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.39: transizione da interfaccia ad alta supervisione a interfaccia semplificata</figcaption></figure>
+          <h3 class="module-subtitle">Ecosistema tool e funzione di orchestrazione</h3>
+          <p>Ogni integrazione esterna va trattata come componente critico di prodotto: SLA, qualità, sicurezza, fallback e costo. Gli agenti funzionano meglio quando il catalogo strumenti è limitato e ben curato.</p>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img15.png" alt="Ecosistema plug-in/tool disponibili per estendere gli agenti" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.40: panorama integrazioni esterne che l&#x27;agente può invocare</figcaption></figure>
+          <p>Il ciclo base di tool use è:</p>
+          <ol><li>selezione dello strumento corretto;</li><li>invocazione con parametri validi;</li><li>parsing del risultato e decisione del passo successivo.</li></ol>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img02.png" alt="Processo decisionale di un agente nell&#x27;uso di uno strumento" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.41: flow minimo di selezione, esecuzione e interpretazione output del tool</figcaption></figure>
+          <h3 class="module-subtitle">Architettura dell&#x27;agente: componenti essenziali</h3>
+          <p>Un agente robusto combina quattro blocchi:</p>
+          <ul><li><strong>LM controller</strong> per ragionamento e orchestrazione;</li><li><strong>tool layer</strong> per accesso a dati e azioni;</li><li><strong>planning module</strong> per decomporre task complessi;</li><li><strong>memory module</strong> per continuità e apprendimento.</li></ul>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img01.png" alt="Architettura ad alto livello di un agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.42: componenti principali e flussi tra modello, memoria, piano e strumenti</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img04.png" alt="Interazione agente-ambiente esterno" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.43: ciclo osservazione-decisione-azione con feedback dal contesto operativo</figcaption></figure>
+          <h3 class="module-subtitle">Pianificazione: da task ampio a piano eseguibile</h3>
+          <p>Senza pianificazione i sistemi agentici degradano in tentativi disordinati. La pipeline corretta prevede:</p>
+          <ol><li>decomposizione del problema;</li><li>ordinamento dei sottotask;</li><li>selezione tool per ciascun sottotask;</li><li>controlli di coerenza tra step;</li><li>consolidamento output finale.</li></ol>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img03.png" alt="Template prompt per governare la pianificazione dell&#x27;agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.44: struttura prompt per guidare la pianificazione in modo ripetibile</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img06.png" alt="Metodi di pianificazione disponibili per gli agenti" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.45: varianti di planning in base a complessità e livello di controllo richiesto</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img05.png" alt="Esempio di piano operativo senza riflessione" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.46: sequenza iniziale dei passi che l&#x27;agente può eseguire su un caso roadmap</figcaption></figure>
+          <h3 class="module-subtitle">Reflection e riduzione errori</h3>
+          <p>Per migliorare affidabilità serve introdurre cicli di auto-valutazione. Una strategia utile è far riesaminare all&#x27;agente i propri output con criteri espliciti (accuratezza, completezza, rischio, azionabilità), poi forzare una revisione prima dell&#x27;esecuzione finale.</p>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img07.png" alt="Schema di riflessione e miglioramento su un sottotask" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.47: loop di feedback interno per correggere passaggi deboli prima dell&#x27;azione</figcaption></figure>
+          <h3 class="module-subtitle">Memoria: continuità tra sessioni e apprendimento</h3>
+          <p>Gli agenti devono mantenere stato operativo su due livelli:</p>
+          <ul><li><strong>memoria breve</strong>: contesto della sessione corrente;</li><li><strong>memoria lunga</strong>: preferenze utente, errori passati, pattern utili, policy efficaci.</li></ul>
+          <p>La memoria lunga consente iterazioni migliori nel tempo, ma richiede governance forte su qualità dato, privacy e aggiornamento.</p>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img09.png" alt="Memoria di breve e lungo periodo per sistemi agentici" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.48: separazione tra contesto sessione e conoscenza persistente dell&#x27;agente</figcaption></figure>
+          <h3 class="module-subtitle">Multi-agent collaboration e pattern supervisor</h3>
+          <p>Quando un solo agente diventa troppo generico, conviene specializzare: discovery, analisi, prioritizzazione, esecuzione. Un agente supervisore coordina handoff, risolve conflitti e verifica allineamento con obiettivi business.</p>
+          <figure class="module-image"><img src="assets/chapt09_images/ch09_img13.png" alt="Pattern supervisor con agenti specializzati" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.49: orchestrazione di più agenti per task ad alta complessità</figcaption></figure>
+          <h3 class="module-subtitle">Guardrail operativi per andare in produzione</h3>
+          <p>Per rendere sostenibile l&#x27;adozione, fissare policy tecniche e organizzative:</p>
+          <ol><li>limiti di autonomia per categoria di azione;</li><li>whitelist di tool e permessi minimi;</li><li>trigger HITL su bassa confidenza o impatto alto;</li><li>tracciamento completo delle decisioni dell&#x27;agente;</li><li>meccanismi di rollback su azioni write-enabled;</li><li>test regressivi frequenti su workflow critici.</li></ol>
+          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Scegliere il pattern di integrazione corretto per ogni processo (diretto, programmatico, backend).</li><li>Definire guardrail prima del go-live: sicurezza input/output, policy, soglie e fallback.</li><li>Valutare i modelli con benchmark pubblici e test sul dataset reale del dominio.</li><li>Gestire il prompting come asset versionato, con template, metriche e review periodiche.</li><li>Impostare un RAG con metriche su retrieval, groundedness e qualità della risposta finale.</li><li>Introdurre agenti in modo progressivo, con limiti di autonomia, HITL e monitoraggio continuo.</li></ol></section>
+        </section>
+
+
+        <nav class="module-nav footer-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Modulo Precedente</a><a class="nav-btn" href="module-04.html">Modulo Successivo</a></nav>
+      </article>
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+</body>
+</html>

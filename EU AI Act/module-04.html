@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 04 - Valutare la qualità dell’output</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: rgba(0, 5, 15, 0.95);
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
+      <h1>Modulo 04</h1>
+    </header>
+
+    <main>
+      <article class="card">
+        <nav class="module-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-03.html">Modulo Precedente</a><a class="nav-btn" href="module-05.html">Modulo Successivo</a></nav>
+        <nav class="jump-nav"><a class="nav-btn" href="module-01.html">01 - IA nei progetti: leve e criticità</a><a class="nav-btn" href="module-02.html">02 - Come gestire un progetto con IA</a><a class="nav-btn" href="module-03.html">03 - Integrazione GenAI in processi aziendali</a><a class="nav-btn" href="module-04.html">04 - Valutare la qualità dell’output</a><a class="nav-btn" href="module-05.html">05 - Presidio e manutenzione nel quotidiano</a><a class="nav-btn" href="module-06.html">06 - Esempi pratici - Laboratori</a></nav>
+
+        <p class="module-kicker">Modulo 04</p>
+        <h2 class="module-title">Valutare la qualità dell’output</h2>
+
+        <section class="module-content">
+          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> valutare la qualità dell&#x27;output AI in modo strutturato, con criteri tecnici, rischi di governance e impatto business.</li><li><strong>Focus operativo:</strong> sicurezza, privacy, bias, trasparenza e accountability come leve concrete di qualità.</li><li><strong>Risultato atteso:</strong> un framework di controllo che riduce incidenti e aumenta affidabilità, adozione e compliance.</li></ul></section>
+          <h3 class="module-subtitle">Qualità dell&#x27;output: oltre la sola accuratezza</h3>
+          <p>La qualità di una risposta AI non coincide solo con &quot;è corretta o no&quot;. In un contesto aziendale serve valutare almeno cinque dimensioni simultanee:</p>
+          <ol><li><strong>Correttezza fattuale</strong> (aderenza alle fonti e assenza di invenzioni).</li><li><strong>Rilevanza rispetto al task</strong> (risponde davvero alla richiesta).</li><li><strong>Sicurezza</strong> (assenza di azioni o suggerimenti dannosi).</li><li><strong>Equità</strong> (assenza di pattern discriminatori sistematici).</li><li><strong>Comprensibilità e tracciabilità</strong> (output interpretabile e giustificabile).</li></ol>
+          <p>Questo approccio riduce il rischio di risposte formalmente ben scritte ma operative­mente sbagliate.</p>
+          <h3 class="module-subtitle">Sicurezza dell&#x27;output su tre livelli</h3>
+          <p>Per governare la qualità bisogna controllare la sicurezza su:</p>
+          <ul><li><strong>dati</strong> (integrità e confidenzialità),</li><li><strong>modello</strong> (supply chain e dipendenze),</li><li><strong>uso in produzione</strong> (input avversariali, output non sicuri, abuso dei canali di integrazione).</li></ul>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img04.png" alt="Sicurezza AI sui livelli dati, intelligenza e user experience" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.1: le aree di sicurezza da presidiare per evitare degrado della qualità in produzione</figcaption></figure>
+          <h3 class="module-subtitle">Sicurezza dei dati: integrità, riservatezza, proprietà intellettuale</h3>
+          <p>I principali vettori di rischio dati sono:</p>
+          <ol><li><strong>Data poisoning:</strong> dati alterati che degradano output e raccomandazioni.</li><li><strong>Data leakage/exfiltration:</strong> esposizione non autorizzata di informazioni sensibili.</li><li><strong>IP exposure:</strong> uso improprio di contenuti proprietari o coperti da licenza.</li></ol>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img05.png" alt="Classificazione dei dati per livelli di confidenzialità" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.2: classificazione dati come base per policy differenziate di accesso e protezione</figcaption></figure>
+          <p>Contromisure minime:</p>
+          <ul><li>validazione sistematica dataset in ingresso;</li><li>minimizzazione e anonimizzazione dove possibile;</li><li>cifratura end-to-end e controlli RBAC;</li><li>audit periodici su flussi dati e log di accesso.</li></ul>
+          <h3 class="module-subtitle">Sicurezza del modello: rischio supply chain</h3>
+          <p>Quando si integrano componenti esterni, la qualità dell&#x27;output dipende anche dalla fiducia nel software di terze parti. La gestione corretta include:</p>
+          <ul><li>scansione vulnerabilità delle dipendenze;</li><li>SBOM per inventario completo dei componenti;</li><li>aggiornamento controllato delle librerie;</li><li>sandboxing e policy di isolamento;</li><li>vendor risk management con test regolari.</li></ul>
+          <h3 class="module-subtitle">Sicurezza d&#x27;uso: prompt injection e output handling</h3>
+          <p>Il rischio più immediato per la qualità in ambienti aperti è il prompt injection, sia:</p>
+          <ul><li><strong>diretto</strong> (istruzioni malevole nel prompt utente),</li><li><strong>indiretto</strong> (istruzioni malevole introdotte da fonti esterne recuperate).</li></ul>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img07.png" alt="Prompt injection diretto" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.3: istruzioni nocive inserite direttamente nella richiesta utente</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img08.png" alt="Prompt injection indiretto da fonte esterna" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.4: istruzioni nocive veicolate attraverso documenti o pagine recuperate</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img10.png" alt="Esempio di input malevolo che tenta di disattivare i guardrail" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.5: payload avversariale tipico da intercettare prima della generazione</figcaption></figure>
+          <p>Pratiche essenziali:</p>
+          <ol><li>validazione input e filtri semantici;</li><li>separazione netta tra istruzioni di sistema e contenuto utente;</li><li>reset di sessione per limitare accumulo di contesto manipolato;</li><li>output validation prima dell&#x27;esecuzione da parte di sistemi downstream.</li></ol>
+          <h3 class="module-subtitle">Privacy-by-design come requisito di qualità</h3>
+          <p>Un output è di qualità solo se non compromette dati personali, segreti industriali o informazioni regolamentate. Per questo la privacy va progettata dall&#x27;inizio, non aggiunta a posteriori.</p>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img02.png" alt="Principali rischi privacy in un sistema AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.6: mappa dei punti di vulnerabilità privacy lungo la catena del valore AI</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img03.png" alt="Principi guida della privacy-by-design" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.7: principi operativi per incorporare protezione dati nel lifecycle</figcaption></figure>
+          <p>In pratica:</p>
+          <ul><li>selezionare modelli e fornitori con policy di retention chiare;</li><li>evitare trasferimenti non necessari di dati sensibili;</li><li>definire consenso, finalità e tempi di conservazione;</li><li>documentare controlli e responsabilità.</li></ul>
+          <h3 class="module-subtitle">Bias e fairness: prevenire qualità distorta</h3>
+          <p>La qualità si degrada quando il sistema produce risultati sbilanciati tra gruppi o contesti. Le fonti principali del bias sono:</p>
+          <ul><li>dati storici non rappresentativi,</li><li>scelte algoritmiche non neutre,</li><li>feedback loop che rinforzano errori passati.</li></ul>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img06.png" alt="Origini del bias: dati, algoritmo, feedback loop" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.8: le tre sorgenti da monitorare per evitare discriminazioni sistematiche</figcaption></figure>
+          <p>Approccio di mitigazione:</p>
+          <ol><li>dataset più bilanciati e aggiornati;</li><li>metriche fairness in validazione e monitoraggio;</li><li>supervisione umana su decisioni ad alto impatto;</li><li>alert automatici su drift di distribuzione tra segmenti.</li></ol>
+          <h3 class="module-subtitle">Trasparenza e fiducia nell&#x27;output</h3>
+          <p>Per favorire adozione e uso corretto, l&#x27;output deve essere:</p>
+          <ul><li><strong>spiegabile</strong> (perché quella risposta),</li><li><strong>interpretabile</strong> (leggibile da chi decide),</li><li><strong>accountable</strong> (chi è responsabile e come si interviene).</li></ul>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img09.png" alt="Le tre componenti della trasparenza: explainability, interpretability, accountability" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.9: struttura di trasparenza necessaria per fiducia e adozione nel business</figcaption></figure>
+          <h3 class="module-subtitle">Accountability operativa: HITL, HOTL, HOOTL</h3>
+          <p>La scelta del livello di supervisione determina qualità e rischio:</p>
+          <ol><li><strong>HITL</strong> (Human-in-the-Loop): approvazione umana obbligatoria prima dell&#x27;azione.</li><li><strong>HOTL</strong> (Human-on-the-Loop): monitoraggio umano con possibilità di intervento.</li><li><strong>HOOTL</strong> (Human-out-of-the-Loop): automazione piena su casi a basso rischio e regole stabili.</li></ol>
+          <p>La regola pratica è semplice: più alto l&#x27;impatto potenziale dell&#x27;errore, più forte deve essere la supervisione umana.</p>
+          <h3 class="module-subtitle">Approccio proattivo: governance shift-left</h3>
+          <p>Per evitare gestione reattiva degli incidenti, la governance va anticipata nelle prime fasi di progettazione: ideazione, dati, sviluppo, test, rilascio e monitoraggio continuo.</p>
+          <figure class="module-image"><img src="assets/chapt11_images/ch11_img01.png" alt="Roadmap shift-left per implementare governance proattiva" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.10: integrazione anticipata dei controlli per ridurre rischi e rework in produzione</figcaption></figure>
+          <h3 class="module-subtitle">KPI di qualità da monitorare nel Modulo 04</h3>
+          <ol><li><strong>Groundedness:</strong> quota output supportati da fonti affidabili.</li><li><strong>Fedeltà al task:</strong> aderenza ai requisiti espliciti della richiesta.</li><li><strong>Coerenza:</strong> stabilità logica interna della risposta.</li><li><strong>Rilevanza:</strong> pertinenza al contesto utente e al dominio.</li><li><strong>Security incident rate:</strong> frequenza di prompt injection o output non sicuri.</li><li><strong>Fairness metrics:</strong> differenze di qualità/esito tra gruppi o segmenti.</li><li><strong>Privacy incidents:</strong> eventi di leakage o accesso improprio.</li></ol>
+          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Definire criteri di qualità multi-dimensione prima dei test di output.</li><li>Implementare validazione input/output e guardrail di sicurezza.</li><li>Applicare privacy-by-design su dati, prompt, log e integrazioni.</li><li>Inserire controlli fairness nel ciclo di validazione e monitoraggio.</li><li>Stabilire livello di oversight umano per ogni tipologia di decisione.</li><li>Attivare roadmap shift-left con audit periodici e miglioramento continuo.</li></ol></section>
+        </section>
+
+
+        <nav class="module-nav footer-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-03.html">Modulo Precedente</a><a class="nav-btn" href="module-05.html">Modulo Successivo</a></nav>
+      </article>
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+</body>
+</html>
