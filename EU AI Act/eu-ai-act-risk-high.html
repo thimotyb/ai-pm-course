@@ -21,8 +21,8 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Formulario EU AI Act - High-Risk (Tabella 4-3)</h1>
-    <p class="muted">Basato sul questionario del Capitolo 4. Sezioni 1 e 2 pesano di piu' nell'esito.</p>
+    <h1>Formulario EU AI Act - High-Risk</h1>
+    <p class="muted">Questionario operativo: le sezioni 1 e 2 pesano di piu' nell'esito.</p>
 
     <h2>1) Application area</h2>
     <div class="q"><label><input type="checkbox" class="s1"> Biometric identification/categorization</label></div>
@@ -81,7 +81,7 @@
       let msg = '<strong>Conteggi:</strong> S1=' + s1 + ', S2=' + s2 + ', S3=' + s3 + ', S4=' + s4 + '.<br>';
       if (s1 > 0 && s2 > 0) {
         out.classList.add('high');
-        msg += '<strong>Esito:</strong> probabile <strong>HIGH-RISK</strong> (coerente con guida interpretativa del Capitolo 4).';
+        msg += '<strong>Esito:</strong> probabile <strong>HIGH-RISK</strong> (coerente con la guida interpretativa).';
       } else if (s1 > 0 && (s3 > 0 || s4 >= 2)) {
         out.classList.add('warn');
         msg += '<strong>Esito:</strong> possibile <strong>HIGH-RISK</strong> (dipende da contesto/implementazione). Richiesta validazione legale.';
