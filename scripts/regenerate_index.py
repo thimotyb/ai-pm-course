@@ -149,7 +149,11 @@ def body_to_html(body: str) -> str:
         if h3_match:
             heading_text = h3_match.group(1).strip()
             heading_key = heading_text.lower()
-            if heading_key in {'scheda rapida del modulo', 'checklist dei concetti principali'}:
+            if heading_key in {
+                'scheda rapida del modulo',
+                'checklist dei concetti principali',
+                'principali punti di fine sezione',
+            }:
                 i += 1
                 block_lines = []
                 seen_content = False
