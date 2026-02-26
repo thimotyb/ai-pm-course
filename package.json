@@ -1,0 +1,12 @@
+{
+  "name": "progettare-gestire-soluzioni-ai",
+  "private": true,
+  "scripts": {
+    "prepare:dist": "bash scripts/prepare_dist.sh",
+    "test:preprod": "node ./node_modules/@playwright/test/cli.js test -c playwright.preprod.config.js",
+    "test:preprod:headed": "node ./node_modules/@playwright/test/cli.js test -c playwright.preprod.config.js --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

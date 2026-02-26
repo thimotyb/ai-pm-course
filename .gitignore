@@ -8,6 +8,15 @@
 !.github/
 !.github/workflows/
 !.github/workflows/*.yml
+!package.json
+!playwright.preprod.config.js
+!tests/
+!tests/**
+!REQUIREMENTS.md
+!TODO.md
 
 # Exclude generated caches
 scripts/__pycache__/
+node_modules/
+dist/
+**/desktop.ini

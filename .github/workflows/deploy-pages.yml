@@ -15,7 +15,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  preprod-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install test dependencies
+        run: npm install --no-fund --no-audit --package-lock=false --no-bin-links
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run pre-production checks
+        run: npm run test:preprod
+
   build:
+    needs: preprod-checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,20 +44,7 @@ jobs:
 
       - name: Prepare site artifact
         shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p dist
-
-          # Publish root HTML pages (index + modules + risk forms)
-          cp -a ./*.html dist/ || true
-
-          # Publish static resources used by the pages
-          if [ -d assets ]; then
-            cp -a assets dist/assets
-          fi
-          if [ -d scripts ]; then
-            cp -a scripts dist/scripts
-          fi
+        run: bash scripts/prepare_dist.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
