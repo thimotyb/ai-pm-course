@@ -27,7 +27,7 @@ jobs:
           node-version: '20'
 
       - name: Install test dependencies
-        run: npm ci --no-fund --no-audit
+        run: npm install --no-fund --no-audit --package-lock=false
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
