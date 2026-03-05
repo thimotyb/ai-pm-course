@@ -434,6 +434,116 @@ h1 {
   }
 }
 
+
+.print-btn {
+  position: fixed;
+  right: 14px;
+  top: calc(50% + 56px);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
+.print-icon {
+  margin-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .print-btn {
+    top: auto;
+    bottom: 52px;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  h1 {
+    background: none !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  .outline-panel,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  header {
+    text-align: left;
+    padding: 0 0 10px;
+  }
+
+  .card {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  h2, h3, h4, p, li, td, th, figcaption {
+    color: #000000 !important;
+  }
+
+  .module-title,
+  .module-section-title,
+  .module-subtitle,
+  .module-subtitle-small {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .module-image,
+  .table-wrap,
+  .quick-card,
+  .checklist-card {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  .module-image img {
+    background: #ffffff !important;
+    border: 1px solid #d0d0d0 !important;
+    padding: 4px !important;
+    max-width: 100% !important;
+  }
+
+  .module-content a,
+  .content-table a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -561,6 +671,7 @@ h1 {
       </article>
     </main>
   </div>
+  <button class="print-btn" type="button" id="print-page-btn" aria-label="Stampa questa pagina"><span class="print-icon" aria-hidden="true">&#128424;</span>Stampa</button>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
   <script>
   (() => {
@@ -708,6 +819,14 @@ h1 {
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('hashchange', setActive);
     setActive();
+  })();
+  </script>
+
+  <script>
+  (() => {
+    const printBtn = document.getElementById('print-page-btn');
+    if (!printBtn) return;
+    printBtn.addEventListener('click', () => window.print());
   })();
   </script>
 
