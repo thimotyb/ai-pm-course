@@ -2018,6 +2018,15 @@ Un output è di qualità solo se non compromette dati personali, segreti industr
 ![Principi guida della privacy-by-design](assets/chapt11_images/ch11_img03.png)
 *Figura M4.7: principi operativi per incorporare protezione dati nel lifecycle*
 
+I sette principi della privacy by design, da applicare come criteri operativi lungo tutto il ciclo di vita del sistema, sono:
+- **Proattivo, non reattivo; preventivo, non correttivo:** la privacy va affrontata nelle fasi iniziali di analisi e progettazione, anticipando i rischi prima che diventino incidenti. Questo implica valutazioni d'impatto privacy, identificazione preventiva delle vulnerabilità e correzione dei punti deboli prima del rilascio.
+- **Privacy come impostazione predefinita:** la configurazione standard del sistema deve proteggere i dati senza richiedere azioni aggiuntive da parte dell'utente. Anonimizzazione, minimizzazione e mascheramento dei dati sensibili devono quindi essere attivi di default.
+- **Privacy incorporata nella progettazione:** i controlli privacy non vanno aggiunti a valle, ma integrati direttamente nell'architettura, nei flussi dati e nelle logiche del modello. Significa progettare fin dall'inizio limitazione del dato, uso di dati anonimizzati e meccanismi tecnici che riducano l'esposizione non necessaria.
+- **Piena funzionalità:** proteggere la privacy non deve significare rinunciare al valore del sistema. L'obiettivo è una logica "positive-sum": mantenere efficacia, qualità dell'output e innovazione senza sacrificare la tutela dei dati.
+- **Sicurezza end-to-end:** i dati devono essere protetti dall'acquisizione fino alla cancellazione o archiviazione finale. Servono quindi cifratura in transito e a riposo, controlli di accesso robusti e procedure di cancellazione sicura quando il dato non è più necessario.
+- **Visibilità e trasparenza:** utenti, clienti e stakeholder devono poter capire come i dati vengono trattati, per quali finalità e con quali controlli. Report di utilizzo, log consultabili e spiegazioni chiare sui flussi dati rafforzano fiducia e verificabilità.
+- **Rispetto della privacy dell'utente:** le persone devono mantenere controllo reale sui propri dati e sulle preferenze di utilizzo. Questo richiede dashboard semplici, opzioni di consenso e revoca, nonché possibilità di modificare in ogni momento le impostazioni privacy.
+
 In pratica:
 - selezionare modelli e fornitori con policy di retention chiare;
 - evitare trasferimenti non necessari di dati sensibili;
