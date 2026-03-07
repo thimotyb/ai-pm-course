@@ -2447,19 +2447,18 @@ Prima di estendere l'audit AI in modo strutturato e continuativo, è utile valut
 - readiness dati,
 - readiness infrastruttura.
 
-Operativamente, lo score si legge come una **valutazione di maturità** e non come un numero "magico" calcolato da un'unica formula universale. Il modo più utile di applicarlo è questo:
-1. definire per ciascun pilastro alcuni criteri osservabili;
-2. assegnare a ogni criterio un punteggio di maturità, per esempio su scala **1-5**;
-3. calcolare un punteggio medio per ciascun pilastro;
-4. confrontare i quattro punteggi per capire dove l'organizzazione è più debole;
-5. usare il profilo risultante per decidere quanto l'audit possa essere esteso, formalizzato o intensificato.
+Il modello AIRI va usato come **assessment strutturato di preparazione all'AI**, non come formula astratta. La logica descritta nella fonte è questa: si analizzano **nove dimensioni** distribuite nei quattro pilastri, si attribuisce un punteggio alle singole aree osservate e si ricava uno **score finale** che viene poi collocato in una matrice di readiness. Il risultato serve a capire non solo "quanto" l'organizzazione sia pronta, ma **dove** sia pronta e dove invece presenti lacune.
 
-Esempio pratico di lettura:
-- se la **readiness dati** è bassa, l'audit dovrà concentrarsi prima su qualità del dato, lineage e controlli di accesso;
-- se la **readiness organizzativa** è bassa, il problema non è solo tecnico ma di ruoli, ownership e processi;
-- se tutti i pilastri hanno punteggi medio-alti, diventa più realistico introdurre audit più frequenti, controlli più profondi e reporting strutturato verso management e board.
+In termini operativi, AIRI può essere letto così:
+1. si raccolgono evidenze su persone, conoscenze, disponibilità ad adottare l'AI, capacità di generare valore, qualità dei dati e adeguatezza dell'infrastruttura;
+2. si valuta ciascuna dimensione con un punteggio di maturità coerente;
+3. si aggregano i punteggi fino a ottenere un profilo complessivo;
+4. si posiziona il risultato nella matrice finale di readiness;
+5. si usano i pilastri più deboli per decidere le priorità di governance, remediation e audit.
 
-In altre parole, il valore dello score non è tanto nel numero finale, ma nella sua utilità per **prioritizzare i gap** e sequenziare correttamente il rafforzamento della governance.
+Questo rende AIRI utile soprattutto come strumento di **diagnosi organizzativa**. Se il punteggio è debole sul fronte dati, prima di intensificare l'audit conviene rafforzare qualità, lineage e controlli di accesso. Se la debolezza è organizzativa, il problema riguarda ruoli, sponsorship, competenze e processi decisionali. Se invece il profilo è più equilibrato, l'organizzazione è in una posizione migliore per introdurre audit più frequenti, controlli più profondi e reporting più formale verso management e board.
+
+Il punto importante è che AIRI non "spiega" da solo cosa fare: offre una **vista sintetica della preparazione** e aiuta a ordinare gli interventi prima di rendere l'audit AI più esteso e sistematico.
 
 ![AI Readiness Index (AIRI): framework a 4 pilastri e 9 dimensioni](assets/principles_ch18_images/pg_ch18_img01.jpg)
 *Figura M5.6: modello AIRI per valutare capacità di adozione e presidio AI*
