@@ -2441,11 +2441,25 @@ Fattori principali:
 Nei sistemi ad alto rischio è utile combinare monitoraggio continuo con audit periodici approfonditi.
 
 ### AI readiness per pianificare governance e audit
-Prima di scalare l'audit è utile valutare la readiness organizzativa su quattro pilastri:
+Prima di estendere l'audit AI in modo strutturato e continuativo, è utile valutare la readiness organizzativa su quattro pilastri:
 - readiness organizzativa,
 - readiness valore business,
 - readiness dati,
 - readiness infrastruttura.
+
+Operativamente, lo score si legge come una **valutazione di maturità** e non come un numero "magico" calcolato da un'unica formula universale. Il modo più utile di applicarlo è questo:
+1. definire per ciascun pilastro alcuni criteri osservabili;
+2. assegnare a ogni criterio un punteggio di maturità, per esempio su scala **1-5**;
+3. calcolare un punteggio medio per ciascun pilastro;
+4. confrontare i quattro punteggi per capire dove l'organizzazione è più debole;
+5. usare il profilo risultante per decidere quanto l'audit possa essere esteso, formalizzato o intensificato.
+
+Esempio pratico di lettura:
+- se la **readiness dati** è bassa, l'audit dovrà concentrarsi prima su qualità del dato, lineage e controlli di accesso;
+- se la **readiness organizzativa** è bassa, il problema non è solo tecnico ma di ruoli, ownership e processi;
+- se tutti i pilastri hanno punteggi medio-alti, diventa più realistico introdurre audit più frequenti, controlli più profondi e reporting strutturato verso management e board.
+
+In altre parole, il valore dello score non è tanto nel numero finale, ma nella sua utilità per **prioritizzare i gap** e sequenziare correttamente il rafforzamento della governance.
 
 ![AI Readiness Index (AIRI): framework a 4 pilastri e 9 dimensioni](assets/principles_ch18_images/pg_ch18_img01.jpg)
 *Figura M5.6: modello AIRI per valutare capacità di adozione e presidio AI*
