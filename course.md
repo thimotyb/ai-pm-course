@@ -2447,7 +2447,24 @@ Prima di estendere l'audit AI in modo strutturato e continuativo, è utile valut
 - readiness dati,
 - readiness infrastruttura.
 
-Il modello AIRI va usato come **assessment strutturato di preparazione all'AI**, non come formula astratta. La logica descritta nella fonte è questa: si analizzano **nove dimensioni** distribuite nei quattro pilastri, si attribuisce un punteggio alle singole aree osservate e si ricava uno **score finale** che viene poi collocato in una matrice di readiness. Il risultato serve a capire non solo "quanto" l'organizzazione sia pronta, ma **dove** sia pronta e dove invece presenti lacune.
+Una modalità pratica per usare AIRI è tradurre i pilastri in una tabella di assessment con dimensioni osservabili e domande di verifica:
+
+| Pilastro | Dimensione | Assessment |
+|---|---|---|
+| Organisational Readiness | Management Support | Verificare se l'organizzazione ha allocato risorse concrete per iniziative AI, inclusi budget, tempo e sponsorship manageriale. |
+| Organisational Readiness | AI Literacy | Verificare se i dipendenti sanno riconoscere casi d'uso AI rilevanti e se sono in grado di usare in modo consapevole soluzioni AI acquistate o sviluppate. |
+| Organisational Readiness | AI Talent | Verificare se l'organizzazione possiede o può reperire le capacità necessarie per sviluppare, integrare e mantenere modelli AI. |
+| Organisational Readiness | Employee Acceptance of AI | Verificare se le persone si fidano dei sistemi basati su AI e se sono disposte ad adottarli nei processi quotidiani. |
+| Organisational Readiness | Experimentation Culture | Verificare se esiste una cultura di sperimentazione che permetta ai team di esplorare, testare e sviluppare use case AI. |
+| Ethics and Governance Readiness | AI Governance | Verificare se esistono regole di governance adeguate per evitare danni non intenzionali verso utenti finali, clienti o soggetti impattati. |
+| Ethics and Governance Readiness | AI Risk Control | Verificare se l'organizzazione classifica correttamente il livello di rischio dei sistemi AI e adatta i controlli di conseguenza. |
+| Business Value Readiness | Business Use Case | Verificare se l'organizzazione ha identificato use case AI appropriati e ne ha valutato in modo credibile il valore atteso. |
+| Data Readiness | Data Quality | Verificare se esistono processi per garantire qualità del dato, accuratezza, completezza e affidabilità delle informazioni raccolte. |
+| Data Readiness | Reference Data | Verificare se esiste una source of truth unica, con formati dati coerenti e metadati affidabili. |
+| Infrastructure Readiness | Machine Learning (ML) Infrastructure | Verificare se l'organizzazione dispone di infrastruttura ML adeguata e sufficiente, ad esempio GPU, memoria e ambienti di training e deployment. |
+| Infrastructure Readiness | Data Infrastructure | Verificare se l'organizzazione usa un'infrastruttura dati appropriata, ad esempio un data lake o repository centrale, per supportare i flussi AI. |
+
+Il modello AIRI va usato come **assessment strutturato di preparazione all'AI**, non come formula astratta. La logica è questa: si analizzano le dimensioni distribuite nei diversi pilastri, si attribuisce un punteggio alle singole aree osservate e si ricava uno **score finale** che viene poi collocato in una matrice di readiness. Il risultato serve a capire non solo "quanto" l'organizzazione sia pronta, ma **dove** sia pronta e dove invece presenti lacune.
 
 In termini operativi, AIRI può essere letto così:
 1. si raccolgono evidenze su persone, conoscenze, disponibilità ad adottare l'AI, capacità di generare valore, qualità dei dati e adeguatezza dell'infrastruttura;
@@ -2459,6 +2476,8 @@ In termini operativi, AIRI può essere letto così:
 Questo rende AIRI utile soprattutto come strumento di **diagnosi organizzativa**. Se il punteggio è debole sul fronte dati, prima di intensificare l'audit conviene rafforzare qualità, lineage e controlli di accesso. Se la debolezza è organizzativa, il problema riguarda ruoli, sponsorship, competenze e processi decisionali. Se invece il profilo è più equilibrato, l'organizzazione è in una posizione migliore per introdurre audit più frequenti, controlli più profondi e reporting più formale verso management e board.
 
 Il punto importante è che AIRI non "spiega" da solo cosa fare: offre una **vista sintetica della preparazione** e aiuta a ordinare gli interventi prima di rendere l'audit AI più esteso e sistematico.
+
+Per rendere il framework più concreto, può essere utile anche vedere un esempio interattivo come **AIRI Sample**: aiuta a capire come i pilastri e le dimensioni possano essere presentati in un assessment pratico, leggibile anche da stakeholder non tecnici.
 
 ![AI Readiness Index (AIRI): framework a 4 pilastri e 9 dimensioni](assets/principles_ch18_images/pg_ch18_img01.jpg)
 *Figura M5.6: modello AIRI per valutare capacità di adozione e presidio AI*
@@ -2476,6 +2495,11 @@ Per trasformare audit in miglioramento reale:
 5. verifica post-intervento e aggiornamento dei controlli.
 
 Le azioni più frequenti includono riequilibrio dati, miglioramento controlli qualità, rafforzamento sicurezza, introduzione strumenti di explainability e maggiore supervisione umana nei punti critici.
+
+### Link utili del modulo
+| Risorsa | Perché è utile | Link |
+|---|---|---|
+| AIRI Sample | Esempio interattivo utile per visualizzare come un assessment AIRI può essere presentato e discusso in modo operativo con team e stakeholder. | [AIRI Sample](https://sample.airi.sg/) |
 
 ### Checklist dei concetti principali
 1. Mantenere un framework di governance vivo, con policy applicabili e ownership esplicita.
