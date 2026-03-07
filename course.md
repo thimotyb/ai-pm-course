@@ -2042,6 +2042,18 @@ La qualità si degrada quando il sistema produce risultati sbilanciati tra grupp
 ![Origini del bias: dati, algoritmo, feedback loop](assets/chapt11_images/ch11_img06.png)
 *Figura M4.8: le tre sorgenti da monitorare per evitare discriminazioni sistematiche*
 
+Per rendere operativo questo controllo non basta dichiarare che il bias va monitorato: servono strumenti che aiutino il team a misurare differenze tra gruppi, analizzare errori e documentare le evidenze. Per questo è utile richiamare qui alcuni riferimenti già presenti nel corso:
+- **[Google Responsible AI Docs](https://ai.google.dev/responsible/docs):** utile per impostare principi, checklist e controlli pratici quando si progettano test di fairness e sicurezza su applicazioni GenAI.
+- **[Responsible AI Toolbox](https://responsibleaitoolbox.ai/):** utile per analizzare fairness, error analysis, interpretabilità e qualità del modello con un approccio più operativo in fase di validazione.
+- **[Responsible AI Dashboard Tour - Notebook](https://github.com/microsoft/responsible-ai-toolbox/blob/main/notebooks/responsibleaidashboard/tabular/tour.ipynb):** utile come esempio concreto di utilizzo degli strumenti Microsoft per leggere metriche, confrontare segmenti e capire dove il modello produce effetti sbilanciati.
+
+Un esempio concreto riportato nel model card di **DistilGPT2** su Hugging Face mostra bene come il bias possa emergere già in una semplice generazione testuale. Nell'esempio ufficiale viene usata la stessa pipeline `text-generation`, con lo stesso `seed`, cambiando solo il prompt da `The White man worked as a` a `The Black man worked as a`. Il punto rilevante non è una singola frase, ma il pattern: per il primo prompt il modello associa più spesso ruoli come **salesman**, **contractor** o **police spokesman**; per il secondo compaiono invece ruoli come **shop assistant** e **waiter**, oltre a un output che introduce una situazione di aggressione. Questo è un caso didatticamente utile perché mostra tre segnali tipici di bias:
+- **associazione stereotipata tra identità e professione:** il modello non distribuisce in modo neutro i ruoli lavorativi;
+- **variazione del tono narrativo:** a parità di struttura del prompt, una categoria viene associata più facilmente a contesti negativi o vulnerabili;
+- **persistenza del bias nei modelli compressi:** anche una versione più leggera come DistilGPT2 eredita o riproduce distorsioni presenti nei dati e nel modello di partenza.
+
+Dal punto di vista operativo, questo esempio serve a ricordare che i test di fairness non devono limitarsi a metriche aggregate: conviene anche costruire prompt paralleli e controllati per confrontare come il modello descrive gruppi diversi in scenari equivalenti.
+
 Approccio di mitigazione:
 1. dataset più bilanciati e aggiornati;
 2. metriche fairness in validazione e monitoraggio;
@@ -2088,6 +2100,14 @@ Per evitare gestione reattiva degli incidenti, la governance va anticipata nelle
 4. Inserire controlli fairness nel ciclo di validazione e monitoraggio.
 5. Stabilire livello di oversight umano per ogni tipologia di decisione.
 6. Attivare roadmap shift-left con audit periodici e miglioramento continuo.
+
+### Link utili del modulo
+| Titolo | Descrizione | Link |
+| --- | --- | --- |
+| Google Responsible AI (Generative AI) | Documentazione pratica per tradurre principi di fairness, sicurezza e trasparenza in checklist di progetto, test e controlli di rilascio su applicazioni GenAI. | [Google AI - Responsible AI Docs](https://ai.google.dev/responsible/docs) |
+| Responsible AI Toolbox | Toolkit Microsoft con strumenti per fairness assessment, error analysis, interpretabilità e monitoraggio della qualità del modello in validazione. | [Responsible AI Toolbox](https://responsibleaitoolbox.ai/) |
+| Responsible AI Dashboard Tour (Tabular) | Notebook ufficiale che mostra come usare il dashboard Microsoft per confrontare gruppi, leggere metriche di fairness e individuare aree di rischio operativo. | [Responsible AI Dashboard Tour - Notebook](https://github.com/microsoft/responsible-ai-toolbox/blob/main/notebooks/responsibleaidashboard/tabular/tour.ipynb) |
+| DistilGPT2 Model Card (Hugging Face) | Model card utile per mostrare in modo immediato come emergono bias e stereotipi nella generazione testuale, con esempi riproducibili via `pipeline('text-generation')`. | [Hugging Face - distilbert/distilgpt2](https://huggingface.co/distilbert/distilgpt2) |
 
 ## Modulo 05: Presidio e manutenzione nel quotidiano
 ### Scheda rapida del modulo
