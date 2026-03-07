@@ -2279,6 +2279,8 @@ Principi pratici per un RACI efficace:
 3. revisione periodica della matrice in base all'evoluzione dei processi;
 4. uso operativo della matrice in CAB, review e audit.
 
+Qui **CAB** è l'acronimo di **Change Advisory Board**: il momento o gruppo formale in cui si valutano le modifiche prima del rilascio, chiarendo chi propone il cambiamento, chi lo approva, chi deve essere consultato e chi va informato.
+
 ![Esempio di matrice RACI ad alto livello per governance AI](assets/principles_ch07_images/pg_ch07_p16_img01.jpg)
 *Figura M5.3: esempio pratico di attribuzione responsabilità Responsible, Accountable, Consulted, Informed*
 
