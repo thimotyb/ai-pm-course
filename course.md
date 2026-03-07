@@ -2069,6 +2069,23 @@ Per favorire adozione e uso corretto, l'output deve essere:
 ![Le tre componenti della trasparenza: explainability, interpretability, accountability](assets/chapt11_images/ch11_img09.png)
 *Figura M4.9: struttura di trasparenza necessaria per fiducia e adozione nel business*
 
+Un modo pratico per aumentare la **spiegabilità percepita** è usare modelli che offrono una modalità di reasoning o **Thinking** più esplicita. Esempi utili da osservare oggi sono:
+- **OpenAI reasoning models**: modelli orientati al ragionamento strutturato, utili quando serve scomporre il problema in passaggi più leggibili e produrre risposte più verificabili sul piano logico.
+- **Google Gemini 2.5**: Google presenta Gemini 2.5 come una famiglia di modelli con capacità di reasoning più forti, adatta a task multi-step, analisi e pianificazione.
+- **Anthropic Claude con extended thinking**: Anthropic offre una modalità di ragionamento esteso che permette di dedicare più elaborazione ai problemi complessi.
+
+Dal punto di vista progettuale, queste modalità possono aiutare la spiegabilità in almeno tre modi:
+- rendono più facile chiedere al modello di **esplicitare passaggi intermedi**, criteri di confronto e ipotesi considerate;
+- producono output più adatti a **review umana**, perché il team può controllare meglio coerenza, completezza e salti logici;
+- aiutano a costruire interfacce in cui il modello separa **risposta finale**, **passaggi di ragionamento**, **incertezze** e **fonti o assunzioni**.
+
+Questo però resta un approccio solo **parziale** alla spiegabilità. Il motivo è che il testo di reasoning mostrato all'utente non equivale a una vera ispezione dei meccanismi interni del modello:
+- non mostra direttamente quali attivazioni, pesi o rappresentazioni interne hanno determinato l'output;
+- può essere una **razionalizzazione leggibile** utile per l'utente, ma non una prova completa di ciò che il modello "ha davvero fatto" internamente;
+- può aumentare fiducia e verificabilità operativa, ma non sostituisce test, audit, analisi degli errori, tracciabilità dei dati e controlli indipendenti.
+
+La regola pratica è quindi questa: usare la modalità Thinking come supporto a **trasparenza operativa e revisione**, non come garanzia definitiva di spiegabilità tecnica del modello.
+
 ### Accountability operativa: HITL, HOTL, HOOTL
 La scelta del livello di supervisione determina qualità e rischio:
 
@@ -2108,6 +2125,9 @@ Per evitare gestione reattiva degli incidenti, la governance va anticipata nelle
 | Responsible AI Toolbox | Toolkit Microsoft con strumenti per fairness assessment, error analysis, interpretabilità e monitoraggio della qualità del modello in validazione. | [Responsible AI Toolbox](https://responsibleaitoolbox.ai/) |
 | Responsible AI Dashboard Tour (Tabular) | Notebook ufficiale che mostra come usare il dashboard Microsoft per confrontare gruppi, leggere metriche di fairness e individuare aree di rischio operativo. | [Responsible AI Dashboard Tour - Notebook](https://github.com/microsoft/responsible-ai-toolbox/blob/main/notebooks/responsibleaidashboard/tabular/tour.ipynb) |
 | DistilGPT2 Model Card (Hugging Face) | Model card utile per mostrare in modo immediato come emergono bias e stereotipi nella generazione testuale, con esempi riproducibili via `pipeline('text-generation')`. | [Hugging Face - distilbert/distilgpt2](https://huggingface.co/distilbert/distilgpt2) |
+| OpenAI Reasoning Models | Riferimento utile per osservare come i modelli reasoning possono essere usati per scomporre problemi complessi e rendere più verificabile la logica della risposta. | [OpenAI Platform - Reasoning](https://platform.openai.com/docs/guides/reasoning) |
+| Google Gemini 2.5 | Documentazione ufficiale su una famiglia di modelli con capacità di reasoning avanzato, utile per capire come strutturare task multi-step e analisi più trasparenti. | [Google AI for Developers - Gemini 2.5](https://ai.google.dev/gemini-api/docs/models#gemini-2.5) |
+| Anthropic Extended Thinking | Documentazione ufficiale della modalità extended thinking di Claude, utile per comprendere quando usare più elaborazione esplicita nei task complessi. | [Anthropic Docs - Extended Thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking) |
 
 ## Modulo 05: Presidio e manutenzione nel quotidiano
 ### Scheda rapida del modulo
@@ -2191,14 +2211,6 @@ Così il framework resta allineato sia alla maturità interna sia al contesto es
 4. **Drift rate:** frequenza e severità di data/model drift.
 5. **Fairness stability:** variazione delle metriche fairness nel tempo.
 6. **Audit readiness:** completezza di evidenze, log e documentazione.
-
-### Punti operativi iniziali del Modulo 05
-1. Confermare sponsor esecutivo e ownership dei controlli.
-2. Mantenere aggiornata la mappa dei casi d'uso AI e relativi rischi.
-3. Applicare policy minime su dati, modelli, bias e incident response.
-4. Eseguire monitoraggio continuo con soglie e alert formalizzati.
-5. Attivare revisione periodica del framework con azioni correttive tracciate.
-6. Aggiornare formazione e strumenti in base alle evidenze operative.
 
 ### Modello di governance e oversight: come strutturare il presidio
 Quando l'adozione AI cresce, il presidio quotidiano richiede una struttura organizzativa esplicita, con responsabilità distribuite tra livello strategico, tattico e operativo. L'obiettivo è evitare zone grigie decisionali e rallentamenti in approvazione, remediation e audit.
