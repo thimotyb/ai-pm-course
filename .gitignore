@@ -10,6 +10,8 @@
 !.github/workflows/*.yml
 !package.json
 !playwright.preprod.config.js
+!notebooks/
+!notebooks/**
 !tests/
 !tests/**
 !REQUIREMENTS.md
