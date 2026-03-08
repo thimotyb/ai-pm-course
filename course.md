@@ -1567,12 +1567,34 @@ Per leggere correttamente questo tipo di confronto, conviene chiarire cosa misur
 
 Queste metriche non vanno lette come un voto assoluto. Servono soprattutto a capire se il modello è forte proprio nel tipo di lavoro che dovrà svolgere nel tuo processo: coding, tool use, multilingua, visione o ragionamento quantitativo.
 
+Alcuni benchmark classici restano utili anche per costruire una lettura più completa del profilo del modello:
+
+| Benchmark | Descrizione |
+| --- | --- |
+| [MMLU](https://arxiv.org/abs/2009.03300) | Benchmark trasversale su molte discipline, usato per confrontare la copertura di conoscenza e la capacità di risposta su domini diversi. |
+| [AGIEval](https://arxiv.org/abs/2304.06364) | Serie di test complessi ispirati a esami e prove avanzate, utile per osservare ragionamento e tenuta su compiti articolati. |
+| [ARC](https://allenai.org/data/arc) | Benchmark centrato su domande scientifiche a scelta multipla, utile per valutare ragionamento e comprensione su problemi scolastici strutturati. |
+| [SQuAD](https://rajpurkar.github.io/SQuAD-explorer/) | Dataset storico per question answering su passaggi testuali, utile per misurare capacità di estrarre risposte corrette da un contesto dato. |
+| [QuAC](https://quac.ai/) | Benchmark di question answering conversazionale in contesto, utile per capire come il modello gestisce scambi multi-turno. |
+| [DROP](https://allenai.org/data/drop) | Dataset progettato per testare ragionamento discreto su paragrafi, con domande che richiedono conteggi, confronti e inferenze. |
+
 Metriche da presidiare in combinazione:
 - **accuratezza fattuale** (groundedness, error rate);
 - **aderenza al compito** (task completion);
 - **qualità linguistica** (coerenza, leggibilità, tono);
 - **rischio** (violazioni policy, contenuti impropri, fallimenti critici);
 - **performance tecnica** (latenza, stabilità, costo per richiesta).
+
+Accanto ai benchmark pubblici conviene definire anche metriche personalizzate, perché il valore reale di un sistema aziendale emerge spesso su criteri che i benchmark generici non coprono:
+
+| Metrica custom | Descrizione |
+| --- | --- |
+| Brand alignment | Misura quanto bene le risposte rispettano la voce del cliente, il tono aziendale e i valori del brand. |
+| Readability | Valuta chiarezza e accessibilità del testo, per capire se i contenuti sono facili da leggere e usare. |
+| Accuracy | Verifica la correttezza fattuale sui contenuti critici del dominio, spesso tramite revisione esperta o fact-checking. |
+| Creativity | Misura originalità e varietà, utile quando il sistema deve produrre contenuti non ripetitivi ma comunque coerenti. |
+| Contextual relevance | Valuta se la risposta affronta davvero la richiesta dell'utente e usa in modo pertinente il contesto disponibile. |
+| Client-specific | Raccoglie metriche costruite su esigenze proprie dell'organizzazione, come linguaggio settoriale, conformità normativa o uso di template interni. |
 
 Per rendere la valutazione robusta conviene adottare un approccio ibrido:
 1. valutazione automatica su volumi elevati;
