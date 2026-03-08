@@ -1541,6 +1541,32 @@ I benchmark pubblici sono un punto di partenza, non il punto d'arrivo. Servono p
 ![Esempio di confronto modelli su benchmark pubblici](assets/chapt05_images/ch05_img10.png)
 *Figura M3.13: benchmark comparativi utili per la prima scrematura*
 
+![Confronto benchmark tra modelli su coding agentico, reasoning, tool use, multilingua, visione e matematica](assets/chapt03_images/benchmark_confronto_modelli_m03_13a.jpeg)
+*Figura M3.13a: esempio di confronto modelli su costo/capacità e benchmark specialistici*
+
+![Schermata di esempio di Terminal-Bench con elenco task, filtri e dettagli operativi](assets/chapt03_images/terminal_bench_esempio_m03_13b.jpeg)
+*Figura M3.13b: esempio di benchmark per LLM con Terminal-Bench su task CLI multi-step e workflow tecnici*
+
+![Schema di funzionamento TAU-bench con setup di tool e traiettoria esempio in dominio airline](assets/chapt03_images/tau_bench_setup_traiettoria_m03_13c.jpeg)
+*Figura M3.13c: esempio di funzionamento di TAU-bench, con tool use, policy di dominio e traiettoria agente-utente*
+
+![Esempio di problema del benchmark AIME con soluzione matematica strutturata](assets/chapt03_images/aime_benchmark_problema_m03_13d.jpeg)
+*Figura M3.13d: esempio di task AIME per valutare ragionamento matematico competitivo*
+
+Per leggere correttamente questo tipo di confronto, conviene chiarire cosa misura ogni benchmark e perché può essere utile in fase di selezione:
+
+| Metrica | Cosa misura | Perché conta nella selezione modello |
+| --- | --- | --- |
+| [SWE-bench](https://openai.com/index/introducing-swe-bench-verified/) | Capacità del modello di risolvere issue reali di software engineering su repository di codice. | Utile per casi d'uso di coding assistant, bug fixing automatico e sviluppo agentico. |
+| [Terminal-bench](https://www.tbench.ai/docs/task-overview) | Performance in task operativi da terminale e CLI multi-step, con esecuzione di comandi e workflow tecnici. | Rilevante quando l'agente deve operare su ambienti DevOps, scripting e automazioni infrastrutturali. |
+| [GPQA Diamond](https://arxiv.org/abs/2311.12022) | Benchmark di domande scientifiche complesse a livello graduate, progettato per misurare ragionamento profondo. | Indica robustezza su analisi avanzata e problem solving ad alta complessità cognitiva. |
+| [TAU-bench](https://arxiv.org/pdf/2406.12045) | Valuta l'uso di strumenti in scenari realistici di agente, ad esempio flussi retail o airline. | Misura quanto il modello sia affidabile in orchestrazione di azioni e integrazione con tool esterni. |
+| [MMMLU](https://huggingface.co/datasets/openai/MMMLU) | Versione multilingue del benchmark MMLU per Q&A e comprensione su più domini di conoscenza. | Fondamentale per prodotti globali che richiedono qualità consistente tra lingue diverse. |
+| [MMMU](https://arxiv.org/abs/2311.16502) | Benchmark multimodale su ragionamento visivo e comprensione combinata testo-immagine. | Importante per use case che includono documenti, immagini, schermate o contenuti visuali. |
+| [AIME 2025](https://artofproblemsolving.com/wiki/index.php/2025_AIME_I_Problems) | Prestazioni su problemi matematici competitivi. | Utile per stimare precisione in calcolo, ragionamento simbolico e task quantitativi strutturati. |
+
+Queste metriche non vanno lette come un voto assoluto. Servono soprattutto a capire se il modello è forte proprio nel tipo di lavoro che dovrà svolgere nel tuo processo: coding, tool use, multilingua, visione o ragionamento quantitativo.
+
 Metriche da presidiare in combinazione:
 - **accuratezza fattuale** (groundedness, error rate);
 - **aderenza al compito** (task completion);
@@ -1647,11 +1673,6 @@ Con **self-consistency** si generano più varianti e si seleziona la migliore tr
 
 ![Schema di self-consistency con confronto di più varianti](assets/chapt06_images/ch06_img03.png)
 *Figura M3.21: più campioni, valutazione strutturata, selezione dell'output migliore*
-
-Il **double diamond** aiuta a usare la self-consistency in modo manageriale: prima si esplora lo spazio problema, poi lo spazio soluzioni, convergendo in modo esplicito su una scelta.
-
-![Double diamond per divergenza e convergenza nel processo creativo](assets/chapt06_images/ch06_img05.png)
-*Figura M3.22: metodo pratico per passare da molte ipotesi a una decisione finale*
 
 La **reflection** completa il ciclo: il modello valuta il proprio output su criteri prefissati (chiarezza, completezza, azionabilità), individua gap e propone revisione. In produzione, questo passaggio migliora la qualità senza dover sempre cambiare modello.
 
@@ -1864,9 +1885,6 @@ Un agente diventa utile quando può usare strumenti esterni in modo controllato.
 3. **Strumenti di azione**: email, Slack, sistemi di workflow, update documentali.
 4. **Strumenti umani (HITL)**: richiesta di validazione quando confidenza o impatto non sono adeguati.
 
-![Template roadmap usato come output target dell'agente](assets/chapt09_images/ch09_img12.png)
-*Figura M3.37: esempio di artefatto finale che l'agente deve produrre e mantenere*
-
 ![Integrazione di più categorie di tool nell'agente](assets/chapt09_images/ch09_img11.png)
 *Figura M3.38: estensione progressiva del tool stack per coprire raccolta, analisi e coordinamento*
 
@@ -1892,9 +1910,6 @@ Il ciclo base di tool use è:
 1. selezione dello strumento corretto;
 2. invocazione con parametri validi;
 3. parsing del risultato e decisione del passo successivo.
-
-![Processo decisionale di un agente nell'uso di uno strumento](assets/chapt09_images/ch09_img02.png)
-*Figura M3.41: flow minimo di selezione, esecuzione e interpretazione output del tool*
 
 ### Architettura dell'agente: componenti essenziali
 Un agente robusto combina quattro blocchi:
@@ -1956,6 +1971,29 @@ Per rendere sostenibile l'adozione, fissare policy tecniche e organizzative:
 4. tracciamento completo delle decisioni dell'agente;
 5. meccanismi di rollback su azioni write-enabled;
 6. test regressivi frequenti su workflow critici.
+
+### Lab consigliati per il Modulo 03
+| Lab consigliato | Obiettivi | Categoria |
+| --- | --- | --- |
+| **[Generative AI with Vertex AI: Prompt Design](https://www.skills.google/course_templates/723/labs/568845)** | Applicare tecniche operative di prompt engineering per aumentare qualità, coerenza e controllabilità degli output. | Lab |
+| **[Intro to Grounding with Gemini in Vertex AI](https://www.skills.google/focuses/104690)** | Integrare fonti contestuali affidabili per ridurre allucinazioni e migliorare aderenza delle risposte al dominio aziendale. | Focus |
+| **[Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI](https://www.skills.google/focuses/85643)** | Costruire una pipeline RAG con retrieval semantico e generazione grounding-aware su contenuti multimodali. | Focus |
+| **[Create a RAG Application with BigQuery](https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=75402418)** | Costruire un caso RAG collegato a BigQuery per unire retrieval, grounding e accesso a basi dati aziendali aggiornate. | Focus |
+| **[Build and Deploy an Agent with Agent Engine in Vertex AI](https://www.skills.google/focuses/104687)** | Passare dal prototipo all'orchestrazione agentica con tool use, controllo dei flussi e rilascio in ambiente operativo. | Focus |
+| **[Get Started with Agent Development Kit (ADK)](https://www.skills.google/course_templates/1504/labs/599605)** | Impostare un agente con ADK per workflow multi-step, sperimentando pianificazione, integrazione strumenti e verifiche. | Lab |
+
+### Link utili del modulo
+| Titolo | Descrizione | Link |
+| --- | --- | --- |
+| Microsoft AI Playbook - List of evaluation metrics | Panoramica operativa delle metriche di valutazione per applicazioni con LLM, utile per impostare criteri di qualità, affidabilità e monitoraggio del sistema. | [Microsoft Learn - List of evaluation metrics](https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/working-with-llms/evaluation/list-of-eval-metrics) |
+| Anthropic Claude API - Models overview | Pagina ufficiale di confronto modelli con esempio pratico di trade-off tra capacità, latenza e costi per token, utile per impostare shortlist e criteri di selezione. | [Anthropic - Models overview](https://platform.claude.com/docs/en/about-claude/models/overview) |
+| IBM Think - LLM Benchmarks | Guida introduttiva ai benchmark per LLM, utile per contestualizzare i risultati oltre il punteggio grezzo. | [IBM Think - LLM benchmarks](https://www.ibm.com/think/topics/llm-benchmarks) |
+| OpenAI - Introducing SWE-bench Verified | Presentazione ufficiale del benchmark SWE-bench Verified per valutare capacità di software engineering su repository reali. | [OpenAI - SWE-bench Verified](https://openai.com/index/introducing-swe-bench-verified/) |
+| Terminal-bench - Task overview | Documentazione del benchmark per task operativi da terminale e CLI multi-step. | [Terminal-bench - Task overview](https://www.tbench.ai/docs/task-overview) |
+| TAU-bench (arXiv) | Paper del benchmark TAU-bench per valutazione del tool use in scenari agentici realistici. | [arXiv - TAU-bench](https://arxiv.org/pdf/2406.12045) |
+| Stanford IR Book - Okapi BM25 | Riferimento teorico su BM25 come base del ranking lessicale negli indici invertiti. | [Stanford IR Book - Okapi BM25](https://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html) |
+| Salesforce Agentforce | Pagina ufficiale della piattaforma agentica Salesforce per scenari enterprise. | [Salesforce - Agentforce](https://www.salesforce.com/it/agentforce/) |
+| Trailhead - Get to Know Agent Builder | Modulo introduttivo su setup, topic, azioni e preview in Agent Builder. | [Trailhead - Agent Builder](https://trailhead.salesforce.com/content/learn/modules/introduction-to-agent-builder/get-to-know-agent-builder) |
 
 ### Checklist dei concetti principali
 1. Scegliere il pattern di integrazione corretto per ogni processo (diretto, programmatico, backend).
