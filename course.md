@@ -1533,6 +1533,7 @@ Una pratica efficace è partire con una shortlist di 2-3 modelli, testati sul da
 
 Approfondimento consigliato per la fase di selezione:
 - [Choosing the Right Language Model for Your NLP Use Case](https://medium.com/data-science/choosing-the-right-language-model-for-your-nlp-use-case-1288ef3c4929)
+- [Create a RAG Application with BigQuery](https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=75402418)
 
 ### Valutazione: benchmark pubblici + metriche personalizzate
 I benchmark pubblici sono un punto di partenza, non il punto d'arrivo. Servono per confronto iniziale, ma non sostituiscono la misurazione su casi reali aziendali.
@@ -2530,6 +2531,7 @@ Le azioni più frequenti includono riequilibrio dati, miglioramento controlli qu
 | **[Intro to Grounding with Gemini in Vertex AI](https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73609565)** | Focus |
 | **[Gmail Sentiment Analysis with Gemini and Vertex AI](https://www.skills.google/focuses/118448?catalog_rank=%7B%22rank%22%3A12%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610087)** | Focus |
 | **[Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI](https://www.skills.google/focuses/85643?catalog_rank=%7B%22rank%22%3A19%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610121)** | Focus |
+| **[Create a RAG Application with BigQuery](https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=75402418)** | Focus |
 | **[Identify Damaged Car Parts with Vertex AutoML](https://www.skills.google/focuses/22020?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610347)** | Focus |
 | **[Build and Deploy an Agent with Agent Engine in Vertex AI](https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610391)** | Focus |
 | **[Deploy and Manage Generative AI Models](https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&search_id=73610456)** | Path |
