@@ -1707,6 +1707,22 @@ In pratica:
 ![Lifecycle operativo di un sistema RAG](assets/chapt07_images/ch07_img10.png)
 *Figura M3.25: fasi iterative per progettare, valutare e ottimizzare la pipeline RAG*
 
+Un esempio molto chiaro di differenza tra modello "isolato" e modello con grounding è questo:
+- se chiedi **"When was the last chinese new year?"** a un modello senza grounding, la risposta tende a riflettere la **data di cutoff** della conoscenza disponibile nel modello;
+- nel caso mostrato, senza grounding il modello restituisce **10 febbraio 2024**, che era l'ultimo capodanno cinese noto nel suo perimetro di conoscenza;
+- quando invece attivi il grounding con un tool di **web search**, il modello esegue prima una ricerca sul web e costruisce la risposta su fonti aggiornate;
+- nello stesso esempio, con grounding la risposta diventa **17 febbraio 2026**, cioè il dato più recente recuperato online.
+
+Questo esempio è utile perché rende visibile un punto progettuale essenziale: il grounding non serve solo a "citare fonti", ma anche a **superare il limite temporale della conoscenza statica del modello**. In tutti i casi d'uso dove contano date, eventi recenti, prezzi, norme o informazioni che cambiano nel tempo, affidarsi al solo modello espone a risposte fluenti ma non aggiornate.
+
+Dal punto di vista operativo, il messaggio per il team è semplice:
+1. se la domanda riguarda conoscenza relativamente stabile, il modello può bastare;
+2. se la domanda dipende da dati recenti o variabili, serve grounding su fonti affidabili;
+3. se la risposta ha impatto operativo o decisionale, grounding e tracciabilità delle fonti diventano requisiti di qualità, non optional.
+
+![Confronto tra risposta senza grounding e risposta grounding-aware con web search](assets/chapt03_images/grounding_web_search_cutoff_example_m03.png)
+*Figura M3.25b: senza grounding il modello riflette il proprio cutoff di conoscenza; con grounding via web search recupera l'informazione più aggiornata disponibile*
+
 ### Perché il prompting da solo non basta nel tempo
 Il prompting migliora stile e struttura, ma non crea nuova conoscenza affidabile. Quando l'utente richiede dati specifici di settore, procedure interne o informazioni recenti, serve una pipeline che recuperi fonti pertinenti prima della generazione.
 
@@ -2532,6 +2548,7 @@ Le azioni più frequenti includono riequilibrio dati, miglioramento controlli qu
 | **[Gmail Sentiment Analysis with Gemini and Vertex AI](https://www.skills.google/focuses/118448?catalog_rank=%7B%22rank%22%3A12%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610087)** | Focus |
 | **[Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI](https://www.skills.google/focuses/85643?catalog_rank=%7B%22rank%22%3A19%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610121)** | Focus |
 | **[Create a RAG Application with BigQuery](https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=75402418)** | Focus |
+| **[Get started with custom search](https://docs.cloud.google.com/generative-ai-app-builder/docs/try-enterprise-search#create_a_data_store)** | Tutorial |
 | **[Identify Damaged Car Parts with Vertex AutoML](https://www.skills.google/focuses/22020?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610347)** | Focus |
 | **[Build and Deploy an Agent with Agent Engine in Vertex AI](https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=73610391)** | Focus |
 | **[Deploy and Manage Generative AI Models](https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&search_id=73610456)** | Path |
