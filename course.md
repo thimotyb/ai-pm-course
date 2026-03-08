@@ -1723,6 +1723,15 @@ Dal punto di vista operativo, il messaggio per il team è semplice:
 ![Confronto tra risposta senza grounding e risposta grounding-aware con web search](assets/chapt03_images/grounding_web_search_cutoff_example_m03.png)
 *Figura M3.25b: senza grounding il modello riflette il proprio cutoff di conoscenza; con grounding via web search recupera l'informazione più aggiornata disponibile*
 
+![Schermata di configurazione di una Search App per grounding in Google Cloud AI Applications](assets/chapt03_images/search_app_grounding_builder_m03.png)
+*Figura M3.25c: esempio di costruzione di una Search App per collegare grounding, configurazione dell'interfaccia e test della ricerca su fonti indicizzate*
+
+![Preview del risultato di una query grounding-aware in una Search App](assets/chapt03_images/search_app_grounding_preview_result_m03.png)
+*Figura M3.25d: esempio di risposta recuperata dalla Search App, utile per verificare qualità del retrieval, pertinenza dei contenuti e esperienza utente del RAG*
+
+![Confronto tra risposta senza grounding e risposta con grounding su Search App per il caso Cymbal](assets/chapt03_images/search_app_grounding_cymbal_compare_m03.png)
+*Figura M3.25e: senza grounding il modello allucina sul caso Cymbal; con grounding tramite Search App recupera informazioni corrette e cita le risorse usate nella risposta*
+
 ### Perché il prompting da solo non basta nel tempo
 Il prompting migliora stile e struttura, ma non crea nuova conoscenza affidabile. Quando l'utente richiede dati specifici di settore, procedure interne o informazioni recenti, serve una pipeline che recuperi fonti pertinenti prima della generazione.
 
@@ -2025,6 +2034,14 @@ Pratiche essenziali:
 2. separazione netta tra istruzioni di sistema e contenuto utente;
 3. reset di sessione per limitare accumulo di contesto manipolato;
 4. output validation prima dell'esecuzione da parte di sistemi downstream.
+
+Quando si implementano pattern per ridurre prompt avversariali e migliorare la qualità dell'output, una leva utile è costruire una Search App con controlli espliciti sull'interazione. In questo assetto si possono combinare:
+- filtri contro query avversariali o poco rilevanti;
+- retrieval su fonti indicizzate e controllate;
+- doppia query o doppio passaggio di ricerca/risposta per verificare meglio pertinenza e aggiornamento del contenuto restituito.
+
+![Schermata di configurazione di una Search App per grounding in Google Cloud AI Applications](assets/chapt03_images/search_app_grounding_builder_m03.png)
+*Figura M4.5b: esempio di Search App configurata per grounding, filtri su query avversariali e test della qualità dell'output su fonti recuperate*
 
 ### Privacy-by-design come requisito di qualità
 Un output è di qualità solo se non compromette dati personali, segreti industriali o informazioni regolamentate. Per questo la privacy va progettata dall'inizio, non aggiunta a posteriori.
