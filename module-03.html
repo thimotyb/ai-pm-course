@@ -287,6 +287,170 @@ h1 {
   text-align: center;
 }
 
+.outline-panel {
+  position: fixed;
+  top: 18px;
+  left: 12px;
+  bottom: 18px;
+  width: 292px;
+  z-index: 950;
+  display: none;
+}
+
+.outline-frame {
+  height: 100%;
+  background: rgba(0, 18, 40, 0.92);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.outline-title {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.4px;
+  font-size: 1rem;
+  color: var(--accent-secondary);
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.outline-nav-tree {
+  padding: 10px 10px 12px;
+  overflow: auto;
+}
+
+.outline-root,
+.outline-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.outline-root {
+  display: grid;
+  gap: 8px;
+}
+
+.outline-group {
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.outline-group > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+}
+
+.outline-group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.outline-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.outline-summary-label::before {
+  content: '▸';
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+.outline-group[open] .outline-summary-label::before {
+  transform: rotate(90deg) translateX(1px);
+}
+
+.outline-sublist {
+  padding: 2px 8px 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.outline-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #d9e3ef;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.outline-link:hover {
+  color: #ffffff;
+  border-color: rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.12);
+}
+
+.outline-section-link {
+  font-size: 0.76rem;
+  color: #9eefff;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.08);
+  white-space: nowrap;
+}
+
+.outline-link.active {
+  color: #ffffff;
+  border-color: rgba(255, 204, 0, 0.55);
+  background: rgba(255, 204, 0, 0.14);
+}
+
+@media (min-width: 1260px) {
+  .outline-panel {
+    display: block;
+  }
+
+  .container {
+    max-width: 1320px;
+    padding-left: 332px;
+  }
+}
+
+.print-btn {
+  position: fixed;
+  right: 14px;
+  top: calc(50% + 56px);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
+.print-icon {
+  margin-right: 6px;
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -315,6 +479,13 @@ h1 {
   .module-title { font-size: 1.55rem; }
   .container { padding: 20px 14px 36px; }
   .card { padding: 18px; }
+  .print-btn {
+    top: auto;
+    bottom: 52px;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
   .to-top-btn {
     top: auto;
     bottom: 14px;
@@ -327,10 +498,76 @@ h1 {
     transform: scale(1.03);
   }
 }
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  h1 {
+    background: none !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  .outline-panel,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  header {
+    text-align: left;
+    padding: 0 0 10px;
+  }
+
+  .card {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  h2, h3, h4, p, li, td, th, figcaption {
+    color: #000000 !important;
+  }
+
+  .module-title,
+  .module-section-title,
+  .module-subtitle,
+  .module-subtitle-small {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .module-image,
+  .table-wrap,
+  .quick-card,
+  .checklist-card {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+}
 </style>
 </head>
 <body>
   <div class="container">
+    <aside class="outline-panel" aria-label="Struttura del modulo">
+      <div class="outline-frame">
+        <p class="outline-title">Struttura del modulo</p>
+        <nav id="outline-nav" class="outline-nav-tree"></nav>
+      </div>
+    </aside>
     <header>
       <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
       <h1>Modulo 03</h1>
@@ -443,8 +680,6 @@ h1 {
           <figure class="module-image"><img src="assets/chapt06_images/ch06_img04.png" alt="Schema di chain-of-thought per decomposizione del compito" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.20: scomporre il problema in step aumenta affidabilità sui task multi-passaggio</figcaption></figure>
           <p>Con <strong>self-consistency</strong> si generano più varianti e si seleziona la migliore tramite voto, scoring o valutazione comparativa. È utile per creatività controllata e per casi in cui serve scegliere l&#x27;opzione più robusta.</p>
           <figure class="module-image"><img src="assets/chapt06_images/ch06_img03.png" alt="Schema di self-consistency con confronto di più varianti" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.21: più campioni, valutazione strutturata, selezione dell&#x27;output migliore</figcaption></figure>
-          <p>Il <strong>double diamond</strong> aiuta a usare la self-consistency in modo manageriale: prima si esplora lo spazio problema, poi lo spazio soluzioni, convergendo in modo esplicito su una scelta.</p>
-          <figure class="module-image"><img src="assets/chapt06_images/ch06_img05.png" alt="Double diamond per divergenza e convergenza nel processo creativo" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.22: metodo pratico per passare da molte ipotesi a una decisione finale</figcaption></figure>
           <p>La <strong>reflection</strong> completa il ciclo: il modello valuta il proprio output su criteri prefissati (chiarezza, completezza, azionabilità), individua gap e propone revisione. In produzione, questo passaggio migliora la qualità senza dover sempre cambiare modello.</p>
           <h3 class="module-subtitle">Prompting per output strutturati e automazione</h3>
           <p>Nei processi aziendali, spesso l&#x27;output deve essere riusabile da sistemi downstream. Per questo il prompt deve specificare schema e vincoli di formato:</p>
@@ -526,7 +761,6 @@ h1 {
           <h3 class="module-subtitle">Tool access: la base dell&#x27;azione nel mondo reale</h3>
           <p>Un agente diventa utile quando può usare strumenti esterni in modo controllato. Le categorie operative principali sono:</p>
           <ol><li><strong>Strumenti di lettura dati</strong>: search, basi documentali, CRM, ticketing, data warehouse.</li><li><strong>Strumenti di analisi</strong>: SQL, modelli predittivi, motori di regole, calcolo.</li><li><strong>Strumenti di azione</strong>: email, Slack, sistemi di workflow, update documentali.</li><li><strong>Strumenti umani (HITL)</strong>: richiesta di validazione quando confidenza o impatto non sono adeguati.</li></ol>
-          <figure class="module-image"><img src="assets/chapt09_images/ch09_img12.png" alt="Template roadmap usato come output target dell&#x27;agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.37: esempio di artefatto finale che l&#x27;agente deve produrre e mantenere</figcaption></figure>
           <figure class="module-image"><img src="assets/chapt09_images/ch09_img11.png" alt="Integrazione di più categorie di tool nell&#x27;agente" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.38: estensione progressiva del tool stack per coprire raccolta, analisi e coordinamento</figcaption></figure>
           <h3 class="module-subtitle">Modello di automazione progressiva</h3>
           <p>Nei contesti reali conviene partire con automazione parziale, poi aumentare autonomia quando qualità e affidabilità diventano stabili.</p>
@@ -538,7 +772,6 @@ h1 {
           <figure class="module-image"><img src="assets/chapt09_images/ch09_img15.png" alt="Ecosistema plug-in/tool disponibili per estendere gli agenti" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.40: panorama integrazioni esterne che l&#x27;agente può invocare</figcaption></figure>
           <p>Il ciclo base di tool use è:</p>
           <ol><li>selezione dello strumento corretto;</li><li>invocazione con parametri validi;</li><li>parsing del risultato e decisione del passo successivo.</li></ol>
-          <figure class="module-image"><img src="assets/chapt09_images/ch09_img02.png" alt="Processo decisionale di un agente nell&#x27;uso di uno strumento" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.41: flow minimo di selezione, esecuzione e interpretazione output del tool</figcaption></figure>
           <h3 class="module-subtitle">Architettura dell&#x27;agente: componenti essenziali</h3>
           <p>Un agente robusto combina quattro blocchi:</p>
           <ul><li><strong>LM controller</strong> per ragionamento e orchestrazione;</li><li><strong>tool layer</strong> per accesso a dati e azioni;</li><li><strong>planning module</strong> per decomporre task complessi;</li><li><strong>memory module</strong> per continuità e apprendimento.</li></ul>
@@ -564,6 +797,10 @@ h1 {
           <h3 class="module-subtitle">Guardrail operativi per andare in produzione</h3>
           <p>Per rendere sostenibile l&#x27;adozione, fissare policy tecniche e organizzative:</p>
           <ol><li>limiti di autonomia per categoria di azione;</li><li>whitelist di tool e permessi minimi;</li><li>trigger HITL su bassa confidenza o impatto alto;</li><li>tracciamento completo delle decisioni dell&#x27;agente;</li><li>meccanismi di rollback su azioni write-enabled;</li><li>test regressivi frequenti su workflow critici.</li></ol>
+          <h3 class="module-subtitle">Lab consigliati per il Modulo 03</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Lab consigliato</th><th>Obiettivi</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Applicare tecniche operative di prompt engineering per aumentare qualità, coerenza e controllabilità degli output.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Integrare fonti contestuali affidabili per ridurre allucinazioni e migliorare aderenza delle risposte al dominio aziendale.</td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/85643" target="_blank" rel="noopener noreferrer">Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI</a></strong></td><td>Costruire una pipeline RAG con retrieval semantico e generazione grounding-aware su contenuti multimodali.</td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=75402418" target="_blank" rel="noopener noreferrer">Create a RAG Application with BigQuery</a></strong></td><td>Costruire un caso RAG collegato a BigQuery per unire retrieval, grounding e accesso a basi dati aziendali aggiornate.</td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104687" target="_blank" rel="noopener noreferrer">Build and Deploy an Agent with Agent Engine in Vertex AI</a></strong></td><td>Passare dal prototipo all&#x27;orchestrazione agentica con tool use, controllo dei flussi e rilascio in ambiente operativo.</td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599605" target="_blank" rel="noopener noreferrer">Get Started with Agent Development Kit (ADK)</a></strong></td><td>Impostare un agente con ADK per workflow multi-step, sperimentando pianificazione, integrazione strumenti e verifiche.</td><td>Lab</td></tr></tbody></table></div>
+          <h3 class="module-subtitle">Link utili del modulo</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo</th><th>Descrizione</th><th>Link</th></tr></thead><tbody><tr><td>Microsoft AI Playbook - List of evaluation metrics</td><td>Panoramica operativa delle metriche di valutazione per applicazioni con LLM, utile per impostare criteri di qualità, affidabilità e monitoraggio del sistema.</td><td><a href="https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/working-with-llms/evaluation/list-of-eval-metrics" target="_blank" rel="noopener noreferrer">Microsoft Learn - List of evaluation metrics</a></td></tr><tr><td>Anthropic Claude API - Models overview</td><td>Pagina ufficiale di confronto modelli con esempio pratico di trade-off tra capacità, latenza e costi per token, utile per impostare shortlist e criteri di selezione.</td><td><a href="https://platform.claude.com/docs/en/about-claude/models/overview" target="_blank" rel="noopener noreferrer">Anthropic - Models overview</a></td></tr><tr><td>IBM Think - LLM Benchmarks</td><td>Guida introduttiva ai benchmark per LLM, utile per contestualizzare i risultati oltre il punteggio grezzo.</td><td><a href="https://www.ibm.com/think/topics/llm-benchmarks" target="_blank" rel="noopener noreferrer">IBM Think - LLM benchmarks</a></td></tr><tr><td>OpenAI - Introducing SWE-bench Verified</td><td>Presentazione ufficiale del benchmark SWE-bench Verified per valutare capacità di software engineering su repository reali.</td><td><a href="https://openai.com/index/introducing-swe-bench-verified/" target="_blank" rel="noopener noreferrer">OpenAI - SWE-bench Verified</a></td></tr><tr><td>Terminal-bench - Task overview</td><td>Documentazione del benchmark per task operativi da terminale e CLI multi-step.</td><td><a href="https://www.tbench.ai/docs/task-overview" target="_blank" rel="noopener noreferrer">Terminal-bench - Task overview</a></td></tr><tr><td>TAU-bench (arXiv)</td><td>Paper del benchmark TAU-bench per valutazione del tool use in scenari agentici realistici.</td><td><a href="https://arxiv.org/pdf/2406.12045" target="_blank" rel="noopener noreferrer">arXiv - TAU-bench</a></td></tr><tr><td>Stanford IR Book - Okapi BM25</td><td>Riferimento teorico su BM25 come base del ranking lessicale negli indici invertiti.</td><td><a href="https://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html" target="_blank" rel="noopener noreferrer">Stanford IR Book - Okapi BM25</a></td></tr><tr><td>Salesforce Agentforce</td><td>Pagina ufficiale della piattaforma agentica Salesforce per scenari enterprise.</td><td><a href="https://www.salesforce.com/it/agentforce/" target="_blank" rel="noopener noreferrer">Salesforce - Agentforce</a></td></tr><tr><td>Trailhead - Get to Know Agent Builder</td><td>Modulo introduttivo su setup, topic, azioni e preview in Agent Builder.</td><td><a href="https://trailhead.salesforce.com/content/learn/modules/introduction-to-agent-builder/get-to-know-agent-builder" target="_blank" rel="noopener noreferrer">Trailhead - Agent Builder</a></td></tr></tbody></table></div>
           <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Scegliere il pattern di integrazione corretto per ogni processo (diretto, programmatico, backend).</li><li>Definire guardrail prima del go-live: sicurezza input/output, policy, soglie e fallback.</li><li>Valutare i modelli con benchmark pubblici e test sul dataset reale del dominio.</li><li>Gestire il prompting come asset versionato, con template, metriche e review periodiche.</li><li>Impostare un RAG con metriche su retrieval, groundedness e qualità della risposta finale.</li><li>Introdurre agenti in modo progressivo, con limiti di autonomia, HITL e monitoraggio continuo.</li></ol></section>
         </section>
 
@@ -572,6 +809,162 @@ h1 {
       </article>
     </main>
   </div>
+  <button class="print-btn" type="button" id="print-page-btn" aria-label="Stampa questa pagina"><span class="print-icon" aria-hidden="true">&#128424;</span>Stampa</button>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+  <script>
+  (() => {
+    const panel = document.querySelector('.outline-panel');
+    const host = document.getElementById('outline-nav');
+    const content = document.querySelector('.module-content');
+    if (!panel || !host || !content) return;
+
+    const slugCounter = {};
+    const normalize = (value) => {
+      const slug = value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return slug || 'section';
+    };
+
+    const ensureId = (el) => {
+      if (el.id) return el.id;
+      const base = normalize(el.textContent.trim());
+      const count = (slugCounter[base] || 0) + 1;
+      slugCounter[base] = count;
+      el.id = count === 1 ? base : `${base}-${count}`;
+      return el.id;
+    };
+
+    const ordered = Array.from(content.querySelectorAll('h2.module-section-title, h3.module-subtitle'));
+    const sections = [];
+    const pending = [];
+
+    ordered.forEach((heading) => {
+      if (heading.matches('h2.module-section-title')) {
+        sections.push({ heading, children: [] });
+        return;
+      }
+      if (sections.length === 0) pending.push(heading);
+      else sections[sections.length - 1].children.push(heading);
+    });
+
+    if (sections.length === 0) {
+      const moduleTitle = document.querySelector('.module-title');
+      if (moduleTitle) {
+        sections.push({
+          heading: moduleTitle,
+          children: Array.from(content.querySelectorAll('h3.module-subtitle'))
+        });
+      }
+    } else if (pending.length > 0) {
+      sections[0].children.unshift(...pending);
+    }
+
+    if (sections.length === 0) {
+      panel.style.display = 'none';
+      return;
+    }
+
+    const root = document.createElement('ul');
+    root.className = 'outline-root';
+
+    const linkById = new Map();
+    const headingOrder = [];
+
+    sections.forEach((section, index) => {
+      const sectionId = ensureId(section.heading);
+      headingOrder.push(section.heading);
+
+      const item = document.createElement('li');
+      const details = document.createElement('details');
+      details.className = 'outline-group';
+      details.open = index === 0;
+
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.className = 'outline-summary-label';
+      label.textContent = section.heading.textContent.trim();
+
+      const jump = document.createElement('a');
+      jump.className = 'outline-link outline-section-link';
+      jump.href = `#${sectionId}`;
+      jump.textContent = 'Vai';
+      jump.addEventListener('click', (event) => event.stopPropagation());
+
+      summary.append(label, jump);
+      details.appendChild(summary);
+      linkById.set(sectionId, jump);
+
+      if (section.children.length > 0) {
+        const sub = document.createElement('ul');
+        sub.className = 'outline-sublist';
+
+        section.children.forEach((child) => {
+          const childId = ensureId(child);
+          headingOrder.push(child);
+
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.className = 'outline-link';
+          link.href = `#${childId}`;
+          link.textContent = child.textContent.trim();
+          li.appendChild(link);
+          sub.appendChild(li);
+          linkById.set(childId, link);
+        });
+
+        details.appendChild(sub);
+      }
+
+      item.appendChild(details);
+      root.appendChild(item);
+    });
+
+    host.replaceChildren(root);
+
+    let ticking = false;
+
+    const setActive = () => {
+      ticking = false;
+      if (headingOrder.length === 0) return;
+
+      let active = headingOrder[0];
+      for (const heading of headingOrder) {
+        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
+        else break;
+      }
+
+      linkById.forEach((link) => link.classList.remove('active'));
+      const activeId = ensureId(active);
+      const activeLink = linkById.get(activeId);
+      if (activeLink) {
+        activeLink.classList.add('active');
+        const group = activeLink.closest('details.outline-group');
+        if (group) group.open = true;
+      }
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(setActive);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('hashchange', setActive);
+    setActive();
+  })();
+  </script>
+  <script>
+  (() => {
+    const printBtn = document.getElementById('print-page-btn');
+    if (!printBtn) return;
+    printBtn.addEventListener('click', () => window.print());
+  })();
+  </script>
 </body>
 </html>
