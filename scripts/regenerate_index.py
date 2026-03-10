@@ -592,6 +592,145 @@ h1 {
 }
 '''
 
+OUTLINE_STYLE = '''
+.outline-panel {
+  position: fixed;
+  top: 18px;
+  left: 12px;
+  bottom: 18px;
+  width: 292px;
+  z-index: 950;
+  display: none;
+}
+
+.outline-frame {
+  height: 100%;
+  background: rgba(0, 18, 40, 0.92);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.outline-title {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.4px;
+  font-size: 1rem;
+  color: var(--accent-secondary);
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.outline-nav-tree {
+  padding: 10px 10px 12px;
+  overflow: auto;
+}
+
+.outline-root,
+.outline-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.outline-root {
+  display: grid;
+  gap: 8px;
+}
+
+.outline-group {
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.outline-group > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+}
+
+.outline-group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.outline-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.outline-summary-label::before {
+  content: '▸';
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+.outline-group[open] .outline-summary-label::before {
+  transform: rotate(90deg) translateX(1px);
+}
+
+.outline-sublist {
+  padding: 2px 8px 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.outline-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #d9e3ef;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.outline-link:hover {
+  color: #ffffff;
+  border-color: rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.12);
+}
+
+.outline-section-link {
+  font-size: 0.76rem;
+  color: #9eefff;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.08);
+  white-space: nowrap;
+}
+
+.outline-link.active {
+  color: #ffffff;
+  border-color: rgba(255, 204, 0, 0.55);
+  background: rgba(255, 204, 0, 0.14);
+}
+
+@media (min-width: 1260px) {
+  .has-outline .outline-panel {
+    display: block;
+  }
+
+  .has-outline .container {
+    padding-left: 332px;
+  }
+}
+'''
+
 
 def build_home_page(title: str, modules, labs_body: str, bibliography_body: str, home_note_body: str):
     agenda_items = []
@@ -685,6 +824,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
     module = modules[idx]
     num = module['number']
     body_html = body_to_html(module['body'])
+    has_outline = num == 3
 
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
     next_link = module_filename(modules[idx + 1]['number']) if idx < len(modules) - 1 else None
@@ -710,6 +850,169 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
         </section>
 '''
 
+    outline_html = '''
+  <aside class="outline-panel" aria-label="Struttura del modulo">
+    <div class="outline-frame">
+      <p class="outline-title">Struttura del modulo</p>
+      <nav id="outline-nav" class="outline-nav-tree"></nav>
+    </div>
+  </aside>
+''' if has_outline else ''
+
+    outline_script = '''
+  <script>
+  (() => {
+    const panel = document.querySelector('.outline-panel');
+    const host = document.getElementById('outline-nav');
+    const content = document.querySelector('.module-content');
+    if (!panel || !host || !content) return;
+
+    const slugCounter = {};
+    const normalize = (value) => {
+      const slug = value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\\u0300-\\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return slug || 'section';
+    };
+
+    const ensureId = (el) => {
+      if (el.id) return el.id;
+      const base = normalize(el.textContent.trim());
+      const count = (slugCounter[base] || 0) + 1;
+      slugCounter[base] = count;
+      el.id = count === 1 ? base : `${base}-${count}`;
+      return el.id;
+    };
+
+    const ordered = Array.from(content.querySelectorAll(
+      'h2.module-section-title, h3.module-subtitle, h4.module-subtitle-small'
+    ));
+    const sections = [];
+    const pendingChildren = [];
+
+    ordered.forEach((heading) => {
+      if (heading.matches('h2.module-section-title, h3.module-subtitle')) {
+        sections.push({ heading, children: [] });
+        return;
+      }
+      if (sections.length === 0) pendingChildren.push(heading);
+      else sections[sections.length - 1].children.push(heading);
+    });
+
+    if (sections.length === 0) {
+      const moduleTitle = document.querySelector('.module-title');
+      if (moduleTitle) {
+        sections.push({
+          heading: moduleTitle,
+          children: Array.from(content.querySelectorAll('h4.module-subtitle-small'))
+        });
+      }
+    } else if (pendingChildren.length > 0) {
+      sections[0].children.unshift(...pendingChildren);
+    }
+
+    if (sections.length === 0) {
+      panel.style.display = 'none';
+      return;
+    }
+
+    const root = document.createElement('ul');
+    root.className = 'outline-root';
+
+    const linkById = new Map();
+    const headingOrder = [];
+
+    sections.forEach((section, index) => {
+      const sectionId = ensureId(section.heading);
+      headingOrder.push(section.heading);
+
+      const item = document.createElement('li');
+      const details = document.createElement('details');
+      details.className = 'outline-group';
+      details.open = index === 0;
+
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.className = 'outline-summary-label';
+      label.textContent = section.heading.textContent.trim();
+
+      const jump = document.createElement('a');
+      jump.className = 'outline-link outline-section-link';
+      jump.href = `#${sectionId}`;
+      jump.textContent = 'Vai';
+      jump.addEventListener('click', (event) => event.stopPropagation());
+
+      summary.append(label, jump);
+      details.appendChild(summary);
+      linkById.set(sectionId, jump);
+
+      if (section.children.length > 0) {
+        const sub = document.createElement('ul');
+        sub.className = 'outline-sublist';
+
+        section.children.forEach((child) => {
+          const childId = ensureId(child);
+          headingOrder.push(child);
+
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.className = 'outline-link';
+          link.href = `#${childId}`;
+          link.textContent = child.textContent.trim();
+          li.appendChild(link);
+          sub.appendChild(li);
+          linkById.set(childId, link);
+        });
+
+        details.appendChild(sub);
+      }
+
+      item.appendChild(details);
+      root.appendChild(item);
+    });
+
+    host.replaceChildren(root);
+
+    let ticking = false;
+
+    const setActive = () => {
+      ticking = false;
+      if (headingOrder.length === 0) return;
+
+      let active = headingOrder[0];
+      for (const heading of headingOrder) {
+        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
+        else break;
+      }
+
+      linkById.forEach((link) => link.classList.remove('active'));
+      const activeId = ensureId(active);
+      const activeLink = linkById.get(activeId);
+      if (activeLink) {
+        activeLink.classList.add('active');
+        const group = activeLink.closest('details.outline-group');
+        if (group) group.open = true;
+      }
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(setActive);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('hashchange', setActive);
+    setActive();
+  })();
+  </script>
+''' if has_outline else ''
+    outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
+
     return f'''<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -719,9 +1022,10 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>{STYLE}</style>
+  <style>{STYLE}</style>{outline_style_tag}
 </head>
-<body>
+<body class="{'has-outline' if has_outline else ''}">
+{outline_html}
   <div class="container">
     <header>
       <p class="subtitle">{html.escape(course_title)}</p>
@@ -746,6 +1050,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑ Torna su</button>
+{outline_script}
 </body>
 </html>
 '''
