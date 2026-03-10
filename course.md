@@ -1438,7 +1438,7 @@ Controlli minimi da introdurre nel workflow:
 3. eseguire error analysis mirata sui casi ad alto impatto decisionale;
 4. applicare mitigazioni su dati e soglie decisionali prima del rilascio.
 
-Riferimento pratico: [Notebook BERT fine tuning-pretraining](https://colab.research.google.com/github/thimotyb/hugging-face-notebooks/blob/main/02_classification_huggingface_timo.ipynb)
+Riferimento pratico: [Model Card DistilBERT Base (Hugging Face)](https://huggingface.co/distilbert/distilbert-base-uncased)
 
 Per questo la scelta del modello non è mai solo tecnica: è una decisione di governance che richiede coinvolgimento congiunto di prodotto, legale, sicurezza e data team.
 
