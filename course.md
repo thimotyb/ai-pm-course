@@ -1427,6 +1427,19 @@ Le prestazioni di un sistema GenAI dipendono in modo diretto dai dati di addestr
 4. **Knowledge cutoff:** senza basi aggiornate il modello non conosce eventi recenti.
 5. **Privacy e proprietà intellettuale:** occorre verificare uso di dati sensibili e vincoli legali.
 
+#### Esempio operativo: rischio bias con BERT/DistilBERT
+Un caso didattico utile è la classificazione testuale con modelli della famiglia BERT (ad esempio DistilBERT): quando il dataset riflette squilibri storici, il modello tende a riprodurre quegli stessi pattern nelle predizioni.
+
+In pratica, due frasi con struttura simile ma riferite a gruppi diversi possono ricevere probabilità differenti, non per qualità informativa del testo ma per correlazioni spurie apprese in training.
+
+Controlli minimi da introdurre nel workflow:
+1. confrontare metriche per segmento (precision, recall, F1) e non solo metriche aggregate;
+2. usare test set bilanciati con coppie di esempi equivalenti;
+3. eseguire error analysis mirata sui casi ad alto impatto decisionale;
+4. applicare mitigazioni su dati e soglie decisionali prima del rilascio.
+
+Riferimento pratico: [Notebook BERT fine tuning-pretraining](https://colab.research.google.com/github/thimotyb/hugging-face-notebooks/blob/main/02_classification_huggingface_timo.ipynb)
+
 Per questo la scelta del modello non è mai solo tecnica: è una decisione di governance che richiede coinvolgimento congiunto di prodotto, legale, sicurezza e data team.
 
 ### Obiettivo di training e comportamento del modello
@@ -1600,9 +1613,6 @@ Per rendere la valutazione robusta conviene adottare un approccio ibrido:
 1. valutazione automatica su volumi elevati;
 2. revisione umana su campioni strategici;
 3. stress test su edge case e prompt avversariali.
-
-![Tradeoff velocità-affidabilità nei metodi di valutazione](assets/chapt05_images/ch05_img02.png)
-*Figura M3.14: bilanciamento tra velocità di valutazione e affidabilità del giudizio*
 
 ### Personalizzazione: prompt, retrieval, fine-tuning
 Le tre leve principali hanno difficoltà e impatto differenti:
