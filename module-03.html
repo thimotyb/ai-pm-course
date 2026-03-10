@@ -137,6 +137,14 @@ h1 {
   line-height: 1.2;
 }
 
+.module-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  color: var(--accent-primary);
+  margin: 30px 0 12px;
+  line-height: 1.25;
+}
+
 .module-subtitle {
   font-family: 'Outfit', sans-serif;
   font-size: 1.3rem;
@@ -287,48 +295,6 @@ h1 {
   text-align: center;
 }
 
-.to-top-btn {
-  position: fixed;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 999;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 18, 40, 0.85);
-  color: var(--text-color);
-  border-radius: 999px;
-  padding: 10px 12px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.to-top-btn:hover {
-  background: rgba(0, 28, 62, 0.95);
-  border-color: var(--accent-secondary);
-  transform: translateY(-50%) scale(1.03);
-}
-
-@media (max-width: 768px) {
-  h1 { font-size: 2.25rem; }
-  .module-title { font-size: 1.55rem; }
-  .container { padding: 20px 14px 36px; }
-  .card { padding: 18px; }
-  .to-top-btn {
-    top: auto;
-    bottom: 14px;
-    transform: none;
-    right: 12px;
-    font-size: 0.78rem;
-    padding: 9px 10px;
-  }
-  .to-top-btn:hover {
-    transform: scale(1.03);
-  }
-}
-</style>
-  <style>
 .outline-panel {
   position: fixed;
   top: 18px;
@@ -457,26 +423,160 @@ h1 {
 }
 
 @media (min-width: 1260px) {
-  .has-outline .outline-panel {
+  .outline-panel {
     display: block;
   }
 
-  .has-outline .container {
+  .container {
+    max-width: 1320px;
     padding-left: 332px;
+  }
+}
+
+.print-btn {
+  position: fixed;
+  right: 14px;
+  top: calc(50% + 56px);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
+.print-icon {
+  margin-right: 6px;
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .module-section-title { font-size: 1.35rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .print-btn {
+    top: auto;
+    bottom: 52px;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  h1 {
+    background: none !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  .outline-panel,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  header {
+    text-align: left;
+    padding: 0 0 10px;
+  }
+
+  .card {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  h2, h3, h4, p, li, td, th, figcaption {
+    color: #000000 !important;
+  }
+
+  .module-title,
+  .module-section-title,
+  .module-subtitle,
+  .module-subtitle-small {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  .module-image,
+  .table-wrap,
+  .quick-card,
+  .checklist-card {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
   }
 }
 </style>
 </head>
-<body class="has-outline">
-
-  <aside class="outline-panel" aria-label="Struttura del modulo">
-    <div class="outline-frame">
-      <p class="outline-title">Struttura del modulo</p>
-      <nav id="outline-nav" class="outline-nav-tree"></nav>
-    </div>
-  </aside>
-
+<body>
   <div class="container">
+    <aside class="outline-panel" aria-label="Struttura del modulo">
+      <div class="outline-frame">
+        <p class="outline-title">Struttura del modulo</p>
+        <nav id="outline-nav" class="outline-nav-tree"></nav>
+      </div>
+    </aside>
     <header>
       <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
       <h1>Modulo 03</h1>
@@ -547,19 +647,19 @@ h1 {
           <h3 class="module-subtitle">Valutazione: benchmark pubblici + metriche personalizzate</h3>
           <p>I benchmark pubblici sono un punto di partenza, non il punto d&#x27;arrivo. Servono per confronto iniziale, ma non sostituiscono la misurazione su casi reali aziendali.</p>
           <figure class="module-image"><img src="assets/chapt05_images/ch05_img10.png" alt="Esempio di confronto modelli su benchmark pubblici" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13: benchmark comparativi utili per la prima scrematura</figcaption></figure>
-          <figure class="module-image"><img src="assets/chapt03_images/benchmark_confronto_modelli_m03_13a.jpeg" alt="Confronto benchmark tra modelli su coding agentico, reasoning, tool use, multilingua, visione e matematica" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13a: esempio di confronto modelli su costo/capacità e benchmark specialistici</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt03_images/benchmark_confronto_modelli_m03_13a.jpeg" alt="Confronto benchmark tra modelli su coding agentico, reasoning, tool use, multilingua, visione e matematica" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13a: esempio di confronto modelli su costo/capacit&#xE0; e benchmark specialistici</figcaption></figure>
           <figure class="module-image"><img src="assets/chapt03_images/terminal_bench_esempio_m03_13b.jpeg" alt="Schermata di esempio di Terminal-Bench con elenco task, filtri e dettagli operativi" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13b: esempio di benchmark per LLM con Terminal-Bench su task CLI multi-step e workflow tecnici</figcaption></figure>
           <figure class="module-image"><img src="assets/chapt03_images/tau_bench_setup_traiettoria_m03_13c.jpeg" alt="Schema di funzionamento TAU-bench con setup di tool e traiettoria esempio in dominio airline" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13c: esempio di funzionamento di TAU-bench, con tool use, policy di dominio e traiettoria agente-utente</figcaption></figure>
           <figure class="module-image"><img src="assets/chapt03_images/aime_benchmark_problema_m03_13d.jpeg" alt="Esempio di problema del benchmark AIME con soluzione matematica strutturata" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.13d: esempio di task AIME per valutare ragionamento matematico competitivo</figcaption></figure>
-          <p>Per leggere correttamente questo tipo di confronto, conviene chiarire cosa misura ogni benchmark e perché può essere utile in fase di selezione:</p>
-          <div class="table-wrap"><table class="content-table"><thead><tr><th>Metrica</th><th>Cosa misura</th><th>Perché conta nella selezione modello</th></tr></thead><tbody><tr><td><a href="https://openai.com/index/introducing-swe-bench-verified/" target="_blank" rel="noopener noreferrer">SWE-bench</a></td><td>Capacità del modello di risolvere issue reali di software engineering su repository di codice.</td><td>Utile per casi d&#x27;uso di coding assistant, bug fixing automatico e sviluppo agentico.</td></tr><tr><td><a href="https://www.tbench.ai/docs/task-overview" target="_blank" rel="noopener noreferrer">Terminal-bench</a></td><td>Performance in task operativi da terminale e CLI multi-step, con esecuzione di comandi e workflow tecnici.</td><td>Rilevante quando l&#x27;agente deve operare su ambienti DevOps, scripting e automazioni infrastrutturali.</td></tr><tr><td><a href="https://arxiv.org/abs/2311.12022" target="_blank" rel="noopener noreferrer">GPQA Diamond</a></td><td>Benchmark di domande scientifiche complesse a livello graduate, progettato per misurare ragionamento profondo.</td><td>Indica robustezza su analisi avanzata e problem solving ad alta complessità cognitiva.</td></tr><tr><td><a href="https://arxiv.org/pdf/2406.12045" target="_blank" rel="noopener noreferrer">TAU-bench</a></td><td>Valuta l&#x27;uso di strumenti in scenari realistici di agente, ad esempio flussi retail o airline.</td><td>Misura quanto il modello sia affidabile in orchestrazione di azioni e integrazione con tool esterni.</td></tr><tr><td><a href="https://huggingface.co/datasets/openai/MMMLU" target="_blank" rel="noopener noreferrer">MMMLU</a></td><td>Versione multilingue del benchmark MMLU per Q&amp;A e comprensione su più domini di conoscenza.</td><td>Fondamentale per prodotti globali che richiedono qualità consistente tra lingue diverse.</td></tr><tr><td><a href="https://arxiv.org/abs/2311.16502" target="_blank" rel="noopener noreferrer">MMMU</a></td><td>Benchmark multimodale su ragionamento visivo e comprensione combinata testo-immagine.</td><td>Importante per use case che includono documenti, immagini, schermate o contenuti visuali.</td></tr><tr><td><a href="https://artofproblemsolving.com/wiki/index.php/2025_AIME_I_Problems" target="_blank" rel="noopener noreferrer">AIME 2025</a></td><td>Prestazioni su problemi matematici competitivi.</td><td>Utile per stimare precisione in calcolo, ragionamento simbolico e task quantitativi strutturati.</td></tr></tbody></table></div>
-          <p>Queste metriche non vanno lette come un voto assoluto. Servono soprattutto a capire se il modello è forte proprio nel tipo di lavoro che dovrà svolgere nel tuo processo: coding, tool use, multilingua, visione o ragionamento quantitativo.</p>
-          <p>Alcuni benchmark classici restano utili anche per costruire una lettura più completa del profilo del modello:</p>
-          <div class="table-wrap"><table class="content-table"><thead><tr><th>Benchmark</th><th>Descrizione</th></tr></thead><tbody><tr><td><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener noreferrer">MMLU</a></td><td>Benchmark trasversale su molte discipline, usato per confrontare la copertura di conoscenza e la capacità di risposta su domini diversi.</td></tr><tr><td><a href="https://arxiv.org/abs/2304.06364" target="_blank" rel="noopener noreferrer">AGIEval</a></td><td>Serie di test complessi ispirati a esami e prove avanzate, utile per osservare ragionamento e tenuta su compiti articolati.</td></tr><tr><td><a href="https://allenai.org/data/arc" target="_blank" rel="noopener noreferrer">ARC</a></td><td>Benchmark centrato su domande scientifiche a scelta multipla, utile per valutare ragionamento e comprensione su problemi scolastici strutturati.</td></tr><tr><td><a href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank" rel="noopener noreferrer">SQuAD</a></td><td>Dataset storico per question answering su passaggi testuali, utile per misurare capacità di estrarre risposte corrette da un contesto dato.</td></tr><tr><td><a href="https://quac.ai/" target="_blank" rel="noopener noreferrer">QuAC</a></td><td>Benchmark di question answering conversazionale in contesto, utile per capire come il modello gestisce scambi multi-turno.</td></tr><tr><td><a href="https://allenai.org/data/drop" target="_blank" rel="noopener noreferrer">DROP</a></td><td>Dataset progettato per testare ragionamento discreto su paragrafi, con domande che richiedono conteggi, confronti e inferenze.</td></tr></tbody></table></div>
+          <p>Per leggere correttamente questo tipo di confronto, conviene chiarire cosa misura ogni benchmark e perch&#xE9; pu&#xF2; essere utile in fase di selezione:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Metrica</th><th>Cosa misura</th><th>Perch&#xE9; conta nella selezione modello</th></tr></thead><tbody><tr><td><a href="https://openai.com/index/introducing-swe-bench-verified/" target="_blank" rel="noopener noreferrer">SWE-bench</a></td><td>Capacit&#xE0; del modello di risolvere issue reali di software engineering su repository di codice.</td><td>Utile per casi d&#x27;uso di coding assistant, bug fixing automatico e sviluppo agentico.</td></tr><tr><td><a href="https://www.tbench.ai/docs/task-overview" target="_blank" rel="noopener noreferrer">Terminal-bench</a></td><td>Performance in task operativi da terminale e CLI multi-step, con esecuzione di comandi e workflow tecnici.</td><td>Rilevante quando l&#x27;agente deve operare su ambienti DevOps, scripting e automazioni infrastrutturali.</td></tr><tr><td><a href="https://arxiv.org/abs/2311.12022" target="_blank" rel="noopener noreferrer">GPQA Diamond</a></td><td>Benchmark di domande scientifiche complesse a livello graduate, progettato per misurare ragionamento profondo.</td><td>Indica robustezza su analisi avanzata e problem solving ad alta complessit&#xE0; cognitiva.</td></tr><tr><td><a href="https://arxiv.org/pdf/2406.12045" target="_blank" rel="noopener noreferrer">TAU-bench</a></td><td>Valuta l&#x27;uso di strumenti in scenari realistici di agente, ad esempio flussi retail o airline.</td><td>Misura quanto il modello sia affidabile in orchestrazione di azioni e integrazione con tool esterni.</td></tr><tr><td><a href="https://huggingface.co/datasets/openai/MMMLU" target="_blank" rel="noopener noreferrer">MMMLU</a></td><td>Versione multilingue del benchmark MMLU per Q&amp;A e comprensione su pi&#xF9; domini di conoscenza.</td><td>Fondamentale per prodotti globali che richiedono qualit&#xE0; consistente tra lingue diverse.</td></tr><tr><td><a href="https://arxiv.org/abs/2311.16502" target="_blank" rel="noopener noreferrer">MMMU</a></td><td>Benchmark multimodale su ragionamento visivo e comprensione combinata testo-immagine.</td><td>Importante per use case che includono documenti, immagini, schermate o contenuti visuali.</td></tr><tr><td><a href="https://artofproblemsolving.com/wiki/index.php/2025_AIME_I_Problems" target="_blank" rel="noopener noreferrer">AIME 2025</a></td><td>Prestazioni su problemi matematici competitivi.</td><td>Utile per stimare precisione in calcolo, ragionamento simbolico e task quantitativi strutturati.</td></tr></tbody></table></div>
+          <p>Queste metriche non vanno lette come un voto assoluto. Servono soprattutto a capire se il modello &#xE8; forte proprio nel tipo di lavoro che dovr&#xE0; svolgere nel tuo processo: coding, tool use, multilingua, visione o ragionamento quantitativo.</p>
+          <p>Alcuni benchmark classici restano utili anche per costruire una lettura pi&#xF9; completa del profilo del modello:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Benchmark</th><th>Descrizione</th></tr></thead><tbody><tr><td><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener noreferrer">MMLU</a></td><td>Benchmark trasversale su molte discipline, usato per confrontare la copertura di conoscenza e la capacit&#xE0; di risposta su domini diversi.</td></tr><tr><td><a href="https://arxiv.org/abs/2304.06364" target="_blank" rel="noopener noreferrer">AGIEval</a></td><td>Serie di test complessi ispirati a esami e prove avanzate, utile per osservare ragionamento e tenuta su compiti articolati.</td></tr><tr><td><a href="https://allenai.org/data/arc" target="_blank" rel="noopener noreferrer">ARC</a></td><td>Benchmark centrato su domande scientifiche a scelta multipla, utile per valutare ragionamento e comprensione su problemi scolastici strutturati.</td></tr><tr><td><a href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank" rel="noopener noreferrer">SQuAD</a></td><td>Dataset storico per question answering su passaggi testuali, utile per misurare capacit&#xE0; di estrarre risposte corrette da un contesto dato.</td></tr><tr><td><a href="https://quac.ai/" target="_blank" rel="noopener noreferrer">QuAC</a></td><td>Benchmark di question answering conversazionale in contesto, utile per capire come il modello gestisce scambi multi-turno.</td></tr><tr><td><a href="https://allenai.org/data/drop" target="_blank" rel="noopener noreferrer">DROP</a></td><td>Dataset progettato per testare ragionamento discreto su paragrafi, con domande che richiedono conteggi, confronti e inferenze.</td></tr></tbody></table></div>
           <p>Metriche da presidiare in combinazione:</p>
           <ul><li><strong>accuratezza fattuale</strong> (groundedness, error rate);</li><li><strong>aderenza al compito</strong> (task completion);</li><li><strong>qualità linguistica</strong> (coerenza, leggibilità, tono);</li><li><strong>rischio</strong> (violazioni policy, contenuti impropri, fallimenti critici);</li><li><strong>performance tecnica</strong> (latenza, stabilità, costo per richiesta).</li></ul>
           <p>Accanto ai benchmark pubblici conviene definire anche metriche personalizzate, perché il valore reale di un sistema aziendale emerge spesso su criteri che i benchmark generici non coprono:</p>
-          <div class="table-wrap"><table class="content-table"><thead><tr><th>Metrica custom</th><th>Descrizione</th></tr></thead><tbody><tr><td>Brand alignment</td><td>Misura quanto bene le risposte rispettano la voce del cliente, il tono aziendale e i valori del brand.</td></tr><tr><td>Readability</td><td>Valuta chiarezza e accessibilità del testo, per capire se i contenuti sono facili da leggere e usare.</td></tr><tr><td>Accuracy</td><td>Verifica la correttezza fattuale sui contenuti critici del dominio, spesso tramite revisione esperta o fact-checking.</td></tr><tr><td>Creativity</td><td>Misura originalità e varietà, utile quando il sistema deve produrre contenuti non ripetitivi ma comunque coerenti.</td></tr><tr><td>Contextual relevance</td><td>Valuta se la risposta affronta davvero la richiesta dell&#x27;utente e usa in modo pertinente il contesto disponibile.</td></tr><tr><td>Client-specific</td><td>Raccoglie metriche costruite su esigenze proprie dell&#x27;organizzazione, come linguaggio settoriale, conformità normativa o uso di template interni.</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Metrica custom</th><th>Descrizione</th></tr></thead><tbody><tr><td>Brand alignment</td><td>Misura quanto bene le risposte rispettano la voce del cliente, il tono aziendale e i valori del brand.</td></tr><tr><td>Readability</td><td>Valuta chiarezza e accessibilit&#xE0; del testo, per capire se i contenuti sono facili da leggere e usare.</td></tr><tr><td>Accuracy</td><td>Verifica la correttezza fattuale sui contenuti critici del dominio, spesso tramite revisione esperta o fact-checking.</td></tr><tr><td>Creativity</td><td>Misura originalit&#xE0; e variet&#xE0;, utile quando il sistema deve produrre contenuti non ripetitivi ma comunque coerenti.</td></tr><tr><td>Contextual relevance</td><td>Valuta se la risposta affronta davvero la richiesta dell&#x27;utente e usa in modo pertinente il contesto disponibile.</td></tr><tr><td>Client-specific</td><td>Raccoglie metriche costruite su esigenze proprie dell&#x27;organizzazione, come linguaggio settoriale, conformit&#xE0; normativa o uso di template interni.</td></tr></tbody></table></div>
           <p>Per rendere la valutazione robusta conviene adottare un approccio ibrido:</p>
           <ol><li>valutazione automatica su volumi elevati;</li><li>revisione umana su campioni strategici;</li><li>stress test su edge case e prompt avversariali.</li></ol>
           <figure class="module-image"><img src="assets/chapt05_images/ch05_img02.png" alt="Tradeoff velocità-affidabilità nei metodi di valutazione" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M3.14: bilanciamento tra velocità di valutazione e affidabilità del giudizio</figcaption></figure>
@@ -729,8 +829,8 @@ h1 {
       </article>
     </main>
   </div>
+  <button class="print-btn" type="button" id="print-page-btn" aria-label="Stampa questa pagina"><span class="print-icon" aria-hidden="true">&#128424;</span>Stampa</button>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
-
   <script>
   (() => {
     const panel = document.querySelector('.outline-panel');
@@ -758,18 +858,68 @@ h1 {
       return el.id;
     };
 
-    const ordered = Array.from(content.querySelectorAll(
-      'h2.module-section-title, h3.module-subtitle, h4.module-subtitle-small'
-    ));
+    const sectionDefs = [
+      { index: 1, title: '1. Fondamenti di integrazione GenAI', startText: 'Come funziona un language model e perché impatta il prodotto' },
+      { index: 2, title: '2. Prompt Engineering operativo', startText: 'Prompt Engineering per processi aziendali' },
+      { index: 3, title: '3. Search semantico e RAG', startText: 'Search semantico e RAG: integrare conoscenza aziendale nel flusso GenAI' },
+      { index: 4, title: '4. Agentic AI e automazione', startText: 'Agentic AI: automatizzare workflow complessi' },
+      { index: 5, title: '5. Chiusura del modulo', startText: 'Lab consigliati per il Modulo 03' }
+    ];
+
+    const cleanupNumberPrefix = (text) => text.replace(/^\d+(?:\.\d+)?\s+/, '').trim();
+    const numberedHeadings = Array.from(content.querySelectorAll('h3.module-subtitle'))
+      .filter((heading) => !heading.closest('.quick-card, .checklist-card'));
+
+    let currentSection = null;
+    let subsectionCounter = 0;
+    const firstHeadingBySection = new Map();
+
+    numberedHeadings.forEach((heading) => {
+      const plainText = cleanupNumberPrefix(heading.textContent);
+      const foundSection = sectionDefs.find((def) => plainText === def.startText);
+      if (foundSection) {
+        currentSection = foundSection;
+        subsectionCounter = 0;
+        firstHeadingBySection.set(foundSection.index, heading);
+      }
+
+      if (!currentSection) return;
+
+      subsectionCounter += 1;
+      heading.textContent = `${currentSection.index}.${subsectionCounter} ${plainText}`;
+    });
+
+    sectionDefs
+      .slice()
+      .reverse()
+      .forEach((def) => {
+        const anchorHeading = firstHeadingBySection.get(def.index);
+        if (!anchorHeading) return;
+        const prev = anchorHeading.previousElementSibling;
+        if (
+          prev &&
+          prev.matches('h2.module-section-title') &&
+          prev.textContent.trim() === def.title
+        ) {
+          return;
+        }
+        const sectionHeading = document.createElement('h2');
+        sectionHeading.className = 'module-section-title';
+        sectionHeading.textContent = def.title;
+        anchorHeading.before(sectionHeading);
+      });
+
+    const ordered = Array.from(content.querySelectorAll('h2.module-section-title, h3.module-subtitle'))
+      .filter((heading) => heading.matches('h2.module-section-title') || !heading.closest('.quick-card, .checklist-card'));
     const sections = [];
-    const pendingChildren = [];
+    const pending = [];
 
     ordered.forEach((heading) => {
-      if (heading.matches('h2.module-section-title, h3.module-subtitle')) {
+      if (heading.matches('h2.module-section-title')) {
         sections.push({ heading, children: [] });
         return;
       }
-      if (sections.length === 0) pendingChildren.push(heading);
+      if (sections.length === 0) pending.push(heading);
       else sections[sections.length - 1].children.push(heading);
     });
 
@@ -778,11 +928,12 @@ h1 {
       if (moduleTitle) {
         sections.push({
           heading: moduleTitle,
-          children: Array.from(content.querySelectorAll('h4.module-subtitle-small'))
+          children: Array.from(content.querySelectorAll('h3.module-subtitle'))
+            .filter((heading) => !heading.closest('.quick-card, .checklist-card'))
         });
       }
-    } else if (pendingChildren.length > 0) {
-      sections[0].children.unshift(...pendingChildren);
+    } else if (pending.length > 0) {
+      sections[0].children.unshift(...pending);
     }
 
     if (sections.length === 0) {
@@ -881,6 +1032,12 @@ h1 {
     setActive();
   })();
   </script>
-
+  <script>
+  (() => {
+    const printBtn = document.getElementById('print-page-btn');
+    if (!printBtn) return;
+    printBtn.addEventListener('click', () => window.print());
+  })();
+  </script>
 </body>
 </html>
