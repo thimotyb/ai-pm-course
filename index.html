@@ -287,6 +287,49 @@ h1 {
   text-align: center;
 }
 
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1100;
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: rgba(0, 18, 40, 0.88);
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  border-color: var(--accent-secondary);
+  background: rgba(0, 28, 62, 0.95);
+}
+
+.lang-btn.is-active {
+  border-color: var(--accent-primary);
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.lang-flag {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.lang-code {
+  letter-spacing: 0.3px;
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -311,6 +354,14 @@ h1 {
 }
 
 @media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 6px 9px;
+  }
   h1 { font-size: 2.25rem; }
   .module-title { font-size: 1.55rem; }
   .container { padding: 20px 14px 36px; }
@@ -330,6 +381,12 @@ h1 {
 </style>
 </head>
 <body>
+
+  <div class="lang-switch" aria-label="Language switch">
+    <a class="lang-btn is-active" data-lang="it" href="#"><span class="lang-flag" aria-hidden="true">🇮🇹</span><span class="lang-code">IT</span></a>
+    <a class="lang-btn" data-lang="en" href="#"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
+  </div>
+
   <div class="container">
     <header>
       <p class="subtitle">Corso di Alta Formazione</p>
@@ -360,5 +417,33 @@ h1 {
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+
+  <script>
+  (() => {
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const page = window.location.pathname.split('/').pop() || '';
+    const customMap = {
+      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
+      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
+    };
+
+    document.querySelectorAll('.lang-switch').forEach((sw) => {
+      const itLink = sw.querySelector('[data-lang="it"]');
+      const enLink = sw.querySelector('[data-lang="en"]');
+      if (customMap[page]) {
+        const itUrl = new URL(customMap[page].it, window.location.href).toString();
+        const enUrl = new URL(customMap[page].en, window.location.href).toString();
+        if (itLink) itLink.href = itUrl;
+        if (enLink) enLink.href = enUrl;
+        return;
+      }
+
+      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
+      if (itLink) itLink.href = currentUrl;
+      if (enLink) enLink.href = enUrl;
+    });
+  })();
+  </script>
+
 </body>
 </html>

@@ -575,6 +575,9 @@ h1 {
 }
 
 .lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
   color: var(--text-color);
   border: 1px solid var(--glass-border);
@@ -593,6 +596,16 @@ h1 {
 .lang-btn.is-active {
   border-color: var(--accent-primary);
   background: rgba(255, 204, 0, 0.2);
+}
+
+.lang-flag {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.lang-code {
+  letter-spacing: 0.3px;
 }
 
 .to-top-btn {
@@ -789,8 +802,8 @@ def lang_switch_html(lang: str = 'it') -> str:
     en_active = ' is-active' if lang == 'en' else ''
     return f'''
   <div class="lang-switch" aria-label="Language switch">
-    <a class="lang-btn{it_active}" data-lang="it" href="#">🇮🇹 IT</a>
-    <a class="lang-btn{en_active}" data-lang="en" href="#">🇬🇧 EN</a>
+    <a class="lang-btn{it_active}" data-lang="it" href="#"><span class="lang-flag" aria-hidden="true">🇮🇹</span><span class="lang-code">IT</span></a>
+    <a class="lang-btn{en_active}" data-lang="en" href="#"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
   </div>
 '''
 

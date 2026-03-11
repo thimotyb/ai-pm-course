@@ -287,6 +287,49 @@ h1 {
   text-align: center;
 }
 
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1100;
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: rgba(0, 18, 40, 0.88);
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  border-color: var(--accent-secondary);
+  background: rgba(0, 28, 62, 0.95);
+}
+
+.lang-btn.is-active {
+  border-color: var(--accent-primary);
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.lang-flag {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.lang-code {
+  letter-spacing: 0.3px;
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -311,6 +354,14 @@ h1 {
 }
 
 @media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 6px 9px;
+  }
   h1 { font-size: 2.25rem; }
   .module-title { font-size: 1.55rem; }
   .container { padding: 20px 14px 36px; }
@@ -329,7 +380,14 @@ h1 {
 }
 </style>
 </head>
-<body>
+<body class="">
+
+  <div class="lang-switch" aria-label="Language switch">
+    <a class="lang-btn is-active" data-lang="it" href="#"><span class="lang-flag" aria-hidden="true">🇮🇹</span><span class="lang-code">IT</span></a>
+    <a class="lang-btn" data-lang="en" href="#"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
+  </div>
+
+
   <div class="container">
     <header>
       <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
@@ -349,7 +407,7 @@ h1 {
           <ul><li><strong>Google Vertex AI:</strong> Model Registry, Feature Engineering, Monitoring.</li><li><strong>Microsoft Copilot:</strong> Riassunti, minuting, tecniche di produttività.</li><li><strong>Prompt Engineering:</strong> Esercitazioni pratiche per il business.</li></ul>
           <h3 class="module-subtitle">Labs</h3>
           <h4 class="module-subtitle-small">Catalogo laboratori e percorsi</h4>
-          <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo e link</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Generative AI Explorer - Vertex AI</a></strong></td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568844" target="_blank" rel="noopener noreferrer">Introduction to Gemini 3</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/118448?catalog_rank=%7B%22rank%22%3A12%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610087" target="_blank" rel="noopener noreferrer">Gmail Sentiment Analysis with Gemini and Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/85643?catalog_rank=%7B%22rank%22%3A19%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610121" target="_blank" rel="noopener noreferrer">Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=75402418" target="_blank" rel="noopener noreferrer">Create a RAG Application with BigQuery</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/22020?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610347" target="_blank" rel="noopener noreferrer">Identify Damaged Car Parts with Vertex AutoML</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610391" target="_blank" rel="noopener noreferrer">Build and Deploy an Agent with Agent Engine in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610456" target="_blank" rel="noopener noreferrer">Deploy and Manage Generative AI Models</a></strong></td><td>Path</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo e link</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Generative AI Explorer - Vertex AI</a></strong></td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568844" target="_blank" rel="noopener noreferrer">Introduction to Gemini 3</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/118448?catalog_rank=%7B%22rank%22%3A12%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610087" target="_blank" rel="noopener noreferrer">Gmail Sentiment Analysis with Gemini and Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/85643?catalog_rank=%7B%22rank%22%3A19%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610121" target="_blank" rel="noopener noreferrer">Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=75402418" target="_blank" rel="noopener noreferrer">Create a RAG Application with BigQuery</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://docs.cloud.google.com/generative-ai-app-builder/docs/try-enterprise-search#create_a_data_store" target="_blank" rel="noopener noreferrer">Get started with custom search</a></strong></td><td>Tutorial</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/22020?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610347" target="_blank" rel="noopener noreferrer">Identify Damaged Car Parts with Vertex AutoML</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610391" target="_blank" rel="noopener noreferrer">Build and Deploy an Agent with Agent Engine in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610456" target="_blank" rel="noopener noreferrer">Deploy and Manage Generative AI Models</a></strong></td><td>Path</td></tr></tbody></table></div>
           <h4 class="module-subtitle-small">Important Agents</h4>
           <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo e link</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/1504?catalog_rank=%7B%22rank%22%3A66%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610516" target="_blank" rel="noopener noreferrer">Understand Google Cloud Agents</a></strong></td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599599" target="_blank" rel="noopener noreferrer">Enable informed decision making with a conversational agent that uses generators and data stores</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599605" target="_blank" rel="noopener noreferrer">Get Started with Agent Development Kit (ADK)</a></strong></td><td>Lab</td></tr></tbody></table></div>
         </section>
@@ -360,5 +418,34 @@ h1 {
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+
+  <script>
+  (() => {
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const page = window.location.pathname.split('/').pop() || '';
+    const customMap = {
+      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
+      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
+    };
+
+    document.querySelectorAll('.lang-switch').forEach((sw) => {
+      const itLink = sw.querySelector('[data-lang="it"]');
+      const enLink = sw.querySelector('[data-lang="en"]');
+      if (customMap[page]) {
+        const itUrl = new URL(customMap[page].it, window.location.href).toString();
+        const enUrl = new URL(customMap[page].en, window.location.href).toString();
+        if (itLink) itLink.href = itUrl;
+        if (enLink) enLink.href = enUrl;
+        return;
+      }
+
+      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
+      if (itLink) itLink.href = currentUrl;
+      if (enLink) enLink.href = enUrl;
+    });
+  })();
+  </script>
+
+
 </body>
 </html>

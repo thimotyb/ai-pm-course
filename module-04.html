@@ -137,14 +137,6 @@ h1 {
   line-height: 1.2;
 }
 
-.module-section-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.6rem;
-  color: var(--accent-primary);
-  margin: 30px 0 12px;
-  line-height: 1.25;
-}
-
 .module-subtitle {
   font-family: 'Outfit', sans-serif;
   font-size: 1.3rem;
@@ -295,253 +287,47 @@ h1 {
   text-align: center;
 }
 
-
-.outline-panel {
+.lang-switch {
   position: fixed;
-  top: 18px;
-  left: 12px;
-  bottom: 18px;
-  width: 292px;
-  z-index: 950;
-  display: none;
-}
-
-.outline-frame {
-  height: 100%;
-  background: rgba(0, 18, 40, 0.92);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
-  overflow: hidden;
+  top: 14px;
+  right: 14px;
+  z-index: 1100;
   display: flex;
-  flex-direction: column;
+  gap: 6px;
 }
 
-.outline-title {
-  font-family: 'Outfit', sans-serif;
-  letter-spacing: 0.4px;
-  font-size: 1rem;
-  color: var(--accent-secondary);
-  padding: 12px 14px 8px;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.outline-nav-tree {
-  padding: 10px 10px 12px;
-  overflow: auto;
-}
-
-.outline-root,
-.outline-sublist {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.outline-root {
-  display: grid;
-  gap: 8px;
-}
-
-.outline-group {
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.outline-group > summary {
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-}
-
-.outline-group > summary::-webkit-details-marker {
-  display: none;
-}
-
-.outline-summary-label {
+.lang-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-width: 0;
-}
-
-.outline-summary-label::before {
-  content: '▸';
-  color: var(--accent-primary);
-  font-size: 0.82rem;
-  transform: translateY(-1px);
-  transition: transform 0.2s ease;
-}
-
-.outline-group[open] .outline-summary-label::before {
-  transform: rotate(90deg) translateX(1px);
-}
-
-.outline-sublist {
-  padding: 2px 8px 8px;
-  display: grid;
-  gap: 4px;
-}
-
-.outline-link {
-  display: inline-block;
   text-decoration: none;
-  color: #d9e3ef;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-size: 0.84rem;
-  line-height: 1.35;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.outline-link:hover {
-  color: #ffffff;
-  border-color: rgba(0, 212, 255, 0.45);
-  background: rgba(0, 212, 255, 0.12);
-}
-
-.outline-section-link {
-  font-size: 0.76rem;
-  color: #9eefff;
-  border: 1px solid rgba(0, 212, 255, 0.35);
-  background: rgba(0, 212, 255, 0.08);
-  white-space: nowrap;
-}
-
-.outline-link.active {
-  color: #ffffff;
-  border-color: rgba(255, 204, 0, 0.55);
-  background: rgba(255, 204, 0, 0.14);
-}
-
-@media (min-width: 1260px) {
-  .outline-panel {
-    display: block;
-  }
-
-  .container {
-    max-width: 1320px;
-    padding-left: 332px;
-  }
-}
-
-
-.print-btn {
-  position: fixed;
-  right: 14px;
-  top: calc(50% + 56px);
-  z-index: 999;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 18, 40, 0.85);
   color: var(--text-color);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  padding: 10px 12px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: rgba(0, 18, 40, 0.88);
+  line-height: 1;
 }
 
-.print-btn:hover {
-  background: rgba(0, 28, 62, 0.95);
+.lang-btn:hover {
   border-color: var(--accent-secondary);
-  transform: scale(1.03);
+  background: rgba(0, 28, 62, 0.95);
 }
 
-.print-icon {
-  margin-right: 6px;
+.lang-btn.is-active {
+  border-color: var(--accent-primary);
+  background: rgba(255, 204, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  .print-btn {
-    top: auto;
-    bottom: 52px;
-    right: 12px;
-    font-size: 0.78rem;
-    padding: 9px 10px;
-  }
+.lang-flag {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
 }
 
-@media print {
-  body {
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
-
-  h1 {
-    background: none !important;
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-  }
-
-  .outline-panel,
-  .to-top-btn,
-  .print-btn,
-  .module-nav,
-  .jump-nav {
-    display: none !important;
-  }
-
-  .container {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  header {
-    text-align: left;
-    padding: 0 0 10px;
-  }
-
-  .card {
-    background: #ffffff !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
-
-  h2, h3, h4, p, li, td, th, figcaption {
-    color: #000000 !important;
-  }
-
-  .module-title,
-  .module-section-title,
-  .module-subtitle,
-  .module-subtitle-small {
-    break-after: avoid-page;
-    page-break-after: avoid;
-  }
-
-  .module-image,
-  .table-wrap,
-  .quick-card,
-  .checklist-card {
-    break-inside: avoid-page;
-    page-break-inside: avoid;
-  }
-
-  .module-image img {
-    background: #ffffff !important;
-    border: 1px solid #d0d0d0 !important;
-    padding: 4px !important;
-    max-width: 100% !important;
-  }
-
-  .module-content a,
-  .content-table a {
-    color: #000000 !important;
-    text-decoration: underline;
-  }
+.lang-code {
+  letter-spacing: 0.3px;
 }
 
 .to-top-btn {
@@ -568,9 +354,16 @@ h1 {
 }
 
 @media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 6px 9px;
+  }
   h1 { font-size: 2.25rem; }
   .module-title { font-size: 1.55rem; }
-  .module-section-title { font-size: 1.35rem; }
   .container { padding: 20px 14px 36px; }
   .card { padding: 18px; }
   .to-top-btn {
@@ -587,14 +380,15 @@ h1 {
 }
 </style>
 </head>
-<body>
+<body class="">
+
+  <div class="lang-switch" aria-label="Language switch">
+    <a class="lang-btn is-active" data-lang="it" href="#"><span class="lang-flag" aria-hidden="true">🇮🇹</span><span class="lang-code">IT</span></a>
+    <a class="lang-btn" data-lang="en" href="#"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
+  </div>
+
+
   <div class="container">
-    <aside class="outline-panel" aria-label="Struttura del modulo">
-      <div class="outline-frame">
-        <p class="outline-title">Struttura del modulo</p>
-        <nav id="outline-nav" class="outline-nav-tree"></nav>
-      </div>
-    </aside>
     <header>
       <p class="subtitle">Progettare e gestire le soluzioni AI in azienda</p>
       <h1>Modulo 04</h1>
@@ -610,25 +404,24 @@ h1 {
 
         <section class="module-content">
           <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> valutare la qualità dell&#x27;output AI in modo strutturato, con criteri tecnici, rischi di governance e impatto business.</li><li><strong>Focus operativo:</strong> sicurezza, privacy, bias, trasparenza e accountability come leve concrete di qualità.</li><li><strong>Risultato atteso:</strong> un framework di controllo che riduce incidenti e aumenta affidabilità, adozione e compliance.</li></ul></section>
-          <h2 class="module-section-title">1. Fondamenti di qualità e sicurezza</h2>
-          <h3 class="module-subtitle">1.1 Qualità dell&#x27;output: oltre la sola accuratezza</h3>
+          <h3 class="module-subtitle">Qualità dell&#x27;output: oltre la sola accuratezza</h3>
           <p>La qualità di una risposta AI non coincide solo con &quot;è corretta o no&quot;. In un contesto aziendale serve valutare almeno cinque dimensioni simultanee:</p>
           <ol><li><strong>Correttezza fattuale</strong> (aderenza alle fonti e assenza di invenzioni).</li><li><strong>Rilevanza rispetto al task</strong> (risponde davvero alla richiesta).</li><li><strong>Sicurezza</strong> (assenza di azioni o suggerimenti dannosi).</li><li><strong>Equità</strong> (assenza di pattern discriminatori sistematici).</li><li><strong>Comprensibilità e tracciabilità</strong> (output interpretabile e giustificabile).</li></ol>
           <p>Questo approccio riduce il rischio di risposte formalmente ben scritte ma operative­mente sbagliate.</p>
-          <h3 class="module-subtitle">1.2 Sicurezza dell&#x27;output su tre livelli</h3>
+          <h3 class="module-subtitle">Sicurezza dell&#x27;output su tre livelli</h3>
           <p>Per governare la qualità bisogna controllare la sicurezza su:</p>
           <ul><li><strong>dati</strong> (integrità e confidenzialità),</li><li><strong>modello</strong> (supply chain e dipendenze),</li><li><strong>uso in produzione</strong> (input avversariali, output non sicuri, abuso dei canali di integrazione).</li></ul>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img04.png" alt="Sicurezza AI sui livelli dati, intelligenza e user experience" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.1: le aree di sicurezza da presidiare per evitare degrado della qualità in produzione</figcaption></figure>
-          <h3 class="module-subtitle">1.3 Sicurezza dei dati: integrità, riservatezza, proprietà intellettuale</h3>
+          <h3 class="module-subtitle">Sicurezza dei dati: integrità, riservatezza, proprietà intellettuale</h3>
           <p>I principali vettori di rischio dati sono:</p>
           <ol><li><strong>Data poisoning:</strong> dati alterati che degradano output e raccomandazioni.</li><li><strong>Data leakage/exfiltration:</strong> esposizione non autorizzata di informazioni sensibili.</li><li><strong>IP exposure:</strong> uso improprio di contenuti proprietari o coperti da licenza.</li></ol>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img05.png" alt="Classificazione dei dati per livelli di confidenzialità" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.2: classificazione dati come base per policy differenziate di accesso e protezione</figcaption></figure>
           <p>Contromisure minime:</p>
           <ul><li>validazione sistematica dataset in ingresso;</li><li>minimizzazione e anonimizzazione dove possibile;</li><li>cifratura end-to-end e controlli RBAC;</li><li>audit periodici su flussi dati e log di accesso.</li></ul>
-          <h3 class="module-subtitle">1.4 Sicurezza del modello: rischio supply chain</h3>
+          <h3 class="module-subtitle">Sicurezza del modello: rischio supply chain</h3>
           <p>Quando si integrano componenti esterni, la qualità dell&#x27;output dipende anche dalla fiducia nel software di terze parti. La gestione corretta include:</p>
           <ul><li>scansione vulnerabilità delle dipendenze;</li><li>SBOM per inventario completo dei componenti;</li><li>aggiornamento controllato delle librerie;</li><li>sandboxing e policy di isolamento;</li><li>vendor risk management con test regolari.</li></ul>
-          <h3 class="module-subtitle">1.5 Sicurezza d&#x27;uso: prompt injection e output handling</h3>
+          <h3 class="module-subtitle">Sicurezza d&#x27;uso: prompt injection e output handling</h3>
           <p>Il rischio più immediato per la qualità in ambienti aperti è il prompt injection, sia:</p>
           <ul><li><strong>diretto</strong> (istruzioni malevole nel prompt utente),</li><li><strong>indiretto</strong> (istruzioni malevole introdotte da fonti esterne recuperate).</li></ul>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img07.png" alt="Prompt injection diretto" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.3: istruzioni nocive inserite direttamente nella richiesta utente</figcaption></figure>
@@ -636,8 +429,10 @@ h1 {
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img10.png" alt="Esempio di input malevolo che tenta di disattivare i guardrail" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.5: payload avversariale tipico da intercettare prima della generazione</figcaption></figure>
           <p>Pratiche essenziali:</p>
           <ol><li>validazione input e filtri semantici;</li><li>separazione netta tra istruzioni di sistema e contenuto utente;</li><li>reset di sessione per limitare accumulo di contesto manipolato;</li><li>output validation prima dell&#x27;esecuzione da parte di sistemi downstream.</li></ol>
-          <h2 class="module-section-title">2. Responsible AI e controllo operativo</h2>
-          <h3 class="module-subtitle">2.1 Privacy-by-design come requisito di qualità</h3>
+          <p>Quando si implementano pattern per ridurre prompt avversariali e migliorare la qualità dell&#x27;output, una leva utile è costruire una Search App con controlli espliciti sull&#x27;interazione. In questo assetto si possono combinare:</p>
+          <ul><li>filtri contro query avversariali o poco rilevanti;</li><li>retrieval su fonti indicizzate e controllate;</li><li>doppia query o doppio passaggio di ricerca/risposta per verificare meglio pertinenza e aggiornamento del contenuto restituito.</li></ul>
+          <figure class="module-image"><img src="assets/chapt03_images/search_app_grounding_builder_m03.png" alt="Schermata di configurazione di una Search App per grounding in Google Cloud AI Applications" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.5b: esempio di Search App configurata per grounding, filtri su query avversariali e test della qualità dell&#x27;output su fonti recuperate</figcaption></figure>
+          <h3 class="module-subtitle">Privacy-by-design come requisito di qualità</h3>
           <p>Un output è di qualità solo se non compromette dati personali, segreti industriali o informazioni regolamentate. Per questo la privacy va progettata dall&#x27;inizio, non aggiunta a posteriori.</p>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img02.png" alt="Principali rischi privacy in un sistema AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.6: mappa dei punti di vulnerabilità privacy lungo la catena del valore AI</figcaption></figure>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img03.png" alt="Principi guida della privacy-by-design" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.7: principi operativi per incorporare protezione dati nel lifecycle</figcaption></figure>
@@ -645,7 +440,7 @@ h1 {
           <ul><li><strong>Proattivo, non reattivo; preventivo, non correttivo:</strong> la privacy va affrontata nelle fasi iniziali di analisi e progettazione, anticipando i rischi prima che diventino incidenti. Questo implica valutazioni d&#x27;impatto privacy, identificazione preventiva delle vulnerabilità e correzione dei punti deboli prima del rilascio.</li><li><strong>Privacy come impostazione predefinita:</strong> la configurazione standard del sistema deve proteggere i dati senza richiedere azioni aggiuntive da parte dell&#x27;utente. Anonimizzazione, minimizzazione e mascheramento dei dati sensibili devono quindi essere attivi di default.</li><li><strong>Privacy incorporata nella progettazione:</strong> i controlli privacy non vanno aggiunti a valle, ma integrati direttamente nell&#x27;architettura, nei flussi dati e nelle logiche del modello. Significa progettare fin dall&#x27;inizio limitazione del dato, uso di dati anonimizzati e meccanismi tecnici che riducano l&#x27;esposizione non necessaria.</li><li><strong>Piena funzionalità:</strong> proteggere la privacy non deve significare rinunciare al valore del sistema. L&#x27;obiettivo è una logica &quot;positive-sum&quot;: mantenere efficacia, qualità dell&#x27;output e innovazione senza sacrificare la tutela dei dati.</li><li><strong>Sicurezza end-to-end:</strong> i dati devono essere protetti dall&#x27;acquisizione fino alla cancellazione o archiviazione finale. Servono quindi cifratura in transito e a riposo, controlli di accesso robusti e procedure di cancellazione sicura quando il dato non è più necessario.</li><li><strong>Visibilità e trasparenza:</strong> utenti, clienti e stakeholder devono poter capire come i dati vengono trattati, per quali finalità e con quali controlli. Report di utilizzo, log consultabili e spiegazioni chiare sui flussi dati rafforzano fiducia e verificabilità.</li><li><strong>Rispetto della privacy dell&#x27;utente:</strong> le persone devono mantenere controllo reale sui propri dati e sulle preferenze di utilizzo. Questo richiede dashboard semplici, opzioni di consenso e revoca, nonché possibilità di modificare in ogni momento le impostazioni privacy.</li></ul>
           <p>In pratica:</p>
           <ul><li>selezionare modelli e fornitori con policy di retention chiare;</li><li>evitare trasferimenti non necessari di dati sensibili;</li><li>definire consenso, finalità e tempi di conservazione;</li><li>documentare controlli e responsabilità.</li></ul>
-          <h3 class="module-subtitle">2.2 Bias e fairness: prevenire qualità distorta</h3>
+          <h3 class="module-subtitle">Bias e fairness: prevenire qualità distorta</h3>
           <p>La qualità si degrada quando il sistema produce risultati sbilanciati tra gruppi o contesti. Le fonti principali del bias sono:</p>
           <ul><li>dati storici non rappresentativi,</li><li>scelte algoritmiche non neutre,</li><li>feedback loop che rinforzano errori passati.</li></ul>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img06.png" alt="Origini del bias: dati, algoritmo, feedback loop" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.8: le tre sorgenti da monitorare per evitare discriminazioni sistematiche</figcaption></figure>
@@ -656,7 +451,7 @@ h1 {
           <p>Dal punto di vista operativo, questo esempio serve a ricordare che i test di fairness non devono limitarsi a metriche aggregate: conviene anche costruire prompt paralleli e controllati per confrontare come il modello descrive gruppi diversi in scenari equivalenti.</p>
           <p>Approccio di mitigazione:</p>
           <ol><li>dataset più bilanciati e aggiornati;</li><li>metriche fairness in validazione e monitoraggio;</li><li>supervisione umana su decisioni ad alto impatto;</li><li>alert automatici su drift di distribuzione tra segmenti.</li></ol>
-          <h3 class="module-subtitle">2.3 Trasparenza e fiducia nell&#x27;output</h3>
+          <h3 class="module-subtitle">Trasparenza e fiducia nell&#x27;output</h3>
           <p>Per favorire adozione e uso corretto, l&#x27;output deve essere:</p>
           <ul><li><strong>spiegabile</strong> (perché quella risposta),</li><li><strong>interpretabile</strong> (leggibile da chi decide),</li><li><strong>accountable</strong> (chi è responsabile e come si interviene).</li></ul>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img09.png" alt="Le tre componenti della trasparenza: explainability, interpretability, accountability" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.9: struttura di trasparenza necessaria per fiducia e adozione nel business</figcaption></figure>
@@ -667,17 +462,16 @@ h1 {
           <p>Questo però resta un approccio solo <strong>parziale</strong> alla spiegabilità. Il motivo è che il testo di reasoning mostrato all&#x27;utente non equivale a una vera ispezione dei meccanismi interni del modello:</p>
           <ul><li>non mostra direttamente quali attivazioni, pesi o rappresentazioni interne hanno determinato l&#x27;output;</li><li>può essere una <strong>razionalizzazione leggibile</strong> utile per l&#x27;utente, ma non una prova completa di ciò che il modello &quot;ha davvero fatto&quot; internamente;</li><li>può aumentare fiducia e verificabilità operativa, ma non sostituisce test, audit, analisi degli errori, tracciabilità dei dati e controlli indipendenti.</li></ul>
           <p>La regola pratica è quindi questa: usare la modalità Thinking come supporto a <strong>trasparenza operativa e revisione</strong>, non come garanzia definitiva di spiegabilità tecnica del modello.</p>
-          <h3 class="module-subtitle">2.4 Accountability operativa: HITL, HOTL, HOOTL</h3>
+          <h3 class="module-subtitle">Accountability operativa: HITL, HOTL, HOOTL</h3>
           <p>La scelta del livello di supervisione determina qualità e rischio:</p>
           <ol><li><strong>HITL</strong> (Human-in-the-Loop): approvazione umana obbligatoria prima dell&#x27;azione.</li><li><strong>HOTL</strong> (Human-on-the-Loop): monitoraggio umano con possibilità di intervento.</li><li><strong>HOOTL</strong> (Human-out-of-the-Loop): automazione piena su casi a basso rischio e regole stabili.</li></ol>
           <p>La regola pratica è semplice: più alto l&#x27;impatto potenziale dell&#x27;errore, più forte deve essere la supervisione umana.</p>
-          <h3 class="module-subtitle">2.5 Approccio proattivo: governance shift-left</h3>
+          <h3 class="module-subtitle">Approccio proattivo: governance shift-left</h3>
           <p>Per evitare gestione reattiva degli incidenti, la governance va anticipata nelle prime fasi di progettazione: ideazione, dati, sviluppo, test, rilascio e monitoraggio continuo.</p>
           <figure class="module-image"><img src="assets/chapt11_images/ch11_img01.png" alt="Roadmap shift-left per implementare governance proattiva" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M4.10: integrazione anticipata dei controlli per ridurre rischi e rework in produzione</figcaption></figure>
-          <h2 class="module-section-title">3. Chiusura del modulo</h2>
-          <h3 class="module-subtitle">3.1 KPI di qualità da monitorare nel Modulo 04</h3>
+          <h3 class="module-subtitle">KPI di qualità da monitorare nel Modulo 04</h3>
           <ol><li><strong>Groundedness:</strong> quota output supportati da fonti affidabili.</li><li><strong>Fedeltà al task:</strong> aderenza ai requisiti espliciti della richiesta.</li><li><strong>Coerenza:</strong> stabilità logica interna della risposta.</li><li><strong>Rilevanza:</strong> pertinenza al contesto utente e al dominio.</li><li><strong>Security incident rate:</strong> frequenza di prompt injection o output non sicuri.</li><li><strong>Fairness metrics:</strong> differenze di qualità/esito tra gruppi o segmenti.</li><li><strong>Privacy incidents:</strong> eventi di leakage o accesso improprio.</li></ol>
-          <section class="checklist-card"><h3 class="module-subtitle">3.2 Checklist dei concetti principali</h3><ol><li>Definire criteri di qualità multi-dimensione prima dei test di output.</li><li>Implementare validazione input/output e guardrail di sicurezza.</li><li>Applicare privacy-by-design su dati, prompt, log e integrazioni.</li><li>Inserire controlli fairness nel ciclo di validazione e monitoraggio.</li><li>Stabilire livello di oversight umano per ogni tipologia di decisione.</li><li>Attivare roadmap shift-left con audit periodici e miglioramento continuo.</li></ol></section>
+          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Definire criteri di qualità multi-dimensione prima dei test di output.</li><li>Implementare validazione input/output e guardrail di sicurezza.</li><li>Applicare privacy-by-design su dati, prompt, log e integrazioni.</li><li>Inserire controlli fairness nel ciclo di validazione e monitoraggio.</li><li>Stabilire livello di oversight umano per ogni tipologia di decisione.</li><li>Attivare roadmap shift-left con audit periodici e miglioramento continuo.</li></ol></section>
           <h3 class="module-subtitle">Link utili del modulo</h3>
           <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo</th><th>Descrizione</th><th>Link</th></tr></thead><tbody><tr><td>Google Responsible AI (Generative AI)</td><td>Documentazione pratica per tradurre principi di fairness, sicurezza e trasparenza in checklist di progetto, test e controlli di rilascio su applicazioni GenAI.</td><td><a href="https://ai.google.dev/responsible/docs" target="_blank" rel="noopener noreferrer">Google AI - Responsible AI Docs</a></td></tr><tr><td>Responsible AI Toolbox</td><td>Toolkit Microsoft con strumenti per fairness assessment, error analysis, interpretabilità e monitoraggio della qualità del modello in validazione.</td><td><a href="https://responsibleaitoolbox.ai/" target="_blank" rel="noopener noreferrer">Responsible AI Toolbox</a></td></tr><tr><td>Responsible AI Dashboard Tour (Tabular)</td><td>Notebook ufficiale che mostra come usare il dashboard Microsoft per confrontare gruppi, leggere metriche di fairness e individuare aree di rischio operativo.</td><td><a href="https://github.com/microsoft/responsible-ai-toolbox/blob/main/notebooks/responsibleaidashboard/tabular/tour.ipynb" target="_blank" rel="noopener noreferrer">Responsible AI Dashboard Tour - Notebook</a></td></tr><tr><td>DistilGPT2 Model Card (Hugging Face)</td><td>Model card utile per mostrare in modo immediato come emergono bias e stereotipi nella generazione testuale, con esempi riproducibili via <code>pipeline(&#x27;text-generation&#x27;)</code>.</td><td><a href="https://huggingface.co/distilbert/distilgpt2" target="_blank" rel="noopener noreferrer">Hugging Face - distilbert/distilgpt2</a></td></tr><tr><td>OpenAI Reasoning Models</td><td>Riferimento utile per osservare come i modelli reasoning possono essere usati per scomporre problemi complessi e rendere più verificabile la logica della risposta.</td><td><a href="https://platform.openai.com/docs/guides/reasoning" target="_blank" rel="noopener noreferrer">OpenAI Platform - Reasoning</a></td></tr><tr><td>Google Gemini 2.5</td><td>Documentazione ufficiale su una famiglia di modelli con capacità di reasoning avanzato, utile per capire come strutturare task multi-step e analisi più trasparenti.</td><td><a href="https://ai.google.dev/gemini-api/docs/models#gemini-2.5" target="_blank" rel="noopener noreferrer">Google AI for Developers - Gemini 2.5</a></td></tr><tr><td>Anthropic Extended Thinking</td><td>Documentazione ufficiale della modalità extended thinking di Claude, utile per comprendere quando usare più elaborazione esplicita nei task complessi.</td><td><a href="https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking" target="_blank" rel="noopener noreferrer">Anthropic Docs - Extended Thinking</a></td></tr></tbody></table></div>
         </section>
@@ -687,164 +481,35 @@ h1 {
       </article>
     </main>
   </div>
-  <button class="print-btn" type="button" id="print-page-btn" aria-label="Stampa questa pagina"><span class="print-icon" aria-hidden="true">&#128424;</span>Stampa</button>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+
   <script>
   (() => {
-    const panel = document.querySelector('.outline-panel');
-    const host = document.getElementById('outline-nav');
-    const content = document.querySelector('.module-content');
-    if (!panel || !host || !content) return;
-
-    const slugCounter = {};
-    const normalize = (value) => {
-      const slug = value
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-      return slug || 'section';
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const page = window.location.pathname.split('/').pop() || '';
+    const customMap = {
+      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
+      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
     };
 
-    const ensureId = (el) => {
-      if (el.id) return el.id;
-      const base = normalize(el.textContent.trim());
-      const count = (slugCounter[base] || 0) + 1;
-      slugCounter[base] = count;
-      el.id = count === 1 ? base : `${base}-${count}`;
-      return el.id;
-    };
-
-    const ordered = Array.from(content.querySelectorAll('h2.module-section-title, h3.module-subtitle'));
-    const sections = [];
-    const pending = [];
-
-    ordered.forEach((heading) => {
-      if (heading.matches('h2.module-section-title')) {
-        sections.push({ heading, children: [] });
+    document.querySelectorAll('.lang-switch').forEach((sw) => {
+      const itLink = sw.querySelector('[data-lang="it"]');
+      const enLink = sw.querySelector('[data-lang="en"]');
+      if (customMap[page]) {
+        const itUrl = new URL(customMap[page].it, window.location.href).toString();
+        const enUrl = new URL(customMap[page].en, window.location.href).toString();
+        if (itLink) itLink.href = itUrl;
+        if (enLink) enLink.href = enUrl;
         return;
       }
-      if (sections.length === 0) pending.push(heading);
-      else sections[sections.length - 1].children.push(heading);
+
+      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
+      if (itLink) itLink.href = currentUrl;
+      if (enLink) enLink.href = enUrl;
     });
-
-    if (sections.length === 0) {
-      const moduleTitle = document.querySelector('.module-title');
-      if (moduleTitle) {
-        sections.push({
-          heading: moduleTitle,
-          children: Array.from(content.querySelectorAll('h3.module-subtitle'))
-        });
-      }
-    } else if (pending.length > 0) {
-      sections[0].children.unshift(...pending);
-    }
-
-    if (sections.length === 0) {
-      panel.style.display = 'none';
-      return;
-    }
-
-    const root = document.createElement('ul');
-    root.className = 'outline-root';
-
-    const linkById = new Map();
-    const headingOrder = [];
-
-    sections.forEach((section, index) => {
-      const sectionId = ensureId(section.heading);
-      headingOrder.push(section.heading);
-
-      const item = document.createElement('li');
-      const details = document.createElement('details');
-      details.className = 'outline-group';
-      details.open = index === 0;
-
-      const summary = document.createElement('summary');
-      const label = document.createElement('span');
-      label.className = 'outline-summary-label';
-      label.textContent = section.heading.textContent.trim();
-
-      const jump = document.createElement('a');
-      jump.className = 'outline-link outline-section-link';
-      jump.href = `#${sectionId}`;
-      jump.textContent = 'Vai';
-      jump.addEventListener('click', (event) => event.stopPropagation());
-
-      summary.append(label, jump);
-      details.appendChild(summary);
-      linkById.set(sectionId, jump);
-
-      if (section.children.length > 0) {
-        const sub = document.createElement('ul');
-        sub.className = 'outline-sublist';
-
-        section.children.forEach((child) => {
-          const childId = ensureId(child);
-          headingOrder.push(child);
-
-          const li = document.createElement('li');
-          const link = document.createElement('a');
-          link.className = 'outline-link';
-          link.href = `#${childId}`;
-          link.textContent = child.textContent.trim();
-          li.appendChild(link);
-          sub.appendChild(li);
-          linkById.set(childId, link);
-        });
-
-        details.appendChild(sub);
-      }
-
-      item.appendChild(details);
-      root.appendChild(item);
-    });
-
-    host.replaceChildren(root);
-
-    let ticking = false;
-
-    const setActive = () => {
-      ticking = false;
-      if (headingOrder.length === 0) return;
-
-      let active = headingOrder[0];
-      for (const heading of headingOrder) {
-        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
-        else break;
-      }
-
-      linkById.forEach((link) => link.classList.remove('active'));
-      const activeId = ensureId(active);
-      const activeLink = linkById.get(activeId);
-      if (activeLink) {
-        activeLink.classList.add('active');
-        const group = activeLink.closest('details.outline-group');
-        if (group) group.open = true;
-      }
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(setActive);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('hashchange', setActive);
-    setActive();
   })();
   </script>
 
-  <script>
-  (() => {
-    const printBtn = document.getElementById('print-page-btn');
-    if (!printBtn) return;
-    printBtn.addEventListener('click', () => window.print());
-  })();
-  </script>
 
 </body>
 </html>
