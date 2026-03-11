@@ -13,6 +13,7 @@ def parse_course(markdown: str):
     labs_body = ''
     bibliography_body = ''
     home_note_body = ''
+    en_translations = {}
 
     title_match = re.search(r'^#\s+(.+)$', markdown, re.M)
     if title_match:
@@ -31,12 +32,13 @@ def parse_course(markdown: str):
     labs_body = section_bodies.get('labs', '')
     bibliography_body = section_bodies.get('bibliografia', '')
     home_note_body = section_bodies.get('nota home', '')
+    translations_body = section_bodies.get('traduzioni en', '')
 
     modules_region = markdown
     tail_starts = [
         match.start()
         for match in section_matches
-        if match.group(1).strip().lower() in {'labs', 'bibliografia', 'nota home'}
+        if match.group(1).strip().lower() in {'labs', 'bibliografia', 'nota home', 'traduzioni en'}
     ]
     if tail_starts:
         modules_region = markdown[:min(tail_starts)]
@@ -52,7 +54,18 @@ def parse_course(markdown: str):
         body = modules_region[start:end].strip('\n')
         modules.append({'number': num, 'title': module_title, 'body': body})
 
-    return title, modules, labs_body, bibliography_body, home_note_body
+    if translations_body:
+        en_pattern = re.compile(r'^###\s+Module\s+(\d+)\s*:\s*(.+)$', re.M)
+        en_matches = list(en_pattern.finditer(translations_body))
+        for idx, match in enumerate(en_matches):
+            num = int(match.group(1))
+            module_title = match.group(2).strip()
+            start = match.end()
+            end = en_matches[idx + 1].start() if idx + 1 < len(en_matches) else len(translations_body)
+            body = translations_body[start:end].strip('\n')
+            en_translations[num] = {'number': num, 'title': module_title, 'body': body}
+
+    return title, modules, labs_body, bibliography_body, home_note_body, en_translations
 
 
 def format_inline(text: str) -> str:
@@ -249,7 +262,9 @@ def body_to_html(body: str) -> str:
     return '\n'.join(out)
 
 
-def module_filename(module_number: int) -> str:
+def module_filename(module_number: int, lang: str = 'it') -> str:
+    if lang == 'en':
+        return f'module-{module_number:02d}-en.html'
     return f'module-{module_number:02d}.html'
 
 
@@ -550,6 +565,36 @@ h1 {
   text-align: center;
 }
 
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1100;
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: rgba(0, 18, 40, 0.88);
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  border-color: var(--accent-secondary);
+  background: rgba(0, 28, 62, 0.95);
+}
+
+.lang-btn.is-active {
+  border-color: var(--accent-primary);
+  background: rgba(255, 204, 0, 0.2);
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -574,6 +619,14 @@ h1 {
 }
 
 @media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 6px 9px;
+  }
   h1 { font-size: 2.25rem; }
   .module-title { font-size: 1.55rem; }
   .container { padding: 20px 14px 36px; }
@@ -731,6 +784,45 @@ OUTLINE_STYLE = '''
 }
 '''
 
+def lang_switch_html(lang: str = 'it') -> str:
+    it_active = ' is-active' if lang == 'it' else ''
+    en_active = ' is-active' if lang == 'en' else ''
+    return f'''
+  <div class="lang-switch" aria-label="Language switch">
+    <a class="lang-btn{it_active}" data-lang="it" href="#">🇮🇹 IT</a>
+    <a class="lang-btn{en_active}" data-lang="en" href="#">🇬🇧 EN</a>
+  </div>
+'''
+
+LANG_SWITCH_SCRIPT = '''
+  <script>
+  (() => {
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const page = window.location.pathname.split('/').pop() || '';
+    const customMap = {
+      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
+      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
+    };
+
+    document.querySelectorAll('.lang-switch').forEach((sw) => {
+      const itLink = sw.querySelector('[data-lang="it"]');
+      const enLink = sw.querySelector('[data-lang="en"]');
+      if (customMap[page]) {
+        const itUrl = new URL(customMap[page].it, window.location.href).toString();
+        const enUrl = new URL(customMap[page].en, window.location.href).toString();
+        if (itLink) itLink.href = itUrl;
+        if (enLink) enLink.href = enUrl;
+        return;
+      }
+
+      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
+      if (itLink) itLink.href = currentUrl;
+      if (enLink) enLink.href = enUrl;
+    });
+  })();
+  </script>
+'''
+
 
 def build_home_page(title: str, modules, labs_body: str, bibliography_body: str, home_note_body: str):
     agenda_items = []
@@ -796,6 +888,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
   <style>{STYLE}</style>
 </head>
 <body>
+{lang_switch_html('it')}
   <div class="container">
     <header>
       <p class="subtitle">Corso di Alta Formazione</p>
@@ -815,28 +908,41 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑ Torna su</button>
+{LANG_SWITCH_SCRIPT}
 </body>
 </html>
 '''
 
 
-def build_module_page(course_title: str, modules, idx: int, labs_body: str):
-    module = modules[idx]
-    num = module['number']
+def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang: str = 'it', translated_module=None):
+    source_module = modules[idx]
+    module = translated_module if translated_module else source_module
+    num = source_module['number']
     body_html = body_to_html(module['body'])
-    has_outline = num == 3
 
+    is_en = lang == 'en'
+    has_outline = (num == 3) and (not is_en)
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
     next_link = module_filename(modules[idx + 1]['number']) if idx < len(modules) - 1 else None
+    home_label = 'Home'
+    prev_label = 'Previous Module' if is_en else 'Modulo Precedente'
+    next_label = 'Next Module' if is_en else 'Modulo Successivo'
+    module_label = 'Module' if is_en else 'Modulo'
+    page_lang = 'en' if is_en else 'it'
+    header_subtitle = 'Designing and Managing AI Solutions' if is_en else course_title
 
-    nav_links = ['<a class="nav-btn" href="index.html">Home</a>']
+    nav_links = [f'<a class="nav-btn" href="index.html">{home_label}</a>']
     if prev_link:
-        nav_links.append(f'<a class="nav-btn" href="{prev_link}">Modulo Precedente</a>')
+        nav_links.append(f'<a class="nav-btn" href="{prev_link}">{prev_label}</a>')
     if next_link:
-        nav_links.append(f'<a class="nav-btn" href="{next_link}">Modulo Successivo</a>')
+        nav_links.append(f'<a class="nav-btn" href="{next_link}">{next_label}</a>')
 
     jump_links = [
-        f'<a class="nav-btn" href="{module_filename(m["number"])}">{m["number"]:02d} - {html.escape(m["title"])}</a>'
+        (
+            f'<a class="nav-btn" href="{module_filename(m["number"], "en" if (is_en and m["number"] == 1) else "it")}">'
+            f'{m["number"]:02d} - {html.escape(module["title"] if (is_en and m["number"] == num and translated_module) else m["title"])}'
+            '</a>'
+        )
         for m in modules
     ]
 
@@ -1014,22 +1120,23 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
     outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
 
     return f'''<!DOCTYPE html>
-<html lang="it">
+<html lang="{page_lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modulo {num:02d} - {html.escape(module['title'])}</title>
+  <title>{module_label} {num:02d} - {html.escape(module['title'])}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
   <style>{STYLE}</style>{outline_style_tag}
 </head>
 <body class="{'has-outline' if has_outline else ''}">
+{lang_switch_html(lang)}
 {outline_html}
   <div class="container">
     <header>
-      <p class="subtitle">{html.escape(course_title)}</p>
-      <h1>Modulo {num:02d}</h1>
+      <p class="subtitle">{html.escape(header_subtitle)}</p>
+      <h1>{module_label} {num:02d}</h1>
     </header>
 
     <main>
@@ -1037,7 +1144,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
         <nav class="module-nav">{''.join(nav_links)}</nav>
         <nav class="jump-nav">{''.join(jump_links)}</nav>
 
-        <p class="module-kicker">Modulo {num:02d}</p>
+        <p class="module-kicker">{module_label} {num:02d}</p>
         <h2 class="module-title">{html.escape(module['title'])}</h2>
 
         <section class="module-content">
@@ -1050,6 +1157,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑ Torna su</button>
+{LANG_SWITCH_SCRIPT}
 {outline_script}
 </body>
 </html>
@@ -1058,7 +1166,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str):
 
 def regenerate():
     markdown = COURSE_MD.read_text(encoding='utf-8')
-    title, modules, labs_body, bibliography_body, home_note_body = parse_course(markdown)
+    title, modules, labs_body, bibliography_body, home_note_body, en_translations = parse_course(markdown)
     if not title:
         raise SystemExit('Missing course title in course.md')
     if not modules:
@@ -1068,8 +1176,19 @@ def regenerate():
 
     generated = ['index.html']
     for idx, module in enumerate(modules):
-        out = Path(module_filename(module['number']))
+        out = Path(module_filename(module['number'], 'it'))
         out.write_text(build_module_page(title, modules, idx, labs_body), encoding='utf-8')
+        generated.append(out.name)
+
+    for module_num, translated in sorted(en_translations.items()):
+        idx = next((i for i, m in enumerate(modules) if m['number'] == module_num), None)
+        if idx is None:
+            continue
+        out = Path(module_filename(module_num, 'en'))
+        out.write_text(
+            build_module_page(title, modules, idx, labs_body, lang='en', translated_module=translated),
+            encoding='utf-8'
+        )
         generated.append(out.name)
 
     print(f'Generated {len(generated)} HTML files from {COURSE_MD}:')

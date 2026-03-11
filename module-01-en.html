@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 01 - AI in projects: levers and critical issues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-color: #000c1d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --accent-primary: #ffcc00;
+  --accent-secondary: #00d4ff;
+  --text-color: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top right, #001f3f, var(--bg-color));
+  color: var(--text-color);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+
+header { text-align: center; padding: 38px 0 24px; }
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-primary), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+}
+
+.agenda-list { list-style: none; display: grid; gap: 12px; }
+
+.agenda-item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-secondary);
+  background: rgba(255,255,255,0.03);
+}
+
+.agenda-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  padding: 14px 16px;
+}
+
+.agenda-number {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent-primary);
+  font-size: 1.35rem;
+  min-width: 42px;
+}
+
+.agenda-text { font-size: 1.1rem; font-weight: 600; }
+.agenda-teaser { color: #cfd8e3; font-size: 0.95rem; margin-top: 4px; }
+
+.module-nav,
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent-secondary); }
+
+.module-kicker {
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.module-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.module-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  margin: 22px 0 10px;
+}
+
+.quick-card {
+  margin: 10px 0 20px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(255, 204, 0, 0.45);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 204, 0, 0.12), rgba(0, 212, 255, 0.06));
+}
+
+.quick-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #fff5cc;
+}
+
+.quick-card p,
+.quick-card ul,
+.quick-card ol {
+  margin-top: 4px;
+}
+
+.checklist-card {
+  margin: 22px 0 8px;
+  padding: 14px 16px 8px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-left: 5px solid var(--accent-secondary);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 204, 0, 0.05));
+}
+
+.checklist-card .module-subtitle {
+  margin: 0 0 8px;
+  color: #d8f8ff;
+}
+
+.checklist-card p,
+.checklist-card ul,
+.checklist-card ol {
+  margin-top: 4px;
+}
+
+.module-subtitle-small {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  margin: 18px 0 8px;
+  color: #d7ecff;
+}
+
+.module-content p { margin-bottom: 12px; color: #e2e7ec; }
+.module-content ul,
+.module-content ol { margin: 8px 0 14px 22px; }
+.module-content li { margin-bottom: 6px; }
+.module-content a { color: var(--accent-secondary); }
+
+.table-wrap {
+  margin: 12px 0 18px;
+  overflow-x: auto;
+}
+
+.content-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-table th {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.content-table td {
+  color: #e2e7ec;
+}
+
+.content-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.module-image { margin: 24px 0; text-align: center; }
+.module-image img {
+  width: 100%;
+  max-width: 820px;
+  background: #ffffff;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+/* Lightbox/Zoom effect */
+.module-image img.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  object-fit: contain;
+  z-index: 10000;
+  background: #ffffff;
+  margin: 0;
+  padding: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+.figure-caption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.footer-nav { margin-top: 20px; }
+.labs-section { margin-top: 28px; }
+.site-footnote {
+  margin: 14px 6px 4px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--glass-border);
+}
+.site-footnote p {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1100;
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  text-decoration: none;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: rgba(0, 18, 40, 0.88);
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  border-color: var(--accent-secondary);
+  background: rgba(0, 28, 62, 0.95);
+}
+
+.lang-btn.is-active {
+  border-color: var(--accent-primary);
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.to-top-btn {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.85);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.to-top-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+@media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 6px 9px;
+  }
+  h1 { font-size: 2.25rem; }
+  .module-title { font-size: 1.55rem; }
+  .container { padding: 20px 14px 36px; }
+  .card { padding: 18px; }
+  .to-top-btn {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    right: 12px;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+  }
+  .to-top-btn:hover {
+    transform: scale(1.03);
+  }
+}
+</style>
+</head>
+<body class="">
+
+  <div class="lang-switch" aria-label="Language switch">
+    <a class="lang-btn" data-lang="it" href="#">🇮🇹 IT</a>
+    <a class="lang-btn is-active" data-lang="en" href="#">🇬🇧 EN</a>
+  </div>
+
+
+  <div class="container">
+    <header>
+      <p class="subtitle">Designing and Managing AI Solutions</p>
+      <h1>Module 01</h1>
+    </header>
+
+    <main>
+      <article class="card">
+        <nav class="module-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Next Module</a></nav>
+        <nav class="jump-nav"><a class="nav-btn" href="module-01-en.html">01 - AI in projects: levers and critical issues</a><a class="nav-btn" href="module-02.html">02 - Come gestire un progetto con IA</a><a class="nav-btn" href="module-03.html">03 - Integrazione GenAI in processi aziendali</a><a class="nav-btn" href="module-04.html">04 - Valutare la qualità dell’output</a><a class="nav-btn" href="module-05.html">05 - Presidio e manutenzione nel quotidiano</a><a class="nav-btn" href="module-06.html">06 - Esempi pratici - Laboratori</a></nav>
+
+        <p class="module-kicker">Module 01</p>
+        <h2 class="module-title">AI in projects: levers and critical issues</h2>
+
+        <section class="module-content">
+          <h3 class="module-subtitle">Module quick reference</h3>
+          <ul><li><strong>AI value levers:</strong> automation and productivity, human-AI collaboration, personalization, innovation, process simplification.</li><li><strong>Critical issues to be monitored:</strong> AI as an end in itself, data quality, risk of error, responsibility, integration with existing systems.</li><li><strong>Integration scenarios:</strong> AI as an add-on, AI as a core product driver, AI as an internal enabler.</li><li><strong>Prioritization:</strong> Always evaluate user impact, business value and technical feasibility with explicit criteria.</li><li><strong>Execution:</strong> Choose cautious or rapid approach based on risk, regulatory compliance and cost of failure.</li><li><strong>Educational objective:</strong> design an effective distribution of work between AI and people, with clear responsibilities.</li></ul>
+          <h3 class="module-subtitle">Define the AI value space</h3>
+          <p>In an AI project the initial question is not &quot;what model do we use?&quot;, but &quot;what problem do we solve and how do we measure the improvement&quot;. Real value emerges when a solution increases performance, reduces operational costs or visibly improves the user experience. Discovering and defining problems worth solving with AI is a complex task that requires balancing long-term strategic goals and quick wins.</p>
+          <p>To correctly set up the discovery of opportunities, the process is divided into three fundamental steps:</p>
+          <ul><li><strong>Identify opportunities:</strong> Identify areas where AI can add value starting from user feedback and technological advancements.</li><li><strong>Prioritize opportunities:</strong> evaluate technical feasibility, impact and alignment with business objectives.</li><li><strong>Shape opportunities:</strong> Shape opportunities by exploring solution approaches and refining concepts into concrete features.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p02_01.jpg" alt="The process of discovering AI opportunities" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.1: The process of discovering AI opportunities</figcaption></figure>
+          <h3 class="module-subtitle">Operational example: music streaming service</h3>
+          <p>A useful example is designing a music streaming app geared towards growing listening and reducing churn. The opportunity tree helps to start from the business objective and break it down into concrete opportunities on which to intervene with AI.</p>
+          <p>In the streaming case, the &quot;engagement&quot; branch can include personalized recommendations, dynamic playlists and contextual suggestions based on the time of day. The &quot;loyalty&quot; branch can instead include early detection of churn signals, proactive campaigns and optimization of the music onboarding experience.</p>
+          <p>The practical usefulness of the tree is that it makes the connection between outcome metrics and product choices explicit: each opportunity can be evaluated on user impact, business value and technical feasibility before moving on to development.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/image.png" alt="AI opportunity tree for a music streaming app" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.2: AI Opportunity Tree for a Music Streaming App</figcaption></figure>
+          <h3 class="module-subtitle">Value levers: how AI impacts processes</h3>
+          <p>Effective planning starts from understanding the expected benefits. The six main types of benefits include:</p>
+          <p><strong>1. Automation and productivity:</strong> AI excels at handling repetitive tasks that require many small decisions (e.g. customer service, fraud detection). Value is tangible when the cost of the AI ​​process (development + execution + error handling) is significantly lower than the cost of the manual process.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p05_01.jpg" alt="AI Cost Equation for Automation" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.3: The cost equation for automation opportunities</figcaption></figure>
+          <p><strong>2. Improvement and support:</strong> rather than replacing humans, AI collaborates by bringing its strengths (large-scale data processing, precision in defined domains) to support human capabilities (understanding of context, creativity, emotional intelligence).</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p06_01.jpg" alt="Strengths Human vs AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.4: Human and AI Forces Compared in Product Design</figcaption></figure>
+          <p><strong>3. Personalization:</strong> tailor products and services to individual preferences using user behavior data. Good personalization requires a solid foundation of data and continuous refinement so as not to alienate the user with irrelevant or invasive suggestions.</p>
+          <p><strong>4. Inspiration and innovation:</strong> AI can transform innovation processes by accelerating the idea-action cycle and analyzing complex patterns in large volumes of data (e.g. discovery of new materials or drugs).</p>
+          <p><strong>5. Convenience:</strong> Reduce friction in user journeys by eliminating tedious steps, such as with intelligent voice searches or automatic scheduling systems.</p>
+          <p><strong>6. Emotional benefits:</strong> Create interactions that resonate on a personal level, like voice assistants that understand tone or recommendation engines that pick up on subtle emotional nuances.</p>
+          <h3 class="module-subtitle">When not to use AI: Two rules of thumb</h3>
+          <p>Not all decisions are good candidates for automation:</p>
+          <ul><li><strong>Rare or one-off decisions:</strong> The cost of designing and maintaining may outweigh the benefit.</li><li><strong>Mandatory full explainability:</strong> in processes that require linear and fully traceable reasons (e.g. high-impact legal or credit procedures), rules-based or hybrid approaches may be more suitable.</li></ul>
+          <h3 class="module-subtitle">Critical issues and integration scenarios</h3>
+          <p>There are three main scenarios for integrating AI into a business:</p>
+          <ul><li><strong>AI as an add-on:</strong> updating an existing product (e.g. adding sustainable reporting functionality to an existing tool). It requires great attention to managing fragmented data and user experience.</li><li><strong>AI as the central value driver:</strong> AI is the primary driver of the value proposition (&quot;greenfield&quot; scenarios). It requires investment in high-quality data collection from the start.</li><li><strong>AI as an internal enabler:</strong> optimization of operational processes &quot;behind the scenes&quot; (e.g. more precise customer segmentation for marketing). Requires clear efficiency metrics.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p15_01.jpg" alt="Three AI integration scenarios" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.5: AI integration scenarios: add-on, core engine, internal enabler</figcaption></figure>
+          <h3 class="module-subtitle">Case study: Miro</h3>
+          <p>Miro represents a useful case of AI integration in a product already adopted on a large scale for visual collaboration. AI does not replace the main workflow, but accelerates high-volume cognitive activities: content synthesis, reorganization of ideas, generation of first drafts and support for decision convergence in workshops.</p>
+          <p>From a design perspective, value comes from inserting AI where the team wastes the most time: moving from lots of messy inputs to a shared, actionable structure. In this scheme, the human component remains decisive for priorities, quality of decisions and final validation.</p>
+          <p>This case study illustrates a general principle well: AI generates ROI when it reduces the time between exploration and operational alignment without compromising control, transparency and quality of the output.</p>
+          <p>Reference link: <a href="https://miro.com/" target="_blank" rel="noopener noreferrer">Miro</a></p>
+          <figure class="module-image"><img src="assets/chapt02_images/miro.png" alt="Miro case study" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.6: Example of AI integration in Miro for team collaboration</figcaption></figure>
+          <h3 class="module-subtitle">Three ways of integrating into products</h3>
+          <ol><li><strong>AI as an add-on</strong> on existing product.</li><li><strong>AI as the central engine</strong> of a natively AI product.</li><li><strong>AI as an internal enabler</strong> to optimize operational processes.</li></ol>
+          <p>In the add-on model the advantage is speed to market thanks to an already existing user base and processes; the challenge is to integrate without degrading user experience and trust. In the native AI model the priority is to build model and data quality quickly. In the internal model the focus is operational ROI: efficiency, data security, team adoption and continuity of use.</p>
+          <h3 class="module-subtitle">AI Opportunity Sources: Building a Continuous Flow</h3>
+          <p>To have a solid flow of ideas, it&#x27;s not enough to wait for requests from customers. We need a continuous discovery system that combines internal and external signals.</p>
+          <h4 class="module-subtitle-small">Inside knowledge and expert intuition</h4>
+          <p>Product, design, sales and operations teams have working knowledge of the domain. This experience allows you to generate hypotheses at high speed, as long as they are validated early with real tests.</p>
+          <h4 class="module-subtitle-small">Internal use and testing</h4>
+          <p>Using AI capabilities internally speeds up learning cycles because feedback comes right away. It&#x27;s an excellent initial phase, but it shouldn&#x27;t last too long: after the first MVP it is necessary to validate with external users to avoid distortions.</p>
+          <h4 class="module-subtitle-small">Listening to customers and behavioral data</h4>
+          <p>Interviews, tickets, reviews and analyzes must be read together. User statements are useful, but the observed behavior produced is a reality check that avoids decisions based on partial perceptions.</p>
+          <h4 class="module-subtitle-small">External market signals</h4>
+          <p>The most defensible opportunities often emerge from four signals:</p>
+          <ol><li><strong>New technological advances:</strong> open up previously unfeasible possibilities.</li><li><strong>Competitors&#x27; moves:</strong> help understand what the market is already willing to adopt.</li><li><strong>Regulations:</strong> create new mandatory processes and therefore new automation needs.</li><li><strong>Strategic positioning:</strong> in some cases AI strengthens innovative positioning, but it must always remain connected to real value for the customer.</li></ol>
+          <h4 class="module-subtitle-small">Concrete opportunity: modernization of legacy systems (COBOL)</h4>
+          <p>One high-value area is modernizing legacy applications in COBOL with AI support: the value is not just technical, but economic and strategic. In many contexts, migration reduces recurring licensing costs and dependencies on proprietary stacks, with less technological lock-in and greater evolutionary flexibility.</p>
+          <p>Market reference: <a href="https://timesofindia.indiatimes.com/technology/tech-news/ibm-stock-suffers-worst-single-day-drop-in-25-years-over-anthropics-cobol-tool-what-it-is-and-why-it-wiped-billions-of-dollar-for-ibm/articleshow/128744951.cms" target="_blank" rel="noopener noreferrer">IBM stock suffers worst single-day drop in 25 years over Anthropic&#x27;s COBOL tool</a>.</p>
+          <h3 class="module-subtitle">Horizontal vs Vertical Opportunities</h3>
+          <p>Distinguishing this point early avoids strategic errors:</p>
+          <ul><li><strong>Horizontal:</strong> they solve needs that cut across many sectors (e.g. assisted writing, support for knowledge work).</li><li><strong>Verticals:</strong> solve sector-specific problems (e.g. finance, healthcare, insurance), requiring more domain expertise and often targeted model tuning.</li></ul>
+          <p>Operationally, horizontal cases require strong ability to scale the product across heterogeneous markets; vertical cases require greater depth on legislation, processes and specialized language.</p>
+          <h4 class="module-subtitle-small">Recommended reference: McKinsey 2023</h4>
+          <p>McKinsey highlighted the topic in 2023 in the report &quot;The Economic Potential of Generative AI: The Next Productivity Frontier&quot; (<a href="https://mng.bz/vZla" target="_blank" rel="noopener noreferrer">link</a>).</p>
+          <p>Operational summary on horizontal/vertical:</p>
+          <ul><li><strong>Horizontal:</strong> a very large share of GenAI value is concentrated in cross-functional functions found in almost all companies, particularly customer operations, marketing and sales, software engineering, research and development.</li><li><strong>Vertical:</strong> some sectors show higher relative potential compared to revenues (including banking, high technology, life sciences), because they combine information intensity, knowledge-intensive processes and high-leverage use cases.</li><li><strong>Design implication:</strong> if you&#x27;re looking for rapid adoption and scale, start with horizontal use cases; if you&#x27;re looking for defensible differentiation, invest in vertical use cases with strong domain integration and first-party data.</li></ul>
+          <h3 class="module-subtitle">Capabilities of Generative AI and GPTs: Use Cases, Pain Points, and Risks</h3>
+          <p>GenAI is not a single capability but a family of capabilities covering text, images, video, code, audio and cognitive automation. To design well you need to separate three levels: <strong>what it can do</strong>, <strong>where it is best to use it</strong>, <strong>what risks it entails</strong>.</p>
+          <h4 class="module-subtitle-small">Core operational capabilities</h4>
+          <ul><li><strong>Text generation:</strong> content writing, conversational assistance, translation, synthesis.</li><li><strong>Visual and multimedia generation:</strong> creation of realistic/stylized images, video editing, effects and 3D modeling support.</li><li><strong>Software development support:</strong> snippet generation, assisted refactoring, technical documentation, help in testing.</li><li><strong>Additional creative outputs:</strong> support for musical composition, scripts and style variations.</li><li><strong>Context adaptability:</strong> pre-trained models that can be specialized on specific tasks through instructions, context and targeted adaptation (fine-tuning).</li></ul>
+          <h4 class="module-subtitle-small">Use cases to monitor in the company</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Area</th><th>Concrete use cases</th><th>Expected value</th></tr></thead><tbody><tr><td>Content and marketing</td><td>product descriptions, social posts, campaigns, taglines, copy variants</td><td>faster production speed, shorter time to market</td></tr><tr><td>Journalism and knowledge work</td><td>report summary, article drafts, preliminary factual verification support</td><td>acceleration of editorial and analytical activities</td></tr><tr><td>Customer Service</td><td>chatbots, automatic replies, contextual recommendations</td><td>reduction of response times and better service coverage</td></tr><tr><td>Education and training</td><td>personalized plans, quizzes, multi-format explanations, conversational language practice</td><td>more personalized and scalable learning</td></tr><tr><td>Creative Industries</td><td>creative sketches, storyboards, video effects, music, game design support and NPC dialogues</td><td>expanding creative capacity and rapid prototyping</td></tr><tr><td>Software Engineering</td><td>code generation, comments/documentation, test cases and synthetic data</td><td>increased team productivity and quality of release cycles</td></tr><tr><td>Healthcare</td><td>image analysis support, help with drug discovery, personalization of treatments</td><td>improved clinical decision support and operational priorities</td></tr><tr><td>Finance</td><td>automatic reporting, market data synthesis, fraud detection support</td><td>more speed on risk analysis and control</td></tr><tr><td>Scientific research</td><td>literature summary, initial hypotheses, experimental design support</td><td>reduction of exploration and knowledge review time</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Technical and qualitative weaknesses</h4>
+          <ul><li><strong>Plausible factual errors:</strong> the model can formulate fluent but incorrect answers, especially on specialized domains.</li><li><strong>Bias in training data:</strong> biased or discriminatory outputs if fairness checks are not applied.</li><li><strong>Weakness on deep reasoning:</strong> good statistical ability, but limited semantic understanding and causal judgment.</li><li><strong>Reduced stability on long texts:</strong> possible inconsistencies on extended outputs, with loss of logical structure.</li><li><strong>Risk of content homologation:</strong> excessive use can produce generic and undistinctive texts.</li><li><strong>Authenticity problem:</strong> distinguishing human and synthetic content is increasingly difficult, with impacts on trust and traceability.</li><li><strong>Data quality dependency:</strong> Without quality data and prompts, performance degrades rapidly.</li></ul>
+          <h4 class="module-subtitle-small">Key risks to include in the governance framework</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Risk category</th><th>Operational description</th><th>Potential impact</th><th>Mitigation Strategy</th></tr></thead><tbody><tr><td>Quality and reliability</td><td>hallucinations, incompleteness, context errors</td><td>incorrect decisions, operational costs, customer damage</td><td>human-in-the-loop supervision on critical outputs, mandatory factual verification, testing and validation on real datasets</td></tr><tr><td>Security and abuse</td><td>generative phishing, social engineering, deepfake, malicious code support</td><td>fraud, cyber incidents, reputational damage</td><td>security controls on prompts and output, anti-abuse policies, continuous monitoring and incident response</td></tr><tr><td>Ethics and legal</td><td>intellectual property, attribution, misinformation, opacity towards users</td><td>disputes, policy violations, loss of credibility</td><td>internal ethical guidelines, legal review of sensitive cases, transparency on the use of AI towards users and stakeholders</td></tr><tr><td>Compliance and regulation</td><td>failure to comply with obligations on transparency, data use, AI governance</td><td>sanctions, project blocks, increased legal risk</td><td>formalized governance policies, responsibility for roles and decisions, continuous updating with respect to regulations and standards</td></tr><tr><td>Trust and brand</td><td>offensive, misleading, or manipulative output in public touchpoints</td><td>loss of customer trust and commercial impact</td><td>editorial quality controls, human supervision in public content, transparent communication when the content is assisted by AI</td></tr><tr><td>Organization and work</td><td>partial replacement of activities, skills misalignment, disorderly adoption</td><td>internal resistance, inefficiency, decline in decision-making quality</td><td>training plan, progressive adoption for well-defined use cases, explicit responsibility on review and final responsibility</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Key strategies for using generative AI and GPTs</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Key Strategy</th><th>Operational objective</th><th>Practical actions</th></tr></thead><tbody><tr><td>Starting from well-defined use cases</td><td>avoid &quot;AI for AI&#x27;s sake&quot; initiatives and focus on measurable value</td><td>start from concrete problems, start with small projects, evaluate ROI and total cost of adoption</td></tr><tr><td>Focus on human-AI collaboration</td><td>use AI as an amplifier of human work, not as an integral replacement</td><td>maintain continuous human supervision, train teams, preserve human decision-making responsibility</td></tr><tr><td>Prioritize quality control and bias mitigation</td><td>reduce errors, hallucinations and distorted output</td><td>testing and validation on real datasets, structured factual verification, periodic bias checks on prompts and outputs</td></tr><tr><td>Strengthen transparency and accountability</td><td>increase internal/external trust and clarity of responsibilities</td><td>declare when AI is used, define process managers, adopt development, release and monitoring policies</td></tr><tr><td>Investing in experimentation and continuous learning</td><td>adapt to the rapid evolution of models, techniques and regulation</td><td>continuous testing and learning cycles, skills updating, proactive regulatory monitoring</td></tr><tr><td>Strengthen databases and security</td><td>maintain output quality and reduce operational/cyber risk</td><td>take care of data quality and datasets for fine-tuning, protect access and models, control use and abuse of integrations</td></tr></tbody></table></div>
+          <h3 class="module-subtitle">Negative example: AI as an end in itself (Sanremo 2026 case)</h3>
+          <p>A useful example of what <strong>not</strong> to do is the case reported by Fanpage on <strong>25 February 2026</strong> regarding the direction of Sanremo: a visual effect generated with AI, inserted during the live broadcast, was perceived as poor and out of context compared to the expected level of the event. Go directly to the article with video: <a href="https://www.fanpage.it/innovazione/tecnologia/la-regia-di-sanremo-ha-usato-per-la-prima-volta-lia-ma-e-stato-un-incubo-cosa-non-ha-funzionato/" target="_blank" rel="noopener noreferrer">Fanpage - The direction of Sanremo used AI for the first time, but it was a nightmare</a>.</p>
+          <p>The example shows the classic &quot;AI for the sake of AI&quot; anti-pattern: using AI just to demonstrate that you are using it, without any real improvement in the experience.</p>
+          <p>Mistakes to avoid:</p>
+          <ul><li>insert an AI functionality without measurable user objective;</li><li>not defining a minimum quality threshold before broadcasting;</li><li>use &quot;novelty&quot; effects that are not consistent with the operational and reputational context;</li><li>do not provide an immediate fallback mechanism towards traditional management.</li></ul>
+          <p>Operational lesson:</p>
+          <ul><li>before introducing AI into a public touchpoint, clarify which problem it solves;</li><li>validate quality in real conditions;</li><li>assign explicit responsibilities on final approval and incident management.</li></ul>
+          <h4 class="module-subtitle-small">Should I use Generative AI or GPTs for critical business operations?</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Key Point</th><th>Operational implication</th></tr></thead><tbody><tr><td>Don&#x27;t leave critical decisions solely to GPT/GenAI</td><td>use models as a support, not as a final decision maker</td></tr><tr><td>lack of causal understanding and limitations in contextual judgment</td><td>require human expert review in high impact passages</td></tr><tr><td>possible biases in training data</td><td>apply fairness checks and verifications on sensitive groups</td></tr><tr><td>plausible factual errors in specialized domains</td><td>introduce structured factual verification and validation on authoritative sources</td></tr><tr><td>unclear responsibility if the decision is entrusted only to AI</td><td>assign explicit responsibility for decision, approval and escalation</td></tr><tr><td>analysis of large volumes of data and pattern identification</td><td>use AI output for pre-analysis and support for decision-making hypotheses</td></tr><tr><td>generation of alternative scenarios</td><td>support decision-making workshops and comparison of alternatives</td></tr><tr><td>summary of complex reports</td><td>accelerate managerial understanding without skipping the test</td></tr><tr><td>human-AI collaboration with human supervision in the loop</td><td>combine AI speed with critical thinking, ethical judgment and human responsibility</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Identify and manage failure risks in AI strategy implementation</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Common AI Strategy Failures</th><th>Mitigation Tactics</th></tr></thead><tbody><tr><td>Misaligned Goals: AI projects without clear business goals or disconnected from real problems</td><td>starting from an explicit purpose, connecting each initiative to the company&#x27;s mission and priorities</td></tr><tr><td>Insufficient quality of data sources: incomplete, distorted or unreliable data</td><td>strengthen data governance with quality controls, robust data management and bias mitigation throughout the lifecycle</td></tr><tr><td>Skills Shortage: Teams Without Adequate Data, Domain, and Responsible AI Skills</td><td>building the right team with targeted hiring, training and external partnerships</td></tr><tr><td>Underestimation of complexity: times, costs and technical difficulties estimated too optimistically</td><td>set realistic expectations on development, budget and performance, encouraging experimentation and learning</td></tr><tr><td>Late ethical control: fairness, privacy and responsibility treated only downstream</td><td>integrate ethics and risk controls right from design</td></tr><tr><td>Resistance to change: poor involvement of stakeholders and operational teams</td><td>Transparently communicate the benefits and limitations of AI to build trust and adoption</td></tr><tr><td>Siloed development: functions working in isolation without cross-functional coordination</td><td>enable collaboration between data science, IT, business, risk/compliance and ethics experts</td></tr><tr><td>Failure to pivot: persistence on ineffective plans despite contrary feedback</td><td>take an adaptive approach with periodic reviews, course correction and data-driven iterations</td></tr><tr><td>Weak executive sponsorship: insufficient top management support</td><td>gain leadership commitment to resources, priorities and removal of organizational obstacles</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Define responsibility for AI systems</h4>
+          <p>Accountability in AI systems requires explicit responsibilities over design, release, use and impact management. In real-world contexts, the model crosses multiple teams and phases: without a clear chain of responsibility, each incident produces delays, conflicts and untraceable decisions.</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Level of responsibility</th><th>Primary responsibility</th></tr></thead><tbody><tr><td>Developers and data scientists</td><td>technical architecture, data selection, training, initial evaluation, fairness and robustness protection</td></tr><tr><td>Release and Operations Team</td><td>commissioning, production monitoring, management of unexpected effects and alignment with intended use</td></tr><tr><td>Organization (legal entity)</td><td>overall governance, definition of acceptable risk, remediation and compliance mechanisms</td></tr><tr><td>Control functions/regulators</td><td>definition of rules, verification of compliance, application of rules and requests for adaptations</td></tr></tbody></table></div>
+          <p>Operational mechanisms to activate:</p>
+          <ul><li><strong>transparency and explainability:</strong> making the basis and limits of AI decisions understandable;</li><li><strong>audit and documentation traceability:</strong> track data, model versions, decisions and approvals;</li><li><strong>challenge and review processes:</strong> allow structured challenge of high-impact outcomes;</li><li><strong>independent supervision:</strong> periodic audits on critical systems with checks and gaps;</li><li><strong>Legal governance and compliance:</strong> Update policies and controls based on regulatory developments.</li></ul>
+          <h4 class="module-subtitle-small">Rule of use in critical processes</h4>
+          <p>In high-impact processes, GenAI should be used as a <strong>co-pilot</strong> and not as a sole decision maker. The activities in which it is very useful are:</p>
+          <ul><li>preliminary analysis of large volumes of information;</li><li>generation of alternative scenarios;</li><li>summary to facilitate managerial decisions.</li></ul>
+          <p>The final decision must remain human, with explicit responsibility for factual verification, ethical evaluation, management of biases and traceability of liability.</p>
+          <h3 class="module-subtitle">Prioritization: Decide well with explicit criteria</h3>
+          <p>To avoid falling into the trap of infinite analysis (&quot;analysis paralysis&quot;), it is essential to use stable and shared criteria against which to compare opportunities.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p20_01.jpg" alt="Customization branch in Opportunity Tree" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.7: Focus on the personalization branch to be evaluated in the prioritization phase</figcaption></figure>
+          <p>The three basic axes remain:</p>
+          <ol><li><strong>User impact:</strong> how much value does it create for the end customer?</li><li><strong>Business value:</strong> how does it contribute to business objectives (e.g. reduction of churn, new revenues)?</li><li><strong>Technical feasibility:</strong> do we have the data, models and skills to make it happen?</li></ol>
+          <p>In the streaming case, a recommendation engine can have a high impact because it improves discovery and loyalty; feasibility increases if historical data on listens, skips, likes and playlists already exist. In contrast, features like advanced voice search can have value but require higher cost and complexity upfront.</p>
+          <p>Alongside the three general axes it is useful to add context-specific criteria:</p>
+          <ul><li><strong>Regulatory ease</strong> in sectors with high regulatory compliance.</li><li><strong>Data Readiness</strong> when data quality or availability is the primary bottleneck.</li><li><strong>Scalability and customization</strong> when the solution is deployed across heterogeneous corporate customers.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p22_01.jpg" alt="AI Prioritization Matrix" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.8: Example AI Opportunity Evaluation Matrix</figcaption></figure>
+          <p>The scores help to make the reasoning explicit, but must not replace the product judgment. The best prioritization is the one that makes risks, assumptions and conditions for changing course clear.</p>
+          <h3 class="module-subtitle">Balancing quick results and long-term investments</h3>
+          <p>A robust evolutionary plan combines:</p>
+          <ul><li><strong>Quick Results:</strong> Quick Release, Quick Learning, Immediate Impact.</li><li><strong>Defensible investments:</strong> longer initiatives that build competitive advantage over time.</li></ul>
+          <p>Focusing only on quick results brings quick but easily imitable results. Focusing only on the long term slows learning and increases the risk of unproven investments. The balance depends on the role of AI in the business strategy.</p>
+          <h3 class="module-subtitle">Execution Strategies: Cautious vs Rapid</h3>
+          <p>The choice of approach depends on risk, cost of failure and regulatory context.</p>
+          <ul><li><strong>Cautious Approach (Ready, Aim, Fire):</strong> In-depth research, strong validation of impact, feasibility and compliance before development. It is suitable when errors and non-conformities have a very high cost.</li><li><strong>Rapid Approach (Ready, Fire, Aim):</strong> fast prototyping, testing with real users, frequent iterations. It is suitable when the initial cost is low, the market is fast and real feedback is the main uncertainty reducer.</li></ul>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p24_01.jpg" alt="Cautious vs rapid approach comparison" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.9: Comparison between cautious and rapid approaches in AI implementation</figcaption></figure>
+          <p>In the cautious flow, the team documents impact, feasibility, and constraints in advance to reduce the risk of irreversible decisions in critical contexts.</p>
+          <figure class="module-image"><img src="assets/chapt02_images/ch02_p25_01.jpg" alt="Design thinking process for cautious approach" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.10: Typical process of the cautious approach (empathize, define, ideate, prototype, test)</figcaption></figure>
+          <p>In rapid flow, the team soon builds a complete working solution to validate hypotheses with real data. This approach works well when the solution requires multiple tuning cycles and user behavior is not predictable from theoretical analysis alone.</p>
+          <h3 class="module-subtitle">Main end-of-section points</h3>
+          <ul><li>build a continuous flow of opportunities from multiple sources, not just one;</li><li>consciously choose between horizontal and vertical opportunities;</li><li>evaluate with stable, transparent and consistent criteria over time;</li><li>balance rapid results and long-term competitive advantage;</li><li>adopt a cautious or rapid approach based on risk, regulatory compliance, cost of failure and team culture.</li></ul>
+          <h3 class="module-subtitle">Map the AI solution space</h3>
+          <p>In order not to get lost in the vastness of models and tools released daily, it is necessary to build a structured map that guides the discovery of the solution. The solution space is divided into three fundamental components: <strong>data</strong>, <strong>intelligence</strong> and <strong>user experience (UX)</strong>, all surrounded by a layer of <strong>governance</strong>.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p02_01.jpg" alt="AI solution space map" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.11: Solution space map in the mental model of an AI system</figcaption></figure>
+          <p>A systematic categorization helps to communicate with technical and non-technical stakeholders, to evaluate the necessary skills and to understand how choices in one area (e.g. data) influence others (e.g. intelligence or interface).</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p03_01.jpg" alt="AI Solution Space Categorization" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.12: Detailed categorization of the AI solution space</figcaption></figure>
+          <p><strong>Note: What does &quot;Neuro-symbolic AI&quot; mean</strong></p>
+          <p><strong>Neuro-symbolic AI</strong> is a hybrid approach that combines:</p>
+          <ul><li><strong>Neural AI:</strong> statistical models (e.g. deep learning) very effective in learning from data;</li><li><strong>Symbolic AI:</strong> rules and explicit logic (if-then, ontologies, constraints), useful for structured reasoning and traceability.</li></ul>
+          <p>In practice, the neural part proposes or predicts, while the symbolic part controls, constrains or explains according to domain rules. It is useful when model performance, operational control, explainability and compliance are needed together.</p>
+          <h3 class="module-subtitle">1. Data: The fuel of the system</h3>
+          <p>Data is no longer just an engineering issue, but directly impacts the user experience. They must reflect real needs and not just the training procedure.</p>
+          <h4 class="module-subtitle-small">The data mode</h4>
+          <p>Modes represent the different types of data that models learn from:</p>
+          <ul><li><strong>Textual:</strong> focused on natural language processing and generation (NLP). It includes tasks such as sentiment analysis, translation and synthesis.</li><li><strong>Visual:</strong> management of images and videos using computer vision to extract features and recognize objects.</li><li><strong>Auditive:</strong> speech recognition, voice biometrics and intonation-based emotion analysis.</li><li><strong>Sensorimotoria:</strong> data collected from the physical world via sensors, fundamental for robotics, drones and home automation.</li><li><strong>Computer code:</strong> a highly formalized language that enables development automation and increases programmer productivity.</li></ul>
+          <p>Regardless of the source, AI always transforms raw data into a <strong>numerical mode</strong> (vectors) in order to process it mathematically.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p04_01.jpg" alt="Relationships between AI modes" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.13: Relationships between raw modes and numerical mode transformation</figcaption></figure>
+          <p>This transformation (preprocessing) is a strategic act: a representation that is too coarse, such as <em>one-hot encoding</em>, can cause crucial information about the importance and context of words to be lost.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p06_01.jpg" alt="One-hot encoding example" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.14: One-hot encoding as an algebraic numerical representation of words</figcaption></figure>
+          <p>The current frontier is <strong>Multimodal AI</strong>, which combines multiple senses (e.g. sight and hearing) to build a richer and more accurate context, just like the human brain does in the learning process.</p>
+          <h4 class="module-subtitle-small">Labeled vs Unlabeled data</h4>
+          <ul><li><strong>Unlabeled data:</strong> without explicit learning signals (used for clustering). Because the results are uncertain, they are rarely used alone in end-user applications.</li><li><strong>Labeled data:</strong> each point is associated with a &quot;label&quot; that indicates the desired objective (e.g. &quot;positive&quot; review, &quot;cat&quot; image). They provide a clear and precise learning signal (supervised learning).</li></ul>
+          <p>A special case are <strong>Large Language Models (LLM)</strong>: although they use huge volumes of data, they use a self-labeling trick where the &quot;next word&quot; acts as a label for the sequence preceding it, allowing training on a planetary scale.</p>
+          <h3 class="module-subtitle">2. Types of intelligence: from symbols to agents</h3>
+          <p>The intelligence paradigm chosen depends on the nature and complexity of the problem to be solved.</p>
+          <h4 class="module-subtitle-small">Rule-based AI (symbolic)</h4>
+          <p>It is based on human-made logic, databases and ontologies. It is ideal when the domain is normative, stable and transparent (e.g. legal controls in banking).</p>
+          <ul><li><strong>Advantages:</strong> Quick start for an MVP, total explainability of outputs, crucial help in collecting structured data for future iterations.</li><li><strong>Disadvantages:</strong> limited coverage; reality has too many nuances and borderline cases to be entirely contained in rigid rules.</li></ul>
+          <h4 class="module-subtitle-small">Machine learning (neural AI)</h4>
+          <p>Here it is the machine that learns from the data. It is divided into three main paradigms:</p>
+          <ol><li><strong>Predictive AI (Analytics):</strong> focuses on well-defined tasks such as future predictions, trends and anomaly detection. It helps digest large volumes of data to extract actionable insights, but still requires human intervention to translate the analysis into action.</li><li><strong>Generative AI:</strong> creates new information (text, images, code, music) that resembles training patterns. It serves as a creative discussion partner and accelerates routine tasks.</li><li><strong>Agentic AI:</strong> Bridges the gap between guidance and action. It does not just suggest, but carries out activities autonomously via integrated tools (software plugins or physical devices), based on chains of reasoning generated by linguistic models.</li></ol>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p10_01.jpg" alt="Examples of learning problems" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.15: Examples of problems solved by Predictive, Generative and Agentic AI</figcaption></figure>
+          <p>A typical example of Predictive AI is the transformation of unstructured feedback into structured numerical data (sentiment scores) to support strategic decisions on the product.</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p11_01.jpg" alt="Structuring text data with sentiment analysis" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.16: Example of how AI transforms unstructured text into quantitative data</figcaption></figure>
+          <h3 class="module-subtitle">3. User Experience: The Value Interface</h3>
+          <p>The interface (UI) ensures that the value created by AI is actually delivered to the user in a usable and understandable way.</p>
+          <h4 class="module-subtitle-small">Types of AI interfaces</h4>
+          <ul><li><strong>Conversational:</strong> offer maximum flexibility through natural language, but suffer from the &quot;articulation barrier&quot; (users don&#x27;t always know what to ask) and the risk of hallucinations.</li><li><strong>Graphics:</strong> provide structure, predictability and trust, which are critical especially in B2B and analytics contexts.</li><li><strong>Hybrid:</strong> balance flexibility and control, integrating conversation for open inputs and graphical components (buttons, menus) for fixed and well-defined actions (e.g. diagnosis, release).</li><li><strong>Generative:</strong> represent the future, where the interface dynamically adapts to the user&#x27;s mental model, customizing design and interactions at every step.</li></ul>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p16_01.jpg" alt="ChatGPT: the modern conversational interface" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.17: ChatGPT as a conversational interface prototype</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p17_01.jpg" alt="B2B GUI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.18: Anacode Innovation Monitor: a graphical interface that provides robust context and trust</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p18_01.jpg" alt="Hybrid Interface" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.19: Vercel v0.dev: example of a hybrid interface combining chat and structured controls</figcaption></figure>
+          <h4 class="module-subtitle-small">Practical criteria for hybrid and generative interfaces</h4>
+          <p>When an AI system enters production, the choice of interface is not just aesthetic: it determines operational quality, decision-making speed and risk of error. In highly variable activities, it is best to leave room for conversation, while in risky steps (approval, release, data changes, escalation) a guided UI with explicit actions is needed.</p>
+          <p>An effective scheme is to separate:</p>
+          <ul><li><strong>exploratory zone:</strong> free prompts, hypotheses, generation of alternatives;</li><li><strong>control area:</strong> buttons and flows bound for irreversible actions;</li><li><strong>verification area:</strong> evidence, reasons, system confidence, possibility of recovery.</li></ul>
+          <p>This arrangement reduces the &quot;articulation barrier&quot;, avoids vague prompts and maintains traceability in product decisions.</p>
+          <h3 class="module-subtitle">Degrees of automation and Human-AI collaboration</h3>
+          <p>Designing effective collaboration between humans and AI is the heart of the UX of a successful product.</p>
+          <h4 class="module-subtitle-small">The levels of automation</h4>
+          <p>There are three main categories:</p>
+          <ol><li><strong>Assisted Intelligence:</strong> AI supports and enhances human decisions without acting autonomously (e.g. warning systems).</li><li><strong>Augmented Intelligence:</strong> AI automates significant parts of the work, but still requires human supervision for final validation.</li><li><strong>Autonomous Intelligence:</strong> AI operates, decides and acts autonomously with little or no human intervention.</li></ol>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p19_01.jpg" alt="Levels of AI automation in different industries" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.20: Examples of applications with different degrees of automation in autonomous driving, healthcare and customer service</figcaption></figure>
+          <h4 class="module-subtitle-small">The driving case: Autonomous Driving (SAE Levels)</h4>
+          <p>The transition from assistance to full autonomy is well exemplified by the 6 SAE levels for vehicles, ranging from no automation (Level 0) to full autonomous driving in all conditions (Level 5).</p>
+          <figure class="module-image"><img src="assets/chapt03_images/ch03_p20_01.jpg" alt="SAE Levels of Driving Automation" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.21: The levels of automation defined by SAE International</figcaption></figure>
+          <h3 class="module-subtitle">Optimal distribution of work</h3>
+          <p>The success of an AI product depends on finding the distribution of work that maximizes the strengths of both actors:</p>
+          <ul><li><strong>Strengths of AI:</strong> massive-scale data processing, detection of patterns invisible to humans, decision-making objectivity (absence of emotions), immediate scalability and 24-hour operation.</li><li><strong>Man&#x27;s strengths:</strong> deep intuition, emotional intelligence and social skills, understanding of the strategic and business context, adaptability to new unstructured scenarios and ethical/moral judgement.</li></ul>
+          <p>An excellent AI product does not aim to eliminate humans, but to integrate into their workflow to free them from repetitive tasks, allowing them to focus on activities with high added value and criticality.</p>
+          <h3 class="module-subtitle">Predictive AI applied to the product: complete operational picture</h3>
+          <p>For many companies, the first concrete lever is not the generation of content, but the ability to transform already available data into better operational decisions. A well-designed predictive flow allows you to segment users, anticipate churn, intercept anomalies and increase conversion without relying on isolated intuitions.</p>
+          <p>Below we will use an <strong>e-commerce case</strong> as a common thread: an online store that wants to increase conversion and average order value, reducing abandonment and campaign waste. Available data includes browsing, searches, carts, purchases and response to recommendations.</p>
+          <h4 class="module-subtitle-small">Iterative cycle: from business problem to action</h4>
+          <p>Effective work starts with precise and measurable product questions. In the e-commerce case, the question is not &quot;do we do ML?&quot;, but:</p>
+          <ul><li>which users do not convert and why;</li><li>which behaviors anticipate abandonment;</li><li>which interventions have a real impact on loyalty and turnover.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img03.png" alt="Iterative loop for high-value predictive systems" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.22: Iterative build cycle for high-value predictive AI</figcaption></figure>
+          <p>The useful operating cycle in practice:</p>
+          <ol><li><strong>Problem Formulation:</strong> Translate business objectives into learning activities.</li><li><strong>Data preparation:</strong> collection, transformation, cleaning, quality control.</li><li><strong>Algorithm selection:</strong> choose approach consistent with the type of signal.</li><li><strong>Technical and impact evaluation:</strong> model metrics + product metrics.</li><li><strong>Operational grounding:</strong> campaigns, UX, decision making, monitoring.</li></ol>
+          <h4 class="module-subtitle-small">Unsupervised learning: behavioral segmentation</h4>
+          <p>Unsupervised segmentation is a great entry point when the dataset is rich but still poorly structured. Instead of segmenting only by demographics, it is better to build clusters on behavioral signals: frequency of visits, use of recommendations, depth of the funnel, value of purchases, profile editing.</p>
+          <p>Example of a data structure useful for clustering:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>user_id</th><th>purchased_items</th><th>purchase_value</th><th>last_active</th><th>n_visits</th></tr></thead><tbody><tr><td>abhj3k</td><td>2</td><td>908</td><td>2024-04-30 08:36:24</td><td>48</td></tr><tr><td>shj67d</td><td>0</td><td>0</td><td>2023-12-26 12:56:24</td><td>24</td></tr><tr><td>i963gh</td><td>12</td><td>673</td><td>2024-05-15 23:22:11</td><td>156</td></tr></tbody></table></div>
+          <p>The quality of the clusters depends on practical choices:</p>
+          <ul><li>iterative engineering of characteristics, with removal of uninformative variables;</li><li>standardization of characteristics to avoid scale distortions;</li><li>management of missing values, duplicates, anomalies and known distortions in the data phase;</li><li>minimization of sensitive data and verification of consent for use.</li></ul>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img05.png" alt="Clustering K-means and centroids" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.23: K-means with centroids and data point aggregation</figcaption></figure>
+          <p>For the algorithm choice:</p>
+          <ul><li><strong>K-means:</strong> very usable, fast, readable by the business team;</li><li><strong>hierarchical:</strong> useful if you want to explore different granularities without immediately fixing K;</li><li><strong>DBSCAN:</strong> ​​effective for irregular shapes and to isolate outliers.</li></ul>
+          <p>Minimum metrics to monitor:</p>
+          <ul><li><strong>silhouette coefficient:</strong> internal cohesion and separation between clusters;</li><li><strong>Calinski-Harabasz index:</strong> goodness of the overall separation.</li></ul>
+          <h4 class="module-subtitle-small">From clustering to supervised classification</h4>
+          <p>Once useful clusters have been identified, it is best to stabilize them with supervised classification: the clusters become labels and the model automatically assigns new users to the correct segment. In this way the segmentation scales without relaunching continuous clustering.</p>
+          <p>Example of labeled dataset:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>user_id</th><th>purchased_items</th><th>purchase_value</th><th>last_active</th><th>n_visits</th><th>search_queries</th><th>segment</th></tr></thead><tbody><tr><td>abhj3k</td><td>2</td><td>908</td><td>2024-04-30 08:36:24</td><td>48</td><td>3</td><td>Seekers</td></tr><tr><td>shj67d</td><td>0</td><td>0</td><td>2023-12-26 12:56:24</td><td>24</td><td>45</td><td>Conservatives</td></tr><tr><td>i963gh</td><td>12</td><td>673</td><td>2024-05-15 23:22:11</td><td>156</td><td>25</td><td>Indecisives</td></tr><tr><td>ty54df</td><td>20</td><td>1250</td><td>2024-05-10 14:21:07</td><td>190</td><td>5</td><td>Champions</td></tr></tbody></table></div>
+          <p>In a first release, an interpretable classifier (e.g. logistic regression) is often preferable to more opaque models: it facilitates adoption by marketing, sales and operations.</p>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img06.png" alt="Precision and Recall: operational trade-off" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.24: precision and recall in the evaluation of a classifier (operational trade-off)</figcaption></figure>
+          <p>Rule of thumb:</p>
+          <ul><li>if the cost of a wrong campaign is high, raise <strong>precision</strong>;</li><li>if the cost of &quot;losing&quot; critical users is high, raise <strong>recall</strong>.</li></ul>
+          <p>Operational clarification:</p>
+          <ul><li><strong>Precision:</strong> among the users that the model reports as targets, how many are really correct. If you want to reduce false positives (contacting the wrong people), you need to raise precision.</li><li><strong>Recall:</strong> among all the truly relevant users, how many are intercepted by the model. If you want to reduce false negatives (leave out critical users), you need to raise recall.</li><li><strong>Threshold trade-off:</strong> in general, higher threshold increases precision but reduces recall; lower threshold increases recall but reduces precision. The choice depends on the economic and operational cost of the two types of error.</li></ul>
+          <p>Clinical example (image diagnostics, tumor detection):</p>
+          <ul><li><strong>classification model with logistic regression</strong> which produces probabilities of class membership;</li><li>for a patient it can estimate, for example: <strong>65% tumor positive</strong> and <strong>35% tumor negative</strong>;</li><li>with <strong>cutoff = 65%</strong>, the case is classified as positive and sent for further investigation;</li><li>if I used a more selective cutoff, for example <strong>80%</strong> (more oriented towards precision), the same patient would be classified as negative because 65% &lt; 80%;</li><li>therefore, compared to 80%, the cutoff at 65% increases the cases reported as positive and may increase the <strong>false positives</strong>;</li><li>the advantage is that it increases <strong>recall</strong>, reducing the clinical risk of losing really sick people (false negatives);</li><li>the 80% cutoff does the opposite: it generally improves <strong>precision</strong>, but can reduce recall and increase false negatives.</li></ul>
+          <h4 class="module-subtitle-small">Time series: trends, seasonality, anomalies</h4>
+          <p>Cross-sectional analyzes explain the current state; time series explain evolution. It&#x27;s the difference between describing a problem and anticipating it.</p>
+          <p>Minimal event-based time series scheme:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Event</th><th>Date and time</th></tr></thead><tbody><tr><td>Click</td><td>2024-08-19 12:01:35.123</td></tr><tr><td>Search</td><td>2024-08-19 12:02:18.456</td></tr><tr><td>Add to cart</td><td>2024-08-19 12:03:05.789</td></tr></tbody></table></div>
+          <p>Minimal metric-based time series scheme:</p>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Date and time</th><th>Click on recommendations</th></tr></thead><tbody><tr><td>2024-08-19 12:01:35.123</td><td>150</td></tr><tr><td>2024-08-19 12:02:18.456</td><td>172</td></tr><tr><td>2024-08-19 12:03:05.789</td><td>165</td></tr></tbody></table></div>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img01.png" alt="Raw time series" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.25: The raw time series is noisy and difficult to interpret</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img04.png" alt="Smoothed time series with increasing trend" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.26: After smoothing a legible increasing trend emerges</figcaption></figure>
+          <figure class="module-image"><img src="assets/chapt04_images/ch04_img07.png" alt="Time Series Anomalies" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figure M1.27: Abnormal spikes and drops to be treated with alerts and operational response</figcaption></figure>
+          <p>Operational use of signals in the product:</p>
+          <ul><li><strong>trend:</strong> adapt ordering and visibility of the catalog to emerging demand;</li><li><strong>seasonality:</strong> plan campaigns and operational capacity on known windows;</li><li><strong>anomalies:</strong> activate anti-fraud operating procedures, performance control, incident response.</li></ul>
+          <h4 class="module-subtitle-small">Recommender Systems: High-Converting Personalization</h4>
+          <p>Recommendations are the meeting point between predictive AI and UX:</p>
+          <ul><li><strong>collaborative filtering:</strong> exploits similarities between users or between items;</li><li><strong>content-based filtering:</strong> uses product attributes consistent with historical preferences;</li><li><strong>hybrid:</strong> combines the two approaches for accuracy and coverage.</li></ul>
+          <p>To maintain value over time you need:</p>
+          <ul><li>continuous monitoring of CTR (Click-Through Rate, click rate: number of clicks / number of impressions x 100), conversion rate and interaction depth;</li><li>A/B testing on ranking strategies and model parameters;</li><li>explicit/implicit feedback signals to improve alignment with preferences.</li></ul>
+          <h4 class="module-subtitle-small">Actionable segments and marketing/product activations</h4>
+          <p>A useful segmentation is one that brings clear actions:</p>
+          <ul><li><strong>Seekers:</strong> Guided content and style quizzes to clarify preferences.</li><li><strong>Indecisives:</strong> controlled urgency levers (time offers, promotional thresholds).</li><li><strong>Conservatives:</strong> UX oriented towards direct search, with gradual introduction of personalization.</li><li><strong>Champions:</strong> loyalty programs, early access, premium offers.</li></ul>
+          <h3 class="module-subtitle">Implementation steps (predictive) to use in teams</h3>
+          <ol><li>Define business outcome and primary metric before choosing the model.</li><li>Prepare datasets with clear responsibility for quality, privacy and versioning.</li><li>Initiate interpretable baseline and set minimum quality thresholds.</li><li>Bring the model into the operational process with standard actions for each segment.</li><li>Monitor drift, product metrics and economic impact on a regular basis.</li></ol>
+          <h3 class="module-subtitle">Business case studies to watch and comment on</h3>
+          <p>Below is a selection of business cases, focusing on Italian companies or those with direct operations in Italy. Each case can be discussed on four dimensions: process involved, value metrics, data prerequisites, and replicability.</p>
+          <h4 class="module-subtitle-small">Benetton Group (fashion retail, Italy)</h4>
+          <ul><li><strong>AI Process:</strong> Personalized recommendations and e-commerce conversion optimization.</li><li><strong>Value:</strong> users who click the recommendation panel with 6x conversion, sales +7%, time on site almost 3x.</li><li><strong>Link:</strong> <a href="https://cloud.google.com/customers/benetton" target="_blank" rel="noopener noreferrer">Google Cloud - Benetton</a></li></ul>
+          <h4 class="module-subtitle-small">E.ON Italia (utilities, Italy)</h4>
+          <ul><li><strong>AI Process:</strong> marketing and onboarding with BigQuery + Vertex AI and document analysis.</li><li><strong>Value:</strong> customer satisfaction at 87%, digital account creation +9%, conversions +184% (in the case with Cognitive Suite).</li><li><strong>Link:</strong> <a href="https://cloud.google.com/customers/e-on-italia" target="_blank" rel="noopener noreferrer">Google Cloud - E.ON Italia</a></li></ul>
+          <h4 class="module-subtitle-small">Banca Alpi Marittime (local bank, Italy)</h4>
+          <ul><li><strong>AI process:</strong> automatic scoring of credit requests.</li><li><strong>Value:</strong> approximately 50% of requests managed without human intervention, approximately 10 FTEs freed, declared annual savings.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/banca-alpi-marittime-cloud" target="_blank" rel="noopener noreferrer">IBM Case Study - Banca Alpi Marittime</a></li></ul>
+          <h4 class="module-subtitle-small">UMBRAGROUP (precision manufacturing, Italy)</h4>
+          <ul><li><strong>AI process:</strong> predictive modeling on production quality and waste.</li><li><strong>Value:</strong> over 20% reduction in non-compliant materials.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/umbragroup-watson" target="_blank" rel="noopener noreferrer">IBM Case Study - UMBRAGROUP</a></li></ul>
+          <h4 class="module-subtitle-small">WINDTRE (telco, Italy)</h4>
+          <ul><li><strong>AI process:</strong> automated management of tickets and technical claims.</li><li><strong>Value:</strong> Over 200,000 reports handled automatically, 10x faster response time, over 10,000 reports per month.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/windtre" target="_blank" rel="noopener noreferrer">IBM Case Study - WINDTRE</a></li></ul>
+          <h4 class="module-subtitle-small">Unipol Assicurazioni (insurance, Italy)</h4>
+          <ul><li><strong>AI Process:</strong> AIOps for monitoring and managing IT incidents, with impact on operational processes.</li><li><strong>Value:</strong> event response from 20 minutes to 90 seconds, monitoring coverage from 26% to 100%, incident management time -90%.</li><li><strong>Link:</strong> <a href="https://www.ibm.com/case-studies/unipol" target="_blank" rel="noopener noreferrer">IBM Case Study - Unipol</a></li></ul>
+          <h4 class="module-subtitle-small">e-distribution (energy/electricity grid, Italy)</h4>
+          <ul><li><strong>AI process:</strong> ODIN project for image analysis, inspections and predictive maintenance of the network.</li><li><strong>Value:</strong> faster detection of critical issues and better intervention priority (qualitative case, without public numerical KPIs).</li><li><strong>Link:</strong> <a href="https://www.e-distribuzione.it/archivio-news/2023/08/odin--l-intelligence-artificiale-a-supporto-della-rete-elettrica.html" target="_blank" rel="noopener noreferrer">e-distribuzione - ODIN Project</a></li></ul>
+          <h4 class="module-subtitle-small">Snam (energy/gas, Italy)</h4>
+          <ul><li><strong>AI Process:</strong> advanced analytics on Unaccounted-for Gas (UFG) to reduce losses and inefficiencies.</li><li><strong>Value:</strong> improvement of data analysis and reduction of UFG (especially qualitative results in the public case).</li><li><strong>Link:</strong> <a href="https://www.eng.it/en/insights/stories/case-studies/snam-gli-advanced-analytics-per-il-trasporto-del-gas" target="_blank" rel="noopener noreferrer">Engineering - Case Snam</a></li></ul>
+          <h3 class="module-subtitle">Comment track for discussion</h3>
+          <ul><li>What was the operational bottleneck before AI?</li><li>Does the metric used really measure business value or just speed?</li><li>What part of the process remained under human supervision?</li><li>Is the result replicable in other companies or does it depend on specific conditions?</li></ul>
+          <h3 class="module-subtitle">How to manage a project with AI: strategy, governance and execution</h3>
+          <p>An AI project produces stable results only when strategy and governance are designed together from the beginning. Separating them almost always leads to two negative outcomes: experiments without business impact or too rigid controls that block execution.</p>
+          <p>In practice, effective management requires three continuous alignments:</p>
+          <ul><li><strong>strategic alignment:</strong> each use case must solve an explicit business problem;</li><li><strong>operational alignment:</strong> roles, data, models and processes must be coordinated with clear responsibilities;</li><li><strong>risk alignment:</strong> privacy, fairness, security, compliance and explainability should be treated as project requirements, not final checks.</li></ul>
+          <h4 class="module-subtitle-small">Initial setup: AI goals to backlog</h4>
+          <p>Before talking about models, it is worth formalizing:</p>
+          <ul><li>measurable objectives (cost reduction, increase in conversion, reduction in decision-making times, quality of service);</li><li>perimeter of the problem (processes involved, users impacted, systems affected);</li><li>constraints (regulatory, technological, organisational);</li><li>success and stopping criteria.</li></ul>
+          <p>A useful operational criterion is to start with cases with high feasibility and rapid impact, in order to build internal credibility and execution capacity before scaling to more complex initiatives.</p>
+          <h4 class="module-subtitle-small">Phase 1: Ideation and definition</h4>
+          <p>The ideation phase must produce concrete outputs, not just ideas:</p>
+          <ul><li>map of candidate use cases;</li><li>value hypotheses for each case;</li><li>pre-mortem analysis (because it could fail);</li><li>first estimate of risks, costs and times.</li></ul>
+          <p>Cross-functional sessions between business, technology, legal/compliance, security and operations are crucial in this phase. Value does not arise from generic brainstorming, but from shared priorities and explicit compromises.</p>
+          <h4 class="module-subtitle-small">Phase 2: Data and preparation</h4>
+          <p>The quality of the project depends on the quality of the data rather than on the sophistication of the model.</p>
+          <p>Minimum checklist:</p>
+          <ul><li>availability, coverage and updating of data;</li><li>quality (completeness, accuracy, temporal coherence);</li><li>traceability of transformations;</li><li>management of sensitive data and consent;</li><li>checks on bias and representativeness.</li></ul>
+          <p>Data governance must be set up as an ongoing discipline: dataset responsibility, access rules, quality standards, auditability and retention policies.</p>
+          <h4 class="module-subtitle-small">Phase 3: Development and testing</h4>
+          <p>This phase combines two needs: learning speed and risk control.</p>
+          <p>Recommended approach:</p>
+          <ul><li>start with interpretable baselines;</li><li>compare alternatives with comparable metrics;</li><li>document hypotheses, characteristics, parameters and results;</li><li>evaluate not only model performance, but also real operational impact.</li></ul>
+          <p>Experimentation works when it takes place in a protected context with ethical and safety rules already in place.</p>
+          <h4 class="module-subtitle-small">Phase 4: Operationalization and monitoring</h4>
+          <p>The release is not the end of the project; it is the beginning of ongoing management.</p>
+          <p>Mandatory elements:</p>
+          <ul><li>gradual release plan (pilot, controlled extension, scale);</li><li>technical monitoring (data/model drift, latency, stability);</li><li>business monitoring (result KPIs, adoption, ROI);</li><li>risk monitoring (fairness, explainability, incidents, compliance);</li><li>escalation and recovery operational procedures.</li></ul>
+          <h4 class="module-subtitle-small">Execution mode: iterative, hybrid, progressive release</h4>
+          <p>Hybrid management works well in AI projects:</p>
+          <ul><li>infrastructural and control parts with greater structure;</li><li>model experimentation with rapid iterative cycles;</li><li>phased release to reduce systemic risk.</li></ul>
+          <p>This combination maintains governability without losing learning speed.</p>
+          <h4 class="module-subtitle-small">Key roles in the project</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Role</th><th>Primary responsibility</th><th>Main expected results</th></tr></thead><tbody><tr><td>AI Project Manager</td><td>Complete coordination, priorities, dependencies, risk</td><td>Project plan, evolutionary plan, governance meetings, progress status</td></tr><tr><td>Data Scientist</td><td>Modeling, evaluation, tuning, interpretation</td><td>Experiments, metrics, validation reports, acceptance criteria</td></tr><tr><td>Data Engineer</td><td>Data pipeline, quality, reliability, integration</td><td>data pipelines, quality controls, data versioning, production feeding</td></tr><tr><td>Product/Business Owner</td><td>Alignment with business objectives</td><td>Impact KPIs, prioritized backlog, scoping decisions</td></tr><tr><td>Risk/Compliance/Security</td><td>Regulatory oversight and controls</td><td>Risk assessments, control evidence, audit traceability</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">KPIs to monitor throughout the life cycle</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Size</th><th>KPI examples</th></tr></thead><tbody><tr><td>Business Value</td><td>ROI, conversion rate, operational cost reduction, cycle time</td></tr><tr><td>Model Quality</td><td>precision, recall, error rate, stability over time</td></tr><tr><td>Operation</td><td>service availability, latency, processing capacity, average incident resolution time</td></tr><tr><td>Risk and trust</td><td>distortion indicators, number of compliance incidents, quality of explanations, user complaints</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Recurring errors and countermeasures</h4>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Frequent error</th><th>Operational countermeasure</th></tr></thead><tbody><tr><td>Objectives not aligned with the business</td><td>Define measurable goals and success criteria before development</td></tr><tr><td>Incomplete or distorted data</td><td>Strengthen data governance, quality controls and bias controls</td></tr><tr><td>Insufficient skills</td><td>Training plan and development/purchase/partnership mix</td></tr><tr><td>Underestimated complexity</td><td>Realistic planning of times, costs and dependencies</td></tr><tr><td>Ethics and compliance covered late</td><td>Integration of controls from the concept phase</td></tr><tr><td>Silo between functions</td><td>Cross-functional teams and shared decisions</td></tr><tr><td>Lack of ability to pivot</td><td>Periodic reviews and adaptive backlog</td></tr><tr><td>Poor executive support</td><td>Explicit sponsorship with timed governance</td></tr></tbody></table></div>
+          <h4 class="module-subtitle-small">Accountability and decision-making responsibility</h4>
+          <p>To avoid gray areas, responsibility must be distributed across clear levels:</p>
+          <ul><li>whoever designs the model is responsible for the technical robustness;</li><li>whoever puts it into operation is responsible for its compliant use and monitoring;</li><li>the organization is responsible for risk choices and consequences;</li><li>control and audit functions verify quality, legality and traceability over time.</li></ul>
+          <p>Without an explicit accountability model, incidents turn into organizational conflicts and slow down every iteration.</p>
+          <h4 class="module-subtitle-small">Inclusion, social impact and communication</h4>
+          <p>Project management cannot stop at technical performance. You also need to check:</p>
+          <ul><li>accessibility of interfaces and processes;</li><li>impacts on different groups of users;</li><li>transparency towards internal and external stakeholders;</li><li>communication plan that explains what the system does, how it is controlled and with what limits.</li></ul>
+          <p>This protection increases trust, adoption and sustainability over time.</p>
+          <h4 class="module-subtitle-small">Cost factors to plan in advance</h4>
+          <p>The real costs aren&#x27;t just &quot;model and cloud.&quot; The main items are:</p>
+          <ul><li>people (specialist skills and continuous training);</li><li>infrastructure (storage, compute, environments, observability);</li><li>development and integration (pipeline, API, existing systems);</li><li>governance and compliance (audits, controls, documentation);</li><li>accident and legal risk management;</li><li>evolutionary maintenance (retraining, monitoring, policy review).</li></ul>
+          <p>Mature management uses comprehensive cost categories to avoid structural underestimations.</p>
+          <h3 class="module-subtitle">Checklist of main concepts</h3>
+          <ol><li>Validate the AI opportunity with user impact, business value, and technical feasibility.</li><li>Define the role of AI in the process (automation, decision support, personalization).</li><li>Align data, model and UX with a clear design of the solution and risks.</li><li>Set governance and accountability early in the design phase.</li><li>Plan experimentation, phased release, and ongoing monitoring metrics.</li><li>Maintain an improvement cycle with operational feedback and periodic reviews.</li></ol>
+          <h3 class="module-subtitle">Useful module links</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Title</th><th>Description</th><th>Links</th></tr></thead><tbody><tr><td>NIST AI Risk Management Framework (AI RMF 1.0)</td><td>Operational framework to identify, assess and manage AI risks across the lifecycle, with practical governance, mapping, measurement and management functions.</td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework</a></td></tr><tr><td>CMMI Institute - AI Working Group (AIWG)</td><td>Initiative focused on AI governance and operational maturity, with guidance and practical contributions for organizations adopting AI at scale.</td><td><a href="https://cmmiinstitute.com/aiwg" target="_blank" rel="noopener noreferrer">CMMI Institute - AIWG</a></td></tr><tr><td>Layermark - CMMI AI Maturity</td><td>Overview of the CMMI-based AI maturity framework, useful for evaluating the level of adoption and structuring the transition towards repeatable operational practices.</td><td><a href="https://www.layermark.com/cmmi-ai-maturity/#:~:text=Your%20people%20are%20embracing%20AI,framework%20%28making%20it%20habitual%29." target="_blank" rel="noopener noreferrer">Layermark - CMMI AI Maturity</a></td></tr><tr><td>IBM watsonx.governance</td><td>Platform to govern AI models and applications with controls on risk, regulatory compliance, monitoring and traceability throughout the life cycle.</td><td><a href="https://www.ibm.com/it-it/products/watsonx-governance" target="_blank" rel="noopener noreferrer">IBM watsonx.governance</a></td></tr><tr><td>Fanpage - AI in the direction of Sanremo</td><td>Informative case on AI adoption in a complex live context, useful for discussing operational limits, implementation errors and reputational risk.</td><td><a href="https://www.fanpage.it/innovazione/tecnologia/la-regia-di-sanremo-ha-usato-per-la-prima-volta-lia-ma-e-stato-un-incubo-cosa-non-ha-funzionato/" target="_blank" rel="noopener noreferrer">Fanpage - AI and direction of Sanremo</a></td></tr></tbody></table></div>
+          <h3 class="module-subtitle">Recommended labs for Module 01</h3>
+          <div class="table-wrap"><table class="content-table"><thead><tr><th>Recommended Lab</th><th>Objectives</th><th>Category</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Generative AI Explorer - Vertex AI</a></strong></td><td>Complete introduction to GenAI capabilities and main use scenarios, useful for understanding value levers and initial limitations.</td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568844" target="_blank" rel="noopener noreferrer">Introduction to Gemini 3</a></strong></td><td>Quick operational basis to understand model behavior and set realistic expectations on output quality.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>It directly links prompt quality, risk of error and reliability, central themes of Module 01.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Helps move from theory to controlled prototyping, useful for prioritization and cautious vs rapid approach.</td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Useful for mitigating hallucinations and improving reliability, in line with the module&#x27;s risk and governance block.</td><td>Focus</td></tr></tbody></table></div>
+        </section>
+
+
+        <nav class="module-nav footer-nav"><a class="nav-btn" href="index.html">Home</a><a class="nav-btn" href="module-02.html">Next Module</a></nav>
+      </article>
+    </main>
+  </div>
+  <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+
+  <script>
+  (() => {
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const page = window.location.pathname.split('/').pop() || '';
+    const customMap = {
+      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
+      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
+    };
+
+    document.querySelectorAll('.lang-switch').forEach((sw) => {
+      const itLink = sw.querySelector('[data-lang="it"]');
+      const enLink = sw.querySelector('[data-lang="en"]');
+      if (customMap[page]) {
+        const itUrl = new URL(customMap[page].it, window.location.href).toString();
+        const enUrl = new URL(customMap[page].en, window.location.href).toString();
+        if (itLink) itLink.href = itUrl;
+        if (enLink) enLink.href = enUrl;
+        return;
+      }
+
+      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
+      if (itLink) itLink.href = currentUrl;
+      if (enLink) enLink.href = enUrl;
+    });
+  })();
+  </script>
+
+
+</body>
+</html>
