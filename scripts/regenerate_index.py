@@ -400,7 +400,7 @@ body {
   min-height: 100vh;
 }
 
-.container { max-width: 1080px; margin: 0 auto; padding: 34px 18px 50px; }
+.container { max-width: 1480px; margin: 0 auto; padding: 34px 24px 50px; }
 
 header { text-align: center; padding: 38px 0 24px; }
 
