@@ -336,6 +336,11 @@ h1 {
   box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
 }
 
+.lang-select option {
+  color: #0b1f36;
+  background: #ffffff;
+}
+
 .to-top-btn {
   position: fixed;
   right: 14px;
@@ -444,12 +449,33 @@ h1 {
     const supported = new Set(['it', 'en', 'es', 'fr', 'de', 'pt', 'el', 'ru', 'zh-CN']);
     const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
 
+    const decodeTranslateHost = (host) => {
+      // Google Translate proxy host: dots -> '-', hyphens -> '--'
+      return host
+        .replace(/\.translate\.goog$/i, '')
+        .replace(/--/g, '__DASH__')
+        .replace(/-/g, '.')
+        .replace(/__DASH__/g, '-');
+    };
+
     const fromGoogleTranslatePage = () => {
       try {
         const url = new URL(window.location.href);
-        const translatedUrl = url.searchParams.get('u');
-        if (!translatedUrl) return null;
-        return decodeURIComponent(translatedUrl);
+        const direct = url.searchParams.get('u') || url.searchParams.get('_x_tr_url');
+        if (direct) return decodeURIComponent(direct);
+
+        if (/\.translate\.goog$/i.test(url.hostname)) {
+          const host = decodeTranslateHost(url.hostname);
+          const cleanParams = new URLSearchParams(url.search);
+          Array.from(cleanParams.keys())
+            .filter((k) => k.startsWith('_x_tr_'))
+            .forEach((k) => cleanParams.delete(k));
+          const query = cleanParams.toString();
+          const path = `${url.pathname}${query ? `?${query}` : ''}${url.hash || ''}`;
+          return `https://${host}${path}`;
+        }
+
+        return null;
       } catch (_) {
         return null;
       }
