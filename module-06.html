@@ -603,7 +603,7 @@ h1 {
     <div class="outline-frame">
       <p class="outline-title">Struttura del modulo</p>
       <nav class="outline-nav-tree">
-        <ul class="outline-root"><li><details class="outline-group" open><summary><span class="outline-summary-label">Scheda rapida del modulo</span><a class="outline-link outline-section-link" href="#scheda-rapida-del-modulo">Vai</a></summary></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Labs</span><a class="outline-link outline-section-link" href="#labs">Vai</a></summary><ul class="outline-sublist"><li><a class="outline-link" href="#catalogo-laboratori-e-percorsi">Catalogo laboratori e percorsi</a></li><li><a class="outline-link" href="#important-agents">Important Agents</a></li></ul></details></li></ul>
+        <ul class="outline-root"><li><a class="outline-link outline-section-link" href="#scheda-rapida-del-modulo">Scheda rapida del modulo</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Labs</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#catalogo-laboratori-e-percorsi">Catalogo laboratori e percorsi</a></li><li><a class="outline-link" href="#important-agents">Important Agents</a></li></ul></details></li></ul>
       </nav>
     </div>
   </aside>
@@ -710,6 +710,19 @@ h1 {
   })();
   </script>
 
+
+  <script>
+  (() => {
+    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
+      summary.addEventListener('click', (event) => {
+        event.preventDefault();
+        const group = summary.parentElement;
+        if (!group) return;
+        group.open = !group.open;
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>

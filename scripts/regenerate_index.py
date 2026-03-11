@@ -1182,12 +1182,6 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     outline_sections = build_outline_structure(module['body']) if has_outline else []
     outline_items = []
     for index, section in enumerate(outline_sections):
-        section_link = (
-            f'<a class="outline-link outline-section-link" href="#{section["id"]}">'
-            f'{"Go" if is_en else "Vai"}'
-            '</a>'
-        )
-        sub_items = ''
         if section['children']:
             sub_items = (
                 '<ul class="outline-sublist">'
@@ -1201,17 +1195,22 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
                 )
                 + '</ul>'
             )
-        outline_items.append(
-            '<li>'
-            f'<details class="outline-group" {"open" if index == 0 else ""}>'
-            '<summary>'
-            f'<span class="outline-summary-label">{html.escape(section["text"])}</span>'
-            f'{section_link}'
-            '</summary>'
-            f'{sub_items}'
-            '</details>'
-            '</li>'
-        )
+            outline_items.append(
+                '<li>'
+                f'<details class="outline-group" {"open" if index == 0 else ""}>'
+                '<summary>'
+                f'<span class="outline-summary-label">{html.escape(section["text"])}</span>'
+                '</summary>'
+                f'{sub_items}'
+                '</details>'
+                '</li>'
+            )
+        else:
+            outline_items.append(
+                '<li>'
+                f'<a class="outline-link outline-section-link" href="#{section["id"]}">{html.escape(section["text"])}</a>'
+                '</li>'
+            )
 
     outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
     outline_html = (
@@ -1227,7 +1226,20 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
         '  </aside>\n'
     ) if has_outline else ''
 
-    outline_script = ''
+    outline_script = '''
+  <script>
+  (() => {
+    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
+      summary.addEventListener('click', (event) => {
+        event.preventDefault();
+        const group = summary.parentElement;
+        if (!group) return;
+        group.open = !group.open;
+      });
+    });
+  })();
+  </script>
+''' if has_outline else ''
     outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
 
     return f'''<!DOCTYPE html>
