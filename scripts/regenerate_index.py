@@ -104,17 +104,9 @@ def is_table_separator(row_line: str) -> bool:
     return all(re.match(r'^:?-{3,}:?$', html.unescape(cell)) for cell in cells)
 
 
-def body_to_html(body: str):
-    """
-    Returns (html_string, outline_items).
-    outline_items: list of {'level': 2|3|4, 'text': str, 'id': str}
-    Level 2 = major section (### 1. Title → <h2>)
-    Level 3 = subsection (### 1.1 or ### Title → <h3>)
-    Level 4 = sub-subsection (#### Title → <h4>)
-    """
+def body_to_html(body: str) -> str:
     lines = body.splitlines()
     out = []
-    outline_items = []
     i = 0
     slug_counter = {}
     current_major = 1
@@ -212,7 +204,7 @@ def body_to_html(body: str):
                     block_lines.append(current_raw)
                     i += 1
 
-                card_html, _ = body_to_html('\n'.join(block_lines).strip('\n'))
+                card_html = body_to_html('\n'.join(block_lines).strip('\n'))
                 card_class = 'quick-card' if heading_key == 'scheda rapida del modulo' else 'checklist-card'
                 out.append(
                     f'<section class="{card_class}">'
@@ -232,7 +224,6 @@ def body_to_html(body: str):
                 heading_text = heading_text_raw
                 heading_id = _heading_id(heading_text)
                 out.append(f'<h2 id="{heading_id}" class="module-section-title">{format_inline(heading_text)}</h2>')
-                outline_items.append({'level': 2, 'text': heading_text, 'id': heading_id})
                 i += 1
                 continue
             if sub_match:
@@ -249,7 +240,6 @@ def body_to_html(body: str):
 
             heading_id = _heading_id(heading_text)
             out.append(f'<h3 id="{heading_id}" class="module-subtitle">{format_inline(heading_text)}</h3>')
-            outline_items.append({'level': 3, 'text': heading_text, 'id': heading_id})
             i += 1
             continue
 
@@ -264,7 +254,6 @@ def body_to_html(body: str):
                 heading_text = f'{current_major}.{max(current_minor, 1)}.{current_subminor} {heading_text_raw}'
             heading_id = _heading_id(heading_text)
             out.append(f'<h4 id="{heading_id}" class="module-subtitle-small">{format_inline(heading_text)}</h4>')
-            outline_items.append({'level': 4, 'text': heading_text, 'id': heading_id})
             i += 1
             continue
 
@@ -322,92 +311,8 @@ def body_to_html(body: str):
         out.append(f'<p>{format_inline(line)}</p>')
         i += 1
 
-    return '\n'.join(out), outline_items
+    return '\n'.join(out)
 
-
-def build_outline_tree(outline_items):
-    """
-    2-level tree: ### headings (level 2 or 3) as top-level sections,
-    #### headings (level 4) as children of the last section.
-    """
-    sections = []
-    current = None
-
-    for item in outline_items:
-        level = item['level']
-        if level in (2, 3):
-            current = {'text': item['text'], 'id': item['id'], 'children': []}
-            sections.append(current)
-        elif level == 4:
-            if current is not None:
-                current['children'].append({'text': item['text'], 'id': item['id']})
-            else:
-                # orphan h4 — promote to section
-                current = {'text': item['text'], 'id': item['id'], 'children': []}
-                sections.append(current)
-
-    return sections
-
-
-def build_outline_panel_html(outline_items, is_en=False):
-    """Build the full outline panel HTML from flat outline_items list."""
-    if not outline_items:
-        return ''
-
-    sections = build_outline_tree(outline_items)
-    outline_items_html = []
-
-    for index, section in enumerate(sections):
-        sec_id = section['id']
-        sec_text = html.escape(section['text'])
-
-        if section['children']:
-            sub_items = (
-                '<ul class="outline-sublist">'
-                + ''.join(
-                    '<li>'
-                    f'<a class="outline-link" href="#{child["id"]}" data-outline-id="{child["id"]}">'
-                    f'{html.escape(child["text"])}'
-                    '</a>'
-                    '</li>'
-                    for child in section['children']
-                )
-                + '</ul>'
-            )
-            outline_items_html.append(
-                '<li>'
-                f'<details class="outline-group" {"open" if index == 0 else ""}>'
-                '<summary>'
-                f'<span class="outline-summary-label" data-outline-id="{sec_id}">'
-                f'<a class="outline-summary-link" href="#{sec_id}">{sec_text}</a>'
-                '</span>'
-                '</summary>'
-                f'{sub_items}'
-                '</details>'
-                '</li>'
-            )
-        else:
-            outline_items_html.append(
-                '<li>'
-                f'<a class="outline-link outline-section-link" href="#{sec_id}" data-outline-id="{sec_id}">'
-                f'{sec_text}'
-                '</a>'
-                '</li>'
-            )
-
-    outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
-    return (
-        '\n  <aside class="outline-panel" aria-label="Module outline">\n'
-        '    <div class="outline-frame">\n'
-        f'      <p class="outline-title">{outline_title}</p>\n'
-        '      <nav class="outline-nav-tree">\n'
-        '        <ul class="outline-root">'
-        f'{"".join(outline_items_html)}'
-        '</ul>\n'
-        '      </nav>\n'
-        '    </div>\n'
-        '  </aside>\n'
-    )
 
 
 def module_filename(module_number: int, lang: str = 'it') -> str:
@@ -1032,74 +937,133 @@ OUTLINE_STYLE = '''
 OUTLINE_SCRIPT = '''
   <script>
   (() => {
-    // ── Toggle <details> on summary click ───────────────
-    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
-      summary.addEventListener('click', (event) => {
-        // Allow link clicks inside summary to navigate without toggling
-        if (event.target.closest('.outline-summary-link')) return;
-        event.preventDefault();
-        const group = summary.parentElement;
-        if (group) group.open = !group.open;
-      });
+    const panel = document.querySelector('.outline-panel');
+    const host = document.getElementById('outline-nav');
+    const content = document.querySelector('.module-content');
+    if (!panel || !host || !content) return;
+
+    const ordered = Array.from(content.querySelectorAll(
+      'h2.module-section-title, h3.module-subtitle, h4.module-subtitle-small'
+    ));
+    const sections = [];
+    const pendingChildren = [];
+
+    ordered.forEach((heading) => {
+      if (heading.matches('h2.module-section-title, h3.module-subtitle')) {
+        sections.push({ heading, children: [] });
+        return;
+      }
+      if (sections.length === 0) pendingChildren.push(heading);
+      else sections[sections.length - 1].children.push(heading);
     });
 
-    // ── Active-section tracking on scroll ──────────────
-    const headings = Array.from(
-      document.querySelectorAll('h2[id], h3[id], h4[id]')
-    );
-    const allLinks = document.querySelectorAll('[data-outline-id]');
-    if (!headings.length || !allLinks.length) return;
+    if (sections.length === 0) {
+      const moduleTitle = document.querySelector('.module-title');
+      if (moduleTitle) {
+        sections.push({
+          heading: moduleTitle,
+          children: Array.from(content.querySelectorAll('h4.module-subtitle-small'))
+        });
+      }
+    } else if (pendingChildren.length > 0) {
+      sections[0].children.unshift(...pendingChildren);
+    }
 
-    // Map: id → elements with data-outline-id
-    const idToEls = {};
-    allLinks.forEach((el) => {
-      const id = el.dataset.outlineId;
-      if (!idToEls[id]) idToEls[id] = [];
-      idToEls[id].push(el);
+    if (sections.length === 0) {
+      panel.style.display = 'none';
+      return;
+    }
+
+    const root = document.createElement('ul');
+    root.className = 'outline-root';
+
+    const linkById = new Map();
+    const headingOrder = [];
+
+    sections.forEach((section, index) => {
+      const sectionId = section.heading.id;
+      if (!sectionId) return;
+      headingOrder.push(section.heading);
+
+      const item = document.createElement('li');
+      const details = document.createElement('details');
+      details.className = 'outline-group';
+      details.open = index === 0;
+
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.className = 'outline-summary-label';
+      label.textContent = section.heading.textContent.trim();
+
+      const jump = document.createElement('a');
+      jump.className = 'outline-link outline-section-link';
+      jump.href = `#${sectionId}`;
+      jump.textContent = 'Vai';
+      jump.addEventListener('click', (event) => event.stopPropagation());
+
+      summary.append(label, jump);
+      details.appendChild(summary);
+      linkById.set(sectionId, jump);
+
+      if (section.children.length > 0) {
+        const sub = document.createElement('ul');
+        sub.className = 'outline-sublist';
+
+        section.children.forEach((child) => {
+          const childId = child.id;
+          if (!childId) return;
+          headingOrder.push(child);
+
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.className = 'outline-link';
+          link.href = `#${childId}`;
+          link.textContent = child.textContent.trim();
+          li.appendChild(link);
+          sub.appendChild(li);
+          linkById.set(childId, link);
+        });
+
+        details.appendChild(sub);
+      }
+
+      item.appendChild(details);
+      root.appendChild(item);
     });
 
-    const clearActive = () =>
-      document.querySelectorAll('[data-outline-id].active')
-        .forEach((l) => l.classList.remove('active'));
+    host.replaceChildren(root);
 
-    const openParentDetails = (el) => {
-      let node = el.parentElement;
-      while (node) {
-        if (node.tagName === 'DETAILS' && !node.open) node.open = true;
-        node = node.parentElement;
+    let ticking = false;
+
+    const setActive = () => {
+      ticking = false;
+      if (headingOrder.length === 0) return;
+
+      let active = headingOrder[0];
+      for (const heading of headingOrder) {
+        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
+        else break;
+      }
+
+      linkById.forEach((link) => link.classList.remove('active'));
+      const activeLink = linkById.get(active.id);
+      if (activeLink) {
+        activeLink.classList.add('active');
+        const group = activeLink.closest('details.outline-group');
+        if (group) group.open = true;
       }
     };
 
-    const setActive = (id) => {
-      clearActive();
-      const els = idToEls[id];
-      if (!els) return;
-      els.forEach((el) => {
-        el.classList.add('active');
-        openParentDetails(el);
-        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      });
-    };
-
-    // Track topmost heading above 28% of viewport
-    let ticking = false;
     const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const threshold = window.scrollY + window.innerHeight * 0.28;
-        let best = headings[0];
-        for (const h of headings) {
-          if (h.offsetTop <= threshold) best = h;
-          else break;
-        }
-        if (best) setActive(best.id);
-      });
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(setActive);
+      }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('hashchange', setActive);
+    setActive();
   })();
   </script>
 '''
@@ -1221,7 +1185,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     labs_section = ''
     if labs_body:
-        labs_html, _ = body_to_html(labs_body)
+        labs_html = body_to_html(labs_body)
         labs_section = f'''
       <section class="card labs-section">
         <h2 class="section-title">Labs</h2>
@@ -1233,7 +1197,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     bibliography_section = ''
     if bibliography_body:
-        bibliography_html, _ = body_to_html(bibliography_body)
+        bibliography_html = body_to_html(bibliography_body)
         bibliography_section = f'''
       <section class="card">
         <h2 class="section-title">Bibliografia</h2>
@@ -1245,7 +1209,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     home_note_html = ''
     if home_note_body:
-        note_html, _ = body_to_html(home_note_body)
+        note_html = body_to_html(home_note_body)
         home_note_html = f'''
       <section class="site-footnote">
 {chr(10).join('        ' + ln for ln in note_html.splitlines())}
@@ -1294,7 +1258,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     source_module = modules[idx]
     module = translated_module if translated_module else source_module
     num = source_module['number']
-    body_html, outline_items = body_to_html(module['body'])
+    body_html = body_to_html(module['body'])
 
     is_en = lang == 'en'
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
@@ -1323,7 +1287,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
 
     labs_section = ''
     if labs_body:
-        labs_html, _ = body_to_html(labs_body)
+        labs_html = body_to_html(labs_body)
         labs_section = f'''
         <section class="module-content labs-section">
           <h3 class="module-subtitle">Labs</h3>
@@ -1331,9 +1295,17 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
         </section>
 '''
 
-    outline_html = build_outline_panel_html(outline_items, is_en=is_en)
-    has_outline = bool(outline_items)
-    outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
+    has_outline = True
+    outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
+    outline_html = f'''
+  <aside class="outline-panel" aria-label="{outline_title}">
+    <div class="outline-frame">
+      <p class="outline-title">{outline_title}</p>
+      <nav id="outline-nav" class="outline-nav-tree"></nav>
+    </div>
+  </aside>
+'''
+    outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>'
 
     return f'''<!DOCTYPE html>
 <html lang="{page_lang}">

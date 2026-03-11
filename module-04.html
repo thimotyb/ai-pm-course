@@ -620,12 +620,10 @@ h1 {
   </div>
 
 
-  <aside class="outline-panel" aria-label="Module outline">
+  <aside class="outline-panel" aria-label="Struttura del modulo">
     <div class="outline-frame">
       <p class="outline-title">Struttura del modulo</p>
-      <nav class="outline-nav-tree">
-        <ul class="outline-root"><li><a class="outline-link outline-section-link" href="#1-1-qualita-dell-output-oltre-la-sola-accuratezza" data-outline-id="1-1-qualita-dell-output-oltre-la-sola-accuratezza">1.1 Qualità dell&#x27;output: oltre la sola accuratezza</a></li><li><a class="outline-link outline-section-link" href="#1-2-sicurezza-dell-output-su-tre-livelli" data-outline-id="1-2-sicurezza-dell-output-su-tre-livelli">1.2 Sicurezza dell&#x27;output su tre livelli</a></li><li><a class="outline-link outline-section-link" href="#1-3-sicurezza-dei-dati-integrita-riservatezza-proprieta-intellettuale" data-outline-id="1-3-sicurezza-dei-dati-integrita-riservatezza-proprieta-intellettuale">1.3 Sicurezza dei dati: integrità, riservatezza, proprietà intellettuale</a></li><li><a class="outline-link outline-section-link" href="#1-4-sicurezza-del-modello-rischio-supply-chain" data-outline-id="1-4-sicurezza-del-modello-rischio-supply-chain">1.4 Sicurezza del modello: rischio supply chain</a></li><li><a class="outline-link outline-section-link" href="#1-5-sicurezza-d-uso-prompt-injection-e-output-handling" data-outline-id="1-5-sicurezza-d-uso-prompt-injection-e-output-handling">1.5 Sicurezza d&#x27;uso: prompt injection e output handling</a></li><li><a class="outline-link outline-section-link" href="#1-6-privacy-by-design-come-requisito-di-qualita" data-outline-id="1-6-privacy-by-design-come-requisito-di-qualita">1.6 Privacy-by-design come requisito di qualità</a></li><li><a class="outline-link outline-section-link" href="#1-7-bias-e-fairness-prevenire-qualita-distorta" data-outline-id="1-7-bias-e-fairness-prevenire-qualita-distorta">1.7 Bias e fairness: prevenire qualità distorta</a></li><li><a class="outline-link outline-section-link" href="#1-8-trasparenza-e-fiducia-nell-output" data-outline-id="1-8-trasparenza-e-fiducia-nell-output">1.8 Trasparenza e fiducia nell&#x27;output</a></li><li><a class="outline-link outline-section-link" href="#1-9-accountability-operativa-hitl-hotl-hootl" data-outline-id="1-9-accountability-operativa-hitl-hotl-hootl">1.9 Accountability operativa: HITL, HOTL, HOOTL</a></li><li><a class="outline-link outline-section-link" href="#1-10-approccio-proattivo-governance-shift-left" data-outline-id="1-10-approccio-proattivo-governance-shift-left">1.10 Approccio proattivo: governance shift-left</a></li><li><a class="outline-link outline-section-link" href="#1-11-kpi-di-qualita-da-monitorare-nel-modulo-04" data-outline-id="1-11-kpi-di-qualita-da-monitorare-nel-modulo-04">1.11 KPI di qualità da monitorare nel Modulo 04</a></li><li><a class="outline-link outline-section-link" href="#1-12-link-utili-del-modulo" data-outline-id="1-12-link-utili-del-modulo">1.12 Link utili del modulo</a></li></ul>
-      </nav>
+      <nav id="outline-nav" class="outline-nav-tree"></nav>
     </div>
   </aside>
 
@@ -798,74 +796,133 @@ h1 {
 
   <script>
   (() => {
-    // ── Toggle <details> on summary click ───────────────
-    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
-      summary.addEventListener('click', (event) => {
-        // Allow link clicks inside summary to navigate without toggling
-        if (event.target.closest('.outline-summary-link')) return;
-        event.preventDefault();
-        const group = summary.parentElement;
-        if (group) group.open = !group.open;
-      });
+    const panel = document.querySelector('.outline-panel');
+    const host = document.getElementById('outline-nav');
+    const content = document.querySelector('.module-content');
+    if (!panel || !host || !content) return;
+
+    const ordered = Array.from(content.querySelectorAll(
+      'h2.module-section-title, h3.module-subtitle, h4.module-subtitle-small'
+    ));
+    const sections = [];
+    const pendingChildren = [];
+
+    ordered.forEach((heading) => {
+      if (heading.matches('h2.module-section-title, h3.module-subtitle')) {
+        sections.push({ heading, children: [] });
+        return;
+      }
+      if (sections.length === 0) pendingChildren.push(heading);
+      else sections[sections.length - 1].children.push(heading);
     });
 
-    // ── Active-section tracking on scroll ──────────────
-    const headings = Array.from(
-      document.querySelectorAll('h2[id], h3[id], h4[id]')
-    );
-    const allLinks = document.querySelectorAll('[data-outline-id]');
-    if (!headings.length || !allLinks.length) return;
+    if (sections.length === 0) {
+      const moduleTitle = document.querySelector('.module-title');
+      if (moduleTitle) {
+        sections.push({
+          heading: moduleTitle,
+          children: Array.from(content.querySelectorAll('h4.module-subtitle-small'))
+        });
+      }
+    } else if (pendingChildren.length > 0) {
+      sections[0].children.unshift(...pendingChildren);
+    }
 
-    // Map: id → elements with data-outline-id
-    const idToEls = {};
-    allLinks.forEach((el) => {
-      const id = el.dataset.outlineId;
-      if (!idToEls[id]) idToEls[id] = [];
-      idToEls[id].push(el);
+    if (sections.length === 0) {
+      panel.style.display = 'none';
+      return;
+    }
+
+    const root = document.createElement('ul');
+    root.className = 'outline-root';
+
+    const linkById = new Map();
+    const headingOrder = [];
+
+    sections.forEach((section, index) => {
+      const sectionId = section.heading.id;
+      if (!sectionId) return;
+      headingOrder.push(section.heading);
+
+      const item = document.createElement('li');
+      const details = document.createElement('details');
+      details.className = 'outline-group';
+      details.open = index === 0;
+
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.className = 'outline-summary-label';
+      label.textContent = section.heading.textContent.trim();
+
+      const jump = document.createElement('a');
+      jump.className = 'outline-link outline-section-link';
+      jump.href = `#${sectionId}`;
+      jump.textContent = 'Vai';
+      jump.addEventListener('click', (event) => event.stopPropagation());
+
+      summary.append(label, jump);
+      details.appendChild(summary);
+      linkById.set(sectionId, jump);
+
+      if (section.children.length > 0) {
+        const sub = document.createElement('ul');
+        sub.className = 'outline-sublist';
+
+        section.children.forEach((child) => {
+          const childId = child.id;
+          if (!childId) return;
+          headingOrder.push(child);
+
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.className = 'outline-link';
+          link.href = `#${childId}`;
+          link.textContent = child.textContent.trim();
+          li.appendChild(link);
+          sub.appendChild(li);
+          linkById.set(childId, link);
+        });
+
+        details.appendChild(sub);
+      }
+
+      item.appendChild(details);
+      root.appendChild(item);
     });
 
-    const clearActive = () =>
-      document.querySelectorAll('[data-outline-id].active')
-        .forEach((l) => l.classList.remove('active'));
+    host.replaceChildren(root);
 
-    const openParentDetails = (el) => {
-      let node = el.parentElement;
-      while (node) {
-        if (node.tagName === 'DETAILS' && !node.open) node.open = true;
-        node = node.parentElement;
+    let ticking = false;
+
+    const setActive = () => {
+      ticking = false;
+      if (headingOrder.length === 0) return;
+
+      let active = headingOrder[0];
+      for (const heading of headingOrder) {
+        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
+        else break;
+      }
+
+      linkById.forEach((link) => link.classList.remove('active'));
+      const activeLink = linkById.get(active.id);
+      if (activeLink) {
+        activeLink.classList.add('active');
+        const group = activeLink.closest('details.outline-group');
+        if (group) group.open = true;
       }
     };
 
-    const setActive = (id) => {
-      clearActive();
-      const els = idToEls[id];
-      if (!els) return;
-      els.forEach((el) => {
-        el.classList.add('active');
-        openParentDetails(el);
-        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      });
-    };
-
-    // Track topmost heading above 28% of viewport
-    let ticking = false;
     const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const threshold = window.scrollY + window.innerHeight * 0.28;
-        let best = headings[0];
-        for (const h of headings) {
-          if (h.offsetTop <= threshold) best = h;
-          else break;
-        }
-        if (best) setActive(best.id);
-      });
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(setActive);
+      }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('hashchange', setActive);
+    setActive();
   })();
   </script>
 
