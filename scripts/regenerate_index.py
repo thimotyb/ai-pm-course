@@ -598,10 +598,14 @@ h1 {
   background: rgba(255, 204, 0, 0.2);
 }
 
-.lang-flag {
-  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
-  font-size: 1rem;
+.lang-flag-img {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  object-fit: cover;
   line-height: 1;
+  flex: 0 0 auto;
 }
 
 .lang-code {
@@ -802,8 +806,8 @@ def lang_switch_html(lang: str = 'it') -> str:
     en_active = ' is-active' if lang == 'en' else ''
     return f'''
   <div class="lang-switch" aria-label="Language switch">
-    <a class="lang-btn{it_active}" data-lang="it" href="#"><span class="lang-flag" aria-hidden="true">🇮🇹</span><span class="lang-code">IT</span></a>
-    <a class="lang-btn{en_active}" data-lang="en" href="#"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></a>
+    <a class="lang-btn{it_active}" data-lang="it" href="#"><img class="lang-flag-img" src="assets/flags/it.svg" alt="Italian flag"><span class="lang-code">IT</span></a>
+    <a class="lang-btn{en_active}" data-lang="en" href="#"><img class="lang-flag-img" src="assets/flags/gb.svg" alt="English flag"><span class="lang-code">EN</span></a>
   </div>
 '''
 
