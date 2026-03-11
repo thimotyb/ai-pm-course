@@ -443,23 +443,24 @@ h1 {
 }
 </style>
   <style>
+/* ── Outline panel ─────────────────────────────── */
 .outline-panel {
   position: fixed;
   top: 18px;
   left: 12px;
   bottom: 18px;
-  width: 292px;
+  width: 296px;
   z-index: 950;
   display: none;
 }
 
 .outline-frame {
   height: 100%;
-  background: rgba(0, 18, 40, 0.92);
+  background: rgba(0, 14, 32, 0.94);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -467,116 +468,137 @@ h1 {
 
 .outline-title {
   font-family: 'Outfit', sans-serif;
-  letter-spacing: 0.4px;
-  font-size: 1rem;
+  font-size: 0.82rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
   color: var(--accent-secondary);
-  padding: 12px 14px 8px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
 }
 
 .outline-nav-tree {
-  padding: 10px 10px 12px;
-  overflow: auto;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
 }
 
-.outline-root,
-.outline-sublist {
+.outline-nav-tree::-webkit-scrollbar { width: 4px; }
+.outline-nav-tree::-webkit-scrollbar-track { background: transparent; }
+.outline-nav-tree::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
+/* ── Root list ──────────────────────────────────── */
+.outline-root {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.outline-root {
-  display: grid;
-  gap: 8px;
-}
-
-.outline-group {
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.outline-group > summary {
-  cursor: pointer;
-  list-style: none;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.outline-group > summary::-webkit-details-marker {
-  display: none;
+.outline-root-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.outline-summary-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* ── Sublists (indented children) ────────────────── */
+.outline-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.outline-sublist[hidden] { display: none; }
+
+/* ── Item rows (toggle button + link) ─────────────── */
+.outline-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
   min-width: 0;
 }
 
-.outline-summary-label::before {
-  content: '▸';
+/* ── Toggle arrow button ────────────────────────── */
+.outline-toggle-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
   color: var(--accent-primary);
-  font-size: 0.82rem;
-  transform: translateY(-1px);
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 5px 3px 3px;
+  transition: transform 0.18s ease, color 0.15s ease;
+  user-select: none;
 }
 
-.outline-group[open] .outline-summary-label::before {
-  transform: rotate(90deg) translateX(1px);
+.outline-toggle-btn[aria-expanded="false"] {
+  transform: rotate(-90deg);
 }
 
-.outline-sublist {
-  padding: 2px 8px 8px;
-  display: grid;
-  gap: 4px;
-}
+.outline-toggle-btn:hover { color: #fff; }
 
+/* ── Links ──────────────────────────────────────── */
 .outline-link {
-  display: inline-block;
+  display: block;
+  flex: 1;
+  min-width: 0;
   text-decoration: none;
-  color: #d9e3ef;
-  border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 4px 8px;
-  font-size: 0.84rem;
-  line-height: 1.35;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  line-height: 1.38;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  border-left: 2px solid transparent;
+  word-break: break-word;
+}
+
+/* h2 – major sections */
+.outline-h2-link {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ddeeff;
+}
+
+/* h3 – subsections */
+.outline-h3-link {
+  font-size: 0.81rem;
+  color: #b8cede;
+}
+
+/* h4 – sub-subsections */
+.outline-h4-link {
+  font-size: 0.76rem;
+  color: #8aa4b8;
 }
 
 .outline-link:hover {
   color: #ffffff;
-  border-color: rgba(0, 212, 255, 0.45);
-  background: rgba(0, 212, 255, 0.12);
+  background: rgba(0, 212, 255, 0.1);
 }
 
-.outline-section-link {
-  font-size: 0.76rem;
-  color: #9eefff;
-  border: 1px solid rgba(0, 212, 255, 0.35);
-  background: rgba(0, 212, 255, 0.08);
-  white-space: nowrap;
-}
-
+/* Active state */
 .outline-link.active {
-  color: #ffffff;
-  border-color: rgba(255, 204, 0, 0.55);
-  background: rgba(255, 204, 0, 0.14);
+  color: #ffffff !important;
+  background: rgba(255, 204, 0, 0.13);
+  border-left-color: var(--accent-primary);
 }
 
+/* ── Show panel on wide screens ──────────────────── */
 @media (min-width: 1024px) {
   .has-outline .outline-panel {
     display: block;
   }
-
   .has-outline .container {
-    padding-left: 332px;
+    padding-left: 336px;
   }
 }
 </style>
@@ -603,7 +625,7 @@ h1 {
     <div class="outline-frame">
       <p class="outline-title">Struttura del modulo</p>
       <nav class="outline-nav-tree">
-        <ul class="outline-root"><li><a class="outline-link outline-section-link" href="#scheda-rapida-del-modulo">Scheda rapida del modulo</a></li><li><a class="outline-link outline-section-link" href="#il-lifecycle-ia-come-strumento-di-gestione">Il lifecycle IA come strumento di gestione</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Framework tecnici utili per strutturare il lavoro</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#crisp-dm-per-la-struttura-base-del-progetto">CRISP-DM per la struttura base del progetto</a></li><li><a class="outline-link" href="#crisp-ml-q-estensione-quality-first-di-crisp-dm">CRISP-ML(Q): estensione quality-first di CRISP-DM</a></li><li><a class="outline-link" href="#team-data-science-process-per-standardizzazione-del-team">Team Data Science Process per standardizzazione del team</a></li><li><a class="outline-link" href="#mlops-per-continuita-tra-sviluppo-e-produzione">MLOps per continuità tra sviluppo e produzione</a></li><li><a class="outline-link" href="#evoluzione-verso-llmops-e-genaiops">Evoluzione verso LLMOps e GenAIOps</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Lifecycle orientati a governance, ruoli e controllo</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#trustworthy-ai-7-requisiti-da-integrare-nel-progetto">Trustworthy AI: 7 requisiti da integrare nel progetto</a></li><li><a class="outline-link" href="#classificazione-del-rischio-secondo-eu-ai-act">Classificazione del rischio secondo EU AI Act</a></li><li><a class="outline-link" href="#esempio-reale-di-rischio-operativo-agente-fuori-controllo">Esempio reale di rischio operativo: agente fuori controllo</a></li><li><a class="outline-link" href="#sintesi-operativa-da-google-responsible-ai-per-applicazioni-genai">Sintesi operativa da Google Responsible AI (per applicazioni GenAI)</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Gestione per fasi: guida operativa completa</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#fase-1-ideazione-e-definizione-del-problema">Fase 1: Ideazione e definizione del problema</a></li><li><a class="outline-link" href="#fase-2-raccolta-e-preparazione-dati">Fase 2: Raccolta e preparazione dati</a></li><li><a class="outline-link" href="#data-governance-e-compliance-evaluation">Data governance e compliance evaluation</a></li><li><a class="outline-link" href="#fase-3-sviluppo-modello-e-sperimentazione">Fase 3: Sviluppo modello e sperimentazione</a></li><li><a class="outline-link" href="#fase-4-valutazione-e-validazione">Fase 4: Valutazione e validazione</a></li><li><a class="outline-link" href="#fase-5-deploy-e-integrazione-del-sistema-ia">Fase 5: Deploy e integrazione del sistema IA</a></li><li><a class="outline-link" href="#fase-6-manutenzione-e-fine-lifecycle">Fase 6: Manutenzione e fine lifecycle</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Lifecycle di training per sistemi generativi</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#approfondimento-operativo-delle-tecniche-del-lifecycle">Approfondimento operativo delle tecniche del lifecycle</a></li><li><a class="outline-link" href="#pre-training-cosa-succede-e-perche-conta">Pre-training: cosa succede e perché conta</a></li><li><a class="outline-link" href="#post-training-adattare-il-modello-al-caso-reale">Post-training: adattare il modello al caso reale</a></li><li><a class="outline-link" href="#inferenza-usare-il-modello-in-produzione">Inferenza: usare il modello in produzione</a></li><li><a class="outline-link" href="#customization-in-inferenza">Customization in inferenza</a></li><li><a class="outline-link" href="#ottimizzazione-in-inferenza">Ottimizzazione in inferenza</a></li><li><a class="outline-link" href="#implicazioni-per-l-ai-pm">Implicazioni per l&#x27;AI PM</a></li><li><a class="outline-link" href="#spiegazione-dei-termini-glossario-operativo">Spiegazione dei termini (glossario operativo)</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#checklist-dei-concetti-principali">Checklist dei concetti principali</a></li><li><a class="outline-link outline-section-link" href="#lab-consigliati-per-il-modulo-02">Lab consigliati per il Modulo 02</a></li><li><a class="outline-link outline-section-link" href="#link-utili-del-modulo">Link utili del modulo</a></li></ul>
+        <ul class="outline-root"><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-1-il-lifecycle-ia-come-strumento-di-gestione" data-outline-id="1-1-il-lifecycle-ia-come-strumento-di-gestione">1.1 Il lifecycle IA come strumento di gestione</a></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-2-framework-tecnici-utili-per-strutturare-il-lavoro">▾</button><a class="outline-link outline-h3-link" href="#1-2-framework-tecnici-utili-per-strutturare-il-lavoro" data-outline-id="1-2-framework-tecnici-utili-per-strutturare-il-lavoro">1.2 Framework tecnici utili per strutturare il lavoro</a></div><ul class="outline-sublist" id="osub-1-2-framework-tecnici-utili-per-strutturare-il-lavoro" hidden><li><a class="outline-link outline-h4-link" href="#1-2-1-crisp-dm-per-la-struttura-base-del-progetto" data-outline-id="1-2-1-crisp-dm-per-la-struttura-base-del-progetto">1.2.1 CRISP-DM per la struttura base del progetto</a></li><li><a class="outline-link outline-h4-link" href="#1-2-2-crisp-ml-q-estensione-quality-first-di-crisp-dm" data-outline-id="1-2-2-crisp-ml-q-estensione-quality-first-di-crisp-dm">1.2.2 CRISP-ML(Q): estensione quality-first di CRISP-DM</a></li><li><a class="outline-link outline-h4-link" href="#1-2-3-team-data-science-process-per-standardizzazione-del-team" data-outline-id="1-2-3-team-data-science-process-per-standardizzazione-del-team">1.2.3 Team Data Science Process per standardizzazione del team</a></li><li><a class="outline-link outline-h4-link" href="#1-2-4-mlops-per-continuita-tra-sviluppo-e-produzione" data-outline-id="1-2-4-mlops-per-continuita-tra-sviluppo-e-produzione">1.2.4 MLOps per continuità tra sviluppo e produzione</a></li><li><a class="outline-link outline-h4-link" href="#1-2-5-evoluzione-verso-llmops-e-genaiops" data-outline-id="1-2-5-evoluzione-verso-llmops-e-genaiops">1.2.5 Evoluzione verso LLMOps e GenAIOps</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-3-lifecycle-orientati-a-governance-ruoli-e-controllo">▾</button><a class="outline-link outline-h3-link" href="#1-3-lifecycle-orientati-a-governance-ruoli-e-controllo" data-outline-id="1-3-lifecycle-orientati-a-governance-ruoli-e-controllo">1.3 Lifecycle orientati a governance, ruoli e controllo</a></div><ul class="outline-sublist" id="osub-1-3-lifecycle-orientati-a-governance-ruoli-e-controllo" hidden><li><a class="outline-link outline-h4-link" href="#1-3-1-trustworthy-ai-7-requisiti-da-integrare-nel-progetto" data-outline-id="1-3-1-trustworthy-ai-7-requisiti-da-integrare-nel-progetto">1.3.1 Trustworthy AI: 7 requisiti da integrare nel progetto</a></li><li><a class="outline-link outline-h4-link" href="#1-3-2-classificazione-del-rischio-secondo-eu-ai-act" data-outline-id="1-3-2-classificazione-del-rischio-secondo-eu-ai-act">1.3.2 Classificazione del rischio secondo EU AI Act</a></li><li><a class="outline-link outline-h4-link" href="#1-3-3-esempio-reale-di-rischio-operativo-agente-fuori-controllo" data-outline-id="1-3-3-esempio-reale-di-rischio-operativo-agente-fuori-controllo">1.3.3 Esempio reale di rischio operativo: agente fuori controllo</a></li><li><a class="outline-link outline-h4-link" href="#1-3-4-sintesi-operativa-da-google-responsible-ai-per-applicazioni-genai" data-outline-id="1-3-4-sintesi-operativa-da-google-responsible-ai-per-applicazioni-genai">1.3.4 Sintesi operativa da Google Responsible AI (per applicazioni GenAI)</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-4-gestione-per-fasi-guida-operativa-completa">▾</button><a class="outline-link outline-h3-link" href="#1-4-gestione-per-fasi-guida-operativa-completa" data-outline-id="1-4-gestione-per-fasi-guida-operativa-completa">1.4 Gestione per fasi: guida operativa completa</a></div><ul class="outline-sublist" id="osub-1-4-gestione-per-fasi-guida-operativa-completa" hidden><li><a class="outline-link outline-h4-link" href="#1-4-1-fase-1-ideazione-e-definizione-del-problema" data-outline-id="1-4-1-fase-1-ideazione-e-definizione-del-problema">1.4.1 Fase 1: Ideazione e definizione del problema</a></li><li><a class="outline-link outline-h4-link" href="#1-4-2-fase-2-raccolta-e-preparazione-dati" data-outline-id="1-4-2-fase-2-raccolta-e-preparazione-dati">1.4.2 Fase 2: Raccolta e preparazione dati</a></li><li><a class="outline-link outline-h4-link" href="#1-4-3-data-governance-e-compliance-evaluation" data-outline-id="1-4-3-data-governance-e-compliance-evaluation">1.4.3 Data governance e compliance evaluation</a></li><li><a class="outline-link outline-h4-link" href="#1-4-4-fase-3-sviluppo-modello-e-sperimentazione" data-outline-id="1-4-4-fase-3-sviluppo-modello-e-sperimentazione">1.4.4 Fase 3: Sviluppo modello e sperimentazione</a></li><li><a class="outline-link outline-h4-link" href="#1-4-5-fase-4-valutazione-e-validazione" data-outline-id="1-4-5-fase-4-valutazione-e-validazione">1.4.5 Fase 4: Valutazione e validazione</a></li><li><a class="outline-link outline-h4-link" href="#1-4-6-fase-5-deploy-e-integrazione-del-sistema-ia" data-outline-id="1-4-6-fase-5-deploy-e-integrazione-del-sistema-ia">1.4.6 Fase 5: Deploy e integrazione del sistema IA</a></li><li><a class="outline-link outline-h4-link" href="#1-4-7-fase-6-manutenzione-e-fine-lifecycle" data-outline-id="1-4-7-fase-6-manutenzione-e-fine-lifecycle">1.4.7 Fase 6: Manutenzione e fine lifecycle</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-5-lifecycle-di-training-per-sistemi-generativi">▾</button><a class="outline-link outline-h3-link" href="#1-5-lifecycle-di-training-per-sistemi-generativi" data-outline-id="1-5-lifecycle-di-training-per-sistemi-generativi">1.5 Lifecycle di training per sistemi generativi</a></div><ul class="outline-sublist" id="osub-1-5-lifecycle-di-training-per-sistemi-generativi" hidden><li><a class="outline-link outline-h4-link" href="#1-5-1-approfondimento-operativo-delle-tecniche-del-lifecycle" data-outline-id="1-5-1-approfondimento-operativo-delle-tecniche-del-lifecycle">1.5.1 Approfondimento operativo delle tecniche del lifecycle</a></li><li><a class="outline-link outline-h4-link" href="#1-5-2-pre-training-cosa-succede-e-perche-conta" data-outline-id="1-5-2-pre-training-cosa-succede-e-perche-conta">1.5.2 Pre-training: cosa succede e perché conta</a></li><li><a class="outline-link outline-h4-link" href="#1-5-3-post-training-adattare-il-modello-al-caso-reale" data-outline-id="1-5-3-post-training-adattare-il-modello-al-caso-reale">1.5.3 Post-training: adattare il modello al caso reale</a></li><li><a class="outline-link outline-h4-link" href="#1-5-4-inferenza-usare-il-modello-in-produzione" data-outline-id="1-5-4-inferenza-usare-il-modello-in-produzione">1.5.4 Inferenza: usare il modello in produzione</a></li><li><a class="outline-link outline-h4-link" href="#1-5-5-customization-in-inferenza" data-outline-id="1-5-5-customization-in-inferenza">1.5.5 Customization in inferenza</a></li><li><a class="outline-link outline-h4-link" href="#1-5-6-ottimizzazione-in-inferenza" data-outline-id="1-5-6-ottimizzazione-in-inferenza">1.5.6 Ottimizzazione in inferenza</a></li><li><a class="outline-link outline-h4-link" href="#1-5-7-implicazioni-per-l-ai-pm" data-outline-id="1-5-7-implicazioni-per-l-ai-pm">1.5.7 Implicazioni per l&#x27;AI PM</a></li><li><a class="outline-link outline-h4-link" href="#1-5-8-spiegazione-dei-termini-glossario-operativo" data-outline-id="1-5-8-spiegazione-dei-termini-glossario-operativo">1.5.8 Spiegazione dei termini (glossario operativo)</a></li></ul></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-6-lab-consigliati-per-il-modulo-02" data-outline-id="1-6-lab-consigliati-per-il-modulo-02">1.6 Lab consigliati per il Modulo 02</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-7-link-utili-del-modulo" data-outline-id="1-7-link-utili-del-modulo">1.7 Link utili del modulo</a></li></ul>
       </nav>
     </div>
   </aside>
@@ -925,14 +947,86 @@ h1 {
 
   <script>
   (() => {
-    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
-      summary.addEventListener('click', (event) => {
-        event.preventDefault();
-        const group = summary.parentElement;
-        if (!group) return;
-        group.open = !group.open;
+    // ── Toggle expand/collapse ───────────────────────
+    document.querySelectorAll('.outline-toggle-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        const subId = btn.getAttribute('aria-controls');
+        const sub = document.getElementById(subId);
+        if (sub) sub.hidden = expanded;
       });
     });
+
+    // ── Active-section tracking on scroll ──────────────
+    const headings = Array.from(
+      document.querySelectorAll('h2[id], h3[id], h4[id]')
+    );
+    const allLinks = document.querySelectorAll('[data-outline-id]');
+    if (!headings.length || !allLinks.length) return;
+
+    // Map: id → link element(s)
+    const idToLinks = {};
+    allLinks.forEach((link) => {
+      const id = link.dataset.outlineId;
+      if (!idToLinks[id]) idToLinks[id] = [];
+      idToLinks[id].push(link);
+    });
+
+    const clearActive = () =>
+      document.querySelectorAll('[data-outline-id].active')
+        .forEach((l) => l.classList.remove('active'));
+
+    const expandParents = (link) => {
+      let el = link.parentElement;
+      while (el) {
+        if (
+          el.classList.contains('outline-sublist') &&
+          el.hidden
+        ) {
+          el.hidden = false;
+          const subId = el.id;
+          const btn = document.querySelector(
+            `[aria-controls="${subId}"]`
+          );
+          if (btn) btn.setAttribute('aria-expanded', 'true');
+        }
+        el = el.parentElement;
+      }
+    };
+
+    const setActive = (id) => {
+      clearActive();
+      const links = idToLinks[id];
+      if (!links) return;
+      links.forEach((link) => {
+        link.classList.add('active');
+        expandParents(link);
+        // Keep link visible inside the scrollable panel
+        link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    };
+
+    // Use scroll position to find the topmost heading above midpoint
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const mid = window.scrollY + window.innerHeight * 0.28;
+        let best = headings[0];
+        for (const h of headings) {
+          if (h.offsetTop <= mid) best = h;
+          else break;
+        }
+        if (best) setActive(best.id);
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Initial call
+    onScroll();
   })();
   </script>
 

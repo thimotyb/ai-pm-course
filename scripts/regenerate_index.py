@@ -104,9 +104,17 @@ def is_table_separator(row_line: str) -> bool:
     return all(re.match(r'^:?-{3,}:?$', html.unescape(cell)) for cell in cells)
 
 
-def body_to_html(body: str) -> str:
+def body_to_html(body: str):
+    """
+    Returns (html_string, outline_items).
+    outline_items: list of {'level': 2|3|4, 'text': str, 'id': str}
+    Level 2 = major section (### 1. Title → <h2>)
+    Level 3 = subsection (### 1.1 or ### Title → <h3>)
+    Level 4 = sub-subsection (#### Title → <h4>)
+    """
     lines = body.splitlines()
     out = []
+    outline_items = []
     i = 0
     slug_counter = {}
     current_major = 1
@@ -204,7 +212,7 @@ def body_to_html(body: str) -> str:
                     block_lines.append(current_raw)
                     i += 1
 
-                card_html = body_to_html('\n'.join(block_lines).strip('\n'))
+                card_html, _ = body_to_html('\n'.join(block_lines).strip('\n'))
                 card_class = 'quick-card' if heading_key == 'scheda rapida del modulo' else 'checklist-card'
                 out.append(
                     f'<section class="{card_class}">'
@@ -224,6 +232,7 @@ def body_to_html(body: str) -> str:
                 heading_text = heading_text_raw
                 heading_id = _heading_id(heading_text)
                 out.append(f'<h2 id="{heading_id}" class="module-section-title">{format_inline(heading_text)}</h2>')
+                outline_items.append({'level': 2, 'text': heading_text, 'id': heading_id})
                 i += 1
                 continue
             if sub_match:
@@ -240,6 +249,7 @@ def body_to_html(body: str) -> str:
 
             heading_id = _heading_id(heading_text)
             out.append(f'<h3 id="{heading_id}" class="module-subtitle">{format_inline(heading_text)}</h3>')
+            outline_items.append({'level': 3, 'text': heading_text, 'id': heading_id})
             i += 1
             continue
 
@@ -254,6 +264,7 @@ def body_to_html(body: str) -> str:
                 heading_text = f'{current_major}.{max(current_minor, 1)}.{current_subminor} {heading_text_raw}'
             heading_id = _heading_id(heading_text)
             out.append(f'<h4 id="{heading_id}" class="module-subtitle-small">{format_inline(heading_text)}</h4>')
+            outline_items.append({'level': 4, 'text': heading_text, 'id': heading_id})
             i += 1
             continue
 
@@ -274,7 +285,6 @@ def body_to_html(body: str) -> str:
                     )
                     i += 1
 
-            # Clickable images with zoomed class toggle
             out.append(
                 '<figure class="module-image">'
                 f'<img src="{src}" alt="{alt}" onclick="this.classList.toggle(\'zoomed\')">'
@@ -312,7 +322,95 @@ def body_to_html(body: str) -> str:
         out.append(f'<p>{format_inline(line)}</p>')
         i += 1
 
-    return '\n'.join(out)
+    return '\n'.join(out), outline_items
+
+
+def build_outline_tree(outline_items):
+    """Convert flat list of {level, text, id} to nested tree (h2→h3→h4)."""
+    tree = []
+    last_h2 = None
+    last_h3 = None
+
+    for item in outline_items:
+        level = item['level']
+        node = {'level': level, 'text': item['text'], 'id': item['id'], 'children': []}
+
+        if level == 2:
+            tree.append(node)
+            last_h2 = node
+            last_h3 = None
+        elif level == 3:
+            if last_h2 is not None:
+                last_h2['children'].append(node)
+            else:
+                tree.append(node)
+            last_h3 = node
+        elif level == 4:
+            if last_h3 is not None:
+                last_h3['children'].append(node)
+            elif last_h2 is not None:
+                last_h2['children'].append(node)
+            else:
+                tree.append(node)
+
+    return tree
+
+
+def _render_outline_node(node, depth=0):
+    """Render a single tree node recursively."""
+    node_id = node['id']
+    text = html.escape(node['text'])
+    has_children = bool(node.get('children'))
+    level = node['level']
+
+    link_cls = f'outline-link outline-h{level}-link'
+
+    if has_children:
+        sub_id = f'osub-{node_id}'
+        # h2 nodes open by default, deeper nodes closed
+        is_open = (level == 2)
+        aria = 'true' if is_open else 'false'
+        hidden_attr = '' if is_open else ' hidden'
+
+        children_html = ''.join(
+            f'<li>{_render_outline_node(child, depth + 1)}</li>'
+            for child in node['children']
+        )
+        return (
+            f'<div class="outline-item-row">'
+            f'<button class="outline-toggle-btn" aria-expanded="{aria}" aria-controls="{sub_id}">▾</button>'
+            f'<a class="{link_cls}" href="#{node_id}" data-outline-id="{node_id}">{text}</a>'
+            f'</div>'
+            f'<ul class="outline-sublist" id="{sub_id}"{hidden_attr}>'
+            f'{children_html}'
+            f'</ul>'
+        )
+    else:
+        return f'<a class="{link_cls}" href="#{node_id}" data-outline-id="{node_id}">{text}</a>'
+
+
+def build_outline_panel_html(outline_items, is_en=False):
+    """Build the full outline panel HTML from flat outline_items list."""
+    if not outline_items:
+        return ''
+
+    tree = build_outline_tree(outline_items)
+    items_html = ''.join(
+        f'<li class="outline-root-item">{_render_outline_node(node)}</li>'
+        for node in tree
+    )
+
+    outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
+    return (
+        '\n  <aside class="outline-panel" aria-label="Module outline">\n'
+        '    <div class="outline-frame">\n'
+        f'      <p class="outline-title">{outline_title}</p>\n'
+        '      <nav class="outline-nav-tree">\n'
+        f'        <ul class="outline-root">{items_html}</ul>\n'
+        '      </nav>\n'
+        '    </div>\n'
+        '  </aside>\n'
+    )
 
 
 def module_filename(module_number: int, lang: str = 'it') -> str:
@@ -336,45 +434,6 @@ def first_teaser(body: str) -> str:
             return line[:187] + '...'
         return line
     return ''
-
-
-def build_outline_structure(body: str):
-    sections = []
-    current = None
-    slug_counter = {}
-
-    def normalize_slug(value: str) -> str:
-        slug = unicodedata.normalize('NFD', value.lower())
-        slug = ''.join(ch for ch in slug if unicodedata.category(ch) != 'Mn')
-        slug = re.sub(r'[^a-z0-9]+', '-', slug).strip('-')
-        return slug or 'section'
-
-    def heading_id(text: str) -> str:
-        base = normalize_slug(text)
-        count = slug_counter.get(base, 0) + 1
-        slug_counter[base] = count
-        return base if count == 1 else f'{base}-{count}'
-
-    for raw in body.splitlines():
-        line = raw.strip()
-        if not line:
-            continue
-        h3 = re.match(r'^###\s+(.+)$', line)
-        if h3:
-            text = h3.group(1).strip()
-            current = {'text': text, 'id': heading_id(text), 'children': []}
-            sections.append(current)
-            continue
-        h4 = re.match(r'^####\s+(.+)$', line)
-        if h4:
-            text = h4.group(1).strip()
-            item = {'text': text, 'id': heading_id(text)}
-            if current is None:
-                current = {'text': text, 'id': item['id'], 'children': []}
-                sections.append(current)
-            else:
-                current['children'].append(item)
-    return sections
 
 
 STYLE = '''
@@ -814,23 +873,24 @@ h1 {
 '''
 
 OUTLINE_STYLE = '''
+/* ── Outline panel ─────────────────────────────── */
 .outline-panel {
   position: fixed;
   top: 18px;
   left: 12px;
   bottom: 18px;
-  width: 292px;
+  width: 296px;
   z-index: 950;
   display: none;
 }
 
 .outline-frame {
   height: 100%;
-  background: rgba(0, 18, 40, 0.92);
+  background: rgba(0, 14, 32, 0.94);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -838,119 +898,228 @@ OUTLINE_STYLE = '''
 
 .outline-title {
   font-family: 'Outfit', sans-serif;
-  letter-spacing: 0.4px;
-  font-size: 1rem;
+  font-size: 0.82rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
   color: var(--accent-secondary);
-  padding: 12px 14px 8px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
 }
 
 .outline-nav-tree {
-  padding: 10px 10px 12px;
-  overflow: auto;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
 }
 
-.outline-root,
-.outline-sublist {
+.outline-nav-tree::-webkit-scrollbar { width: 4px; }
+.outline-nav-tree::-webkit-scrollbar-track { background: transparent; }
+.outline-nav-tree::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
+/* ── Root list ──────────────────────────────────── */
+.outline-root {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.outline-root {
-  display: grid;
-  gap: 8px;
-}
-
-.outline-group {
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.outline-group > summary {
-  cursor: pointer;
-  list-style: none;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.outline-group > summary::-webkit-details-marker {
-  display: none;
+.outline-root-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.outline-summary-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* ── Sublists (indented children) ────────────────── */
+.outline-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.outline-sublist[hidden] { display: none; }
+
+/* ── Item rows (toggle button + link) ─────────────── */
+.outline-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
   min-width: 0;
 }
 
-.outline-summary-label::before {
-  content: '▸';
+/* ── Toggle arrow button ────────────────────────── */
+.outline-toggle-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
   color: var(--accent-primary);
-  font-size: 0.82rem;
-  transform: translateY(-1px);
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 5px 3px 3px;
+  transition: transform 0.18s ease, color 0.15s ease;
+  user-select: none;
 }
 
-.outline-group[open] .outline-summary-label::before {
-  transform: rotate(90deg) translateX(1px);
+.outline-toggle-btn[aria-expanded="false"] {
+  transform: rotate(-90deg);
 }
 
-.outline-sublist {
-  padding: 2px 8px 8px;
-  display: grid;
-  gap: 4px;
-}
+.outline-toggle-btn:hover { color: #fff; }
 
+/* ── Links ──────────────────────────────────────── */
 .outline-link {
-  display: inline-block;
+  display: block;
+  flex: 1;
+  min-width: 0;
   text-decoration: none;
-  color: #d9e3ef;
-  border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 4px 8px;
-  font-size: 0.84rem;
-  line-height: 1.35;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  line-height: 1.38;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  border-left: 2px solid transparent;
+  word-break: break-word;
+}
+
+/* h2 – major sections */
+.outline-h2-link {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ddeeff;
+}
+
+/* h3 – subsections */
+.outline-h3-link {
+  font-size: 0.81rem;
+  color: #b8cede;
+}
+
+/* h4 – sub-subsections */
+.outline-h4-link {
+  font-size: 0.76rem;
+  color: #8aa4b8;
 }
 
 .outline-link:hover {
   color: #ffffff;
-  border-color: rgba(0, 212, 255, 0.45);
-  background: rgba(0, 212, 255, 0.12);
+  background: rgba(0, 212, 255, 0.1);
 }
 
-.outline-section-link {
-  font-size: 0.76rem;
-  color: #9eefff;
-  border: 1px solid rgba(0, 212, 255, 0.35);
-  background: rgba(0, 212, 255, 0.08);
-  white-space: nowrap;
-}
-
+/* Active state */
 .outline-link.active {
-  color: #ffffff;
-  border-color: rgba(255, 204, 0, 0.55);
-  background: rgba(255, 204, 0, 0.14);
+  color: #ffffff !important;
+  background: rgba(255, 204, 0, 0.13);
+  border-left-color: var(--accent-primary);
 }
 
+/* ── Show panel on wide screens ──────────────────── */
 @media (min-width: 1024px) {
   .has-outline .outline-panel {
     display: block;
   }
-
   .has-outline .container {
-    padding-left: 332px;
+    padding-left: 336px;
   }
 }
 '''
+
+OUTLINE_SCRIPT = '''
+  <script>
+  (() => {
+    // ── Toggle expand/collapse ───────────────────────
+    document.querySelectorAll('.outline-toggle-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        const subId = btn.getAttribute('aria-controls');
+        const sub = document.getElementById(subId);
+        if (sub) sub.hidden = expanded;
+      });
+    });
+
+    // ── Active-section tracking on scroll ──────────────
+    const headings = Array.from(
+      document.querySelectorAll('h2[id], h3[id], h4[id]')
+    );
+    const allLinks = document.querySelectorAll('[data-outline-id]');
+    if (!headings.length || !allLinks.length) return;
+
+    // Map: id → link element(s)
+    const idToLinks = {};
+    allLinks.forEach((link) => {
+      const id = link.dataset.outlineId;
+      if (!idToLinks[id]) idToLinks[id] = [];
+      idToLinks[id].push(link);
+    });
+
+    const clearActive = () =>
+      document.querySelectorAll('[data-outline-id].active')
+        .forEach((l) => l.classList.remove('active'));
+
+    const expandParents = (link) => {
+      let el = link.parentElement;
+      while (el) {
+        if (
+          el.classList.contains('outline-sublist') &&
+          el.hidden
+        ) {
+          el.hidden = false;
+          const subId = el.id;
+          const btn = document.querySelector(
+            `[aria-controls="${subId}"]`
+          );
+          if (btn) btn.setAttribute('aria-expanded', 'true');
+        }
+        el = el.parentElement;
+      }
+    };
+
+    const setActive = (id) => {
+      clearActive();
+      const links = idToLinks[id];
+      if (!links) return;
+      links.forEach((link) => {
+        link.classList.add('active');
+        expandParents(link);
+        // Keep link visible inside the scrollable panel
+        link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    };
+
+    // Use scroll position to find the topmost heading above midpoint
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const mid = window.scrollY + window.innerHeight * 0.28;
+        let best = headings[0];
+        for (const h of headings) {
+          if (h.offsetTop <= mid) best = h;
+          else break;
+        }
+        if (best) setActive(best.id);
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Initial call
+    onScroll();
+  })();
+  </script>
+'''
+
 
 def lang_switch_html(lang: str = 'it') -> str:
     selected = {
@@ -1068,7 +1237,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     labs_section = ''
     if labs_body:
-        labs_html = body_to_html(labs_body)
+        labs_html, _ = body_to_html(labs_body)
         labs_section = f'''
       <section class="card labs-section">
         <h2 class="section-title">Labs</h2>
@@ -1080,7 +1249,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     bibliography_section = ''
     if bibliography_body:
-        bibliography_html = body_to_html(bibliography_body)
+        bibliography_html, _ = body_to_html(bibliography_body)
         bibliography_section = f'''
       <section class="card">
         <h2 class="section-title">Bibliografia</h2>
@@ -1092,7 +1261,7 @@ def build_home_page(title: str, modules, labs_body: str, bibliography_body: str,
 
     home_note_html = ''
     if home_note_body:
-        note_html = body_to_html(home_note_body)
+        note_html, _ = body_to_html(home_note_body)
         home_note_html = f'''
       <section class="site-footnote">
 {chr(10).join('        ' + ln for ln in note_html.splitlines())}
@@ -1141,10 +1310,9 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     source_module = modules[idx]
     module = translated_module if translated_module else source_module
     num = source_module['number']
-    body_html = body_to_html(module['body'])
+    body_html, outline_items = body_to_html(module['body'])
 
     is_en = lang == 'en'
-    has_outline = True
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
     next_link = module_filename(modules[idx + 1]['number']) if idx < len(modules) - 1 else None
     home_label = 'Home'
@@ -1171,7 +1339,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
 
     labs_section = ''
     if labs_body:
-        labs_html = body_to_html(labs_body)
+        labs_html, _ = body_to_html(labs_body)
         labs_section = f'''
         <section class="module-content labs-section">
           <h3 class="module-subtitle">Labs</h3>
@@ -1179,67 +1347,8 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
         </section>
 '''
 
-    outline_sections = build_outline_structure(module['body']) if has_outline else []
-    outline_items = []
-    for index, section in enumerate(outline_sections):
-        if section['children']:
-            sub_items = (
-                '<ul class="outline-sublist">'
-                + ''.join(
-                    (
-                        '<li>'
-                        f'<a class="outline-link" href="#{child["id"]}">{html.escape(child["text"])}</a>'
-                        '</li>'
-                    )
-                    for child in section['children']
-                )
-                + '</ul>'
-            )
-            outline_items.append(
-                '<li>'
-                f'<details class="outline-group" {"open" if index == 0 else ""}>'
-                '<summary>'
-                f'<span class="outline-summary-label">{html.escape(section["text"])}</span>'
-                '</summary>'
-                f'{sub_items}'
-                '</details>'
-                '</li>'
-            )
-        else:
-            outline_items.append(
-                '<li>'
-                f'<a class="outline-link outline-section-link" href="#{section["id"]}">{html.escape(section["text"])}</a>'
-                '</li>'
-            )
-
-    outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
-    outline_html = (
-        '\n  <aside class="outline-panel" aria-label="Module outline">\n'
-        '    <div class="outline-frame">\n'
-        f'      <p class="outline-title">{outline_title}</p>\n'
-        '      <nav class="outline-nav-tree">\n'
-        '        <ul class="outline-root">'
-        f'{"".join(outline_items)}'
-        '</ul>\n'
-        '      </nav>\n'
-        '    </div>\n'
-        '  </aside>\n'
-    ) if has_outline else ''
-
-    outline_script = '''
-  <script>
-  (() => {
-    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
-      summary.addEventListener('click', (event) => {
-        event.preventDefault();
-        const group = summary.parentElement;
-        if (!group) return;
-        group.open = !group.open;
-      });
-    });
-  })();
-  </script>
-''' if has_outline else ''
+    outline_html = build_outline_panel_html(outline_items, is_en=is_en)
+    has_outline = bool(outline_items)
     outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
 
     return f'''<!DOCTYPE html>
@@ -1282,7 +1391,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
   <button class="to-top-btn" type="button" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑ Torna su</button>
   <button class="print-btn" type="button" onclick="window.print()">{'Print' if is_en else 'Stampa'}</button>
 {LANG_SWITCH_SCRIPT}
-{outline_script}
+{OUTLINE_SCRIPT if has_outline else ''}
 </body>
 </html>
 '''

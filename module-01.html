@@ -443,23 +443,24 @@ h1 {
 }
 </style>
   <style>
+/* ── Outline panel ─────────────────────────────── */
 .outline-panel {
   position: fixed;
   top: 18px;
   left: 12px;
   bottom: 18px;
-  width: 292px;
+  width: 296px;
   z-index: 950;
   display: none;
 }
 
 .outline-frame {
   height: 100%;
-  background: rgba(0, 18, 40, 0.92);
+  background: rgba(0, 14, 32, 0.94);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -467,116 +468,137 @@ h1 {
 
 .outline-title {
   font-family: 'Outfit', sans-serif;
-  letter-spacing: 0.4px;
-  font-size: 1rem;
+  font-size: 0.82rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
   color: var(--accent-secondary);
-  padding: 12px 14px 8px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
 }
 
 .outline-nav-tree {
-  padding: 10px 10px 12px;
-  overflow: auto;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
 }
 
-.outline-root,
-.outline-sublist {
+.outline-nav-tree::-webkit-scrollbar { width: 4px; }
+.outline-nav-tree::-webkit-scrollbar-track { background: transparent; }
+.outline-nav-tree::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
+/* ── Root list ──────────────────────────────────── */
+.outline-root {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.outline-root {
-  display: grid;
-  gap: 8px;
-}
-
-.outline-group {
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.outline-group > summary {
-  cursor: pointer;
-  list-style: none;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.outline-group > summary::-webkit-details-marker {
-  display: none;
+.outline-root-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.outline-summary-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* ── Sublists (indented children) ────────────────── */
+.outline-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.outline-sublist[hidden] { display: none; }
+
+/* ── Item rows (toggle button + link) ─────────────── */
+.outline-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
   min-width: 0;
 }
 
-.outline-summary-label::before {
-  content: '▸';
+/* ── Toggle arrow button ────────────────────────── */
+.outline-toggle-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
   color: var(--accent-primary);
-  font-size: 0.82rem;
-  transform: translateY(-1px);
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 5px 3px 3px;
+  transition: transform 0.18s ease, color 0.15s ease;
+  user-select: none;
 }
 
-.outline-group[open] .outline-summary-label::before {
-  transform: rotate(90deg) translateX(1px);
+.outline-toggle-btn[aria-expanded="false"] {
+  transform: rotate(-90deg);
 }
 
-.outline-sublist {
-  padding: 2px 8px 8px;
-  display: grid;
-  gap: 4px;
-}
+.outline-toggle-btn:hover { color: #fff; }
 
+/* ── Links ──────────────────────────────────────── */
 .outline-link {
-  display: inline-block;
+  display: block;
+  flex: 1;
+  min-width: 0;
   text-decoration: none;
-  color: #d9e3ef;
-  border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 4px 8px;
-  font-size: 0.84rem;
-  line-height: 1.35;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  line-height: 1.38;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  border-left: 2px solid transparent;
+  word-break: break-word;
+}
+
+/* h2 – major sections */
+.outline-h2-link {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ddeeff;
+}
+
+/* h3 – subsections */
+.outline-h3-link {
+  font-size: 0.81rem;
+  color: #b8cede;
+}
+
+/* h4 – sub-subsections */
+.outline-h4-link {
+  font-size: 0.76rem;
+  color: #8aa4b8;
 }
 
 .outline-link:hover {
   color: #ffffff;
-  border-color: rgba(0, 212, 255, 0.45);
-  background: rgba(0, 212, 255, 0.12);
+  background: rgba(0, 212, 255, 0.1);
 }
 
-.outline-section-link {
-  font-size: 0.76rem;
-  color: #9eefff;
-  border: 1px solid rgba(0, 212, 255, 0.35);
-  background: rgba(0, 212, 255, 0.08);
-  white-space: nowrap;
-}
-
+/* Active state */
 .outline-link.active {
-  color: #ffffff;
-  border-color: rgba(255, 204, 0, 0.55);
-  background: rgba(255, 204, 0, 0.14);
+  color: #ffffff !important;
+  background: rgba(255, 204, 0, 0.13);
+  border-left-color: var(--accent-primary);
 }
 
+/* ── Show panel on wide screens ──────────────────── */
 @media (min-width: 1024px) {
   .has-outline .outline-panel {
     display: block;
   }
-
   .has-outline .container {
-    padding-left: 332px;
+    padding-left: 336px;
   }
 }
 </style>
@@ -603,7 +625,7 @@ h1 {
     <div class="outline-frame">
       <p class="outline-title">Struttura del modulo</p>
       <nav class="outline-nav-tree">
-        <ul class="outline-root"><li><a class="outline-link outline-section-link" href="#scheda-rapida-del-modulo">Scheda rapida del modulo</a></li><li><a class="outline-link outline-section-link" href="#definire-lo-spazio-di-valore-ai">Definire lo spazio di valore AI</a></li><li><a class="outline-link outline-section-link" href="#esempio-operativo-servizio-streaming-musicale">Esempio operativo: servizio streaming musicale</a></li><li><a class="outline-link outline-section-link" href="#leve-di-valore-come-l-ia-impatta-i-processi">Leve di valore: come l&#x27;IA impatta i processi</a></li><li><a class="outline-link outline-section-link" href="#quando-non-usare-ai-due-regole-pratiche">Quando non usare AI: due regole pratiche</a></li><li><a class="outline-link outline-section-link" href="#criticita-e-scenari-di-integrazione">Criticità e Scenari di Integrazione</a></li><li><a class="outline-link outline-section-link" href="#caso-studio-miro">Caso studio: Miro</a></li><li><a class="outline-link outline-section-link" href="#tre-modalita-di-integrazione-nei-prodotti">Tre modalità di integrazione nei prodotti</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Fonti di opportunità AI: costruire un flusso continuo</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#conoscenza-interna-e-intuizione-esperta">Conoscenza interna e intuizione esperta</a></li><li><a class="outline-link" href="#uso-interno-e-sperimentazione">Uso interno e sperimentazione</a></li><li><a class="outline-link" href="#ascolto-clienti-e-dati-comportamentali">Ascolto clienti e dati comportamentali</a></li><li><a class="outline-link" href="#segnali-esterni-di-mercato">Segnali esterni di mercato</a></li><li><a class="outline-link" href="#opportunita-concreta-modernizzazione-sistemi-legacy-cobol">Opportunità concreta: modernizzazione sistemi legacy (COBOL)</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Opportunità orizzontali vs verticali</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#riferimento-consigliato-mckinsey-2023">Riferimento consigliato: McKinsey 2023</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Capacità dell&#x27;IA generativa e dei GPT: casi d&#x27;uso, punti deboli e rischi</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#capacita-operative-principali">Capacità operative principali</a></li><li><a class="outline-link" href="#casi-d-uso-da-presidiare-in-azienda">Casi d&#x27;uso da presidiare in azienda</a></li><li><a class="outline-link" href="#punti-deboli-tecnici-e-qualitativi">Punti deboli tecnici e qualitativi</a></li><li><a class="outline-link" href="#rischi-principali-da-includere-nel-framework-di-governance">Rischi principali da includere nel framework di governance</a></li><li><a class="outline-link" href="#strategie-chiave-per-usare-l-ia-generativa-e-i-gpt">Strategie chiave per usare l&#x27;IA generativa e i GPT</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Esempio negativo: IA fine a sé stessa (caso Sanremo 2026)</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#devo-usare-l-ia-generativa-o-i-gpt-per-operazioni-di-business-critiche">Devo usare l&#x27;IA generativa o i GPT per operazioni di business critiche?</a></li><li><a class="outline-link" href="#identificare-e-gestire-i-rischi-di-fallimento-nell-implementazione-della-strategia-ai">Identificare e gestire i rischi di fallimento nell&#x27;implementazione della strategia AI</a></li><li><a class="outline-link" href="#definire-la-responsabilita-per-i-sistemi-di-ia">Definire la responsabilità per i sistemi di IA</a></li><li><a class="outline-link" href="#regola-di-impiego-nei-processi-critici">Regola di impiego nei processi critici</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#prioritizzazione-decidere-bene-con-criteri-espliciti">Prioritizzazione: decidere bene con criteri espliciti</a></li><li><a class="outline-link outline-section-link" href="#bilanciare-risultati-rapidi-e-investimenti-a-lungo-termine">Bilanciare risultati rapidi e investimenti a lungo termine</a></li><li><a class="outline-link outline-section-link" href="#strategie-di-esecuzione-cauto-vs-rapido">Strategie di esecuzione: cauto vs rapido</a></li><li><a class="outline-link outline-section-link" href="#principali-punti-di-fine-sezione">Principali punti di fine sezione</a></li><li><a class="outline-link outline-section-link" href="#mappare-lo-spazio-della-soluzione-ai">Mappare lo spazio della soluzione AI</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">1. Dati: il carburante del sistema</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#la-modalita-dei-dati">La modalità dei dati</a></li><li><a class="outline-link" href="#dati-etichettati-vs-non-etichettati">Dati etichettati vs Non etichettati</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">2. Tipi di intelligenza: dai simboli agli agenti</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#ia-basata-su-regole-simbolica">IA basata su regole (simbolica)</a></li><li><a class="outline-link" href="#apprendimento-automatico-ia-neurale">Apprendimento automatico (IA neurale)</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">3. Esperienza utente: l&#x27;interfaccia del valore</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#tipologie-di-interfacce-ai">Tipologie di interfacce AI</a></li><li><a class="outline-link" href="#criteri-pratici-per-interfacce-ibride-e-generative">Criteri pratici per interfacce ibride e generative</a></li></ul></details></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Gradi di automazione e collaborazione Uomo-IA</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#i-livelli-di-automazione">I livelli di automazione</a></li><li><a class="outline-link" href="#il-caso-guida-guida-autonoma-livelli-sae">Il caso guida: Guida Autonoma (Livelli SAE)</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#distribuzione-ottimale-del-lavoro">Distribuzione ottimale del lavoro</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">IA predittiva applicata al prodotto: quadro operativo completo</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#ciclo-iterativo-dal-problema-di-business-all-azione">Ciclo iterativo: dal problema di business all&#x27;azione</a></li><li><a class="outline-link" href="#apprendimento-non-supervisionato-segmentazione-comportamentale">Apprendimento non supervisionato: segmentazione comportamentale</a></li><li><a class="outline-link" href="#dal-clustering-alla-classificazione-supervisionata">Dal clustering alla classificazione supervisionata</a></li><li><a class="outline-link" href="#serie-temporali-trend-stagionalita-anomalie">Serie temporali: trend, stagionalità, anomalie</a></li><li><a class="outline-link" href="#sistemi-di-raccomandazione-personalizzazione-ad-alta-conversione">Sistemi di raccomandazione: personalizzazione ad alta conversione</a></li><li><a class="outline-link" href="#segmenti-azionabili-e-attivazioni-marketing-prodotto">Segmenti azionabili e attivazioni marketing/prodotto</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#passi-di-implementazione-predittiva-da-usare-in-team">Passi di implementazione (predittiva) da usare in team</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Casi di studio aziendali da guardare e commentare</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#benetton-group-retail-moda-italia">Benetton Group (retail moda, Italia)</a></li><li><a class="outline-link" href="#e-on-italia-utilities-italia">E.ON Italia (utilities, Italia)</a></li><li><a class="outline-link" href="#banca-alpi-marittime-banca-locale-italia">Banca Alpi Marittime (banca locale, Italia)</a></li><li><a class="outline-link" href="#umbragroup-manifattura-di-precisione-italia">UMBRAGROUP (manifattura di precisione, Italia)</a></li><li><a class="outline-link" href="#windtre-telco-italia">WINDTRE (telco, Italia)</a></li><li><a class="outline-link" href="#unipol-assicurazioni-insurance-italia">Unipol Assicurazioni (insurance, Italia)</a></li><li><a class="outline-link" href="#e-distribuzione-energia-rete-elettrica-italia">e-distribuzione (energia/rete elettrica, Italia)</a></li><li><a class="outline-link" href="#snam-energia-gas-italia">Snam (energia/gas, Italia)</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#traccia-di-commento-per-la-discussione">Traccia di commento per la discussione</a></li><li><details class="outline-group" ><summary><span class="outline-summary-label">Come gestire un progetto con IA: strategia, governance ed esecuzione</span></summary><ul class="outline-sublist"><li><a class="outline-link" href="#impostazione-iniziale-da-obiettivi-a-backlog-ia">Impostazione iniziale: da obiettivi a backlog IA</a></li><li><a class="outline-link" href="#fase-1-ideazione-e-definizione">Fase 1: Ideazione e definizione</a></li><li><a class="outline-link" href="#fase-2-dati-e-preparazione">Fase 2: Dati e preparazione</a></li><li><a class="outline-link" href="#fase-3-sviluppo-e-sperimentazione">Fase 3: Sviluppo e sperimentazione</a></li><li><a class="outline-link" href="#fase-4-operazionalizzazione-e-monitoraggio">Fase 4: Operazionalizzazione e monitoraggio</a></li><li><a class="outline-link" href="#modalita-di-esecuzione-iterativa-ibrida-a-rilascio-progressivo">Modalità di esecuzione: iterativa, ibrida, a rilascio progressivo</a></li><li><a class="outline-link" href="#ruoli-chiave-nel-progetto">Ruoli chiave nel progetto</a></li><li><a class="outline-link" href="#kpi-da-presidiare-lungo-il-ciclo-di-vita">KPI da presidiare lungo il ciclo di vita</a></li><li><a class="outline-link" href="#errori-ricorrenti-e-contromisure">Errori ricorrenti e contromisure</a></li><li><a class="outline-link" href="#accountability-e-responsabilita-decisionale">Accountability e responsabilità decisionale</a></li><li><a class="outline-link" href="#inclusione-impatto-sociale-e-comunicazione">Inclusione, impatto sociale e comunicazione</a></li><li><a class="outline-link" href="#fattori-di-costo-da-pianificare-in-anticipo">Fattori di costo da pianificare in anticipo</a></li></ul></details></li><li><a class="outline-link outline-section-link" href="#checklist-dei-concetti-principali">Checklist dei concetti principali</a></li><li><a class="outline-link outline-section-link" href="#link-utili-del-modulo">Link utili del modulo</a></li><li><a class="outline-link outline-section-link" href="#lab-consigliati-per-il-modulo-01">Lab consigliati per il Modulo 01</a></li></ul>
+        <ul class="outline-root"><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-1-definire-lo-spazio-di-valore-ai" data-outline-id="1-1-definire-lo-spazio-di-valore-ai">1.1 Definire lo spazio di valore AI</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-2-esempio-operativo-servizio-streaming-musicale" data-outline-id="1-2-esempio-operativo-servizio-streaming-musicale">1.2 Esempio operativo: servizio streaming musicale</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-3-leve-di-valore-come-l-ia-impatta-i-processi" data-outline-id="1-3-leve-di-valore-come-l-ia-impatta-i-processi">1.3 Leve di valore: come l&#x27;IA impatta i processi</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-4-quando-non-usare-ai-due-regole-pratiche" data-outline-id="1-4-quando-non-usare-ai-due-regole-pratiche">1.4 Quando non usare AI: due regole pratiche</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-5-criticita-e-scenari-di-integrazione" data-outline-id="1-5-criticita-e-scenari-di-integrazione">1.5 Criticità e Scenari di Integrazione</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-6-caso-studio-miro" data-outline-id="1-6-caso-studio-miro">1.6 Caso studio: Miro</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-7-tre-modalita-di-integrazione-nei-prodotti" data-outline-id="1-7-tre-modalita-di-integrazione-nei-prodotti">1.7 Tre modalità di integrazione nei prodotti</a></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-8-fonti-di-opportunita-ai-costruire-un-flusso-continuo">▾</button><a class="outline-link outline-h3-link" href="#1-8-fonti-di-opportunita-ai-costruire-un-flusso-continuo" data-outline-id="1-8-fonti-di-opportunita-ai-costruire-un-flusso-continuo">1.8 Fonti di opportunità AI: costruire un flusso continuo</a></div><ul class="outline-sublist" id="osub-1-8-fonti-di-opportunita-ai-costruire-un-flusso-continuo" hidden><li><a class="outline-link outline-h4-link" href="#1-8-1-conoscenza-interna-e-intuizione-esperta" data-outline-id="1-8-1-conoscenza-interna-e-intuizione-esperta">1.8.1 Conoscenza interna e intuizione esperta</a></li><li><a class="outline-link outline-h4-link" href="#1-8-2-uso-interno-e-sperimentazione" data-outline-id="1-8-2-uso-interno-e-sperimentazione">1.8.2 Uso interno e sperimentazione</a></li><li><a class="outline-link outline-h4-link" href="#1-8-3-ascolto-clienti-e-dati-comportamentali" data-outline-id="1-8-3-ascolto-clienti-e-dati-comportamentali">1.8.3 Ascolto clienti e dati comportamentali</a></li><li><a class="outline-link outline-h4-link" href="#1-8-4-segnali-esterni-di-mercato" data-outline-id="1-8-4-segnali-esterni-di-mercato">1.8.4 Segnali esterni di mercato</a></li><li><a class="outline-link outline-h4-link" href="#1-8-5-opportunita-concreta-modernizzazione-sistemi-legacy-cobol" data-outline-id="1-8-5-opportunita-concreta-modernizzazione-sistemi-legacy-cobol">1.8.5 Opportunità concreta: modernizzazione sistemi legacy (COBOL)</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-9-opportunita-orizzontali-vs-verticali">▾</button><a class="outline-link outline-h3-link" href="#1-9-opportunita-orizzontali-vs-verticali" data-outline-id="1-9-opportunita-orizzontali-vs-verticali">1.9 Opportunità orizzontali vs verticali</a></div><ul class="outline-sublist" id="osub-1-9-opportunita-orizzontali-vs-verticali" hidden><li><a class="outline-link outline-h4-link" href="#1-9-1-riferimento-consigliato-mckinsey-2023" data-outline-id="1-9-1-riferimento-consigliato-mckinsey-2023">1.9.1 Riferimento consigliato: McKinsey 2023</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-10-capacita-dell-ia-generativa-e-dei-gpt-casi-d-uso-punti-deboli-e-rischi">▾</button><a class="outline-link outline-h3-link" href="#1-10-capacita-dell-ia-generativa-e-dei-gpt-casi-d-uso-punti-deboli-e-rischi" data-outline-id="1-10-capacita-dell-ia-generativa-e-dei-gpt-casi-d-uso-punti-deboli-e-rischi">1.10 Capacità dell&#x27;IA generativa e dei GPT: casi d&#x27;uso, punti deboli e rischi</a></div><ul class="outline-sublist" id="osub-1-10-capacita-dell-ia-generativa-e-dei-gpt-casi-d-uso-punti-deboli-e-rischi" hidden><li><a class="outline-link outline-h4-link" href="#1-10-1-capacita-operative-principali" data-outline-id="1-10-1-capacita-operative-principali">1.10.1 Capacità operative principali</a></li><li><a class="outline-link outline-h4-link" href="#1-10-2-casi-d-uso-da-presidiare-in-azienda" data-outline-id="1-10-2-casi-d-uso-da-presidiare-in-azienda">1.10.2 Casi d&#x27;uso da presidiare in azienda</a></li><li><a class="outline-link outline-h4-link" href="#1-10-3-punti-deboli-tecnici-e-qualitativi" data-outline-id="1-10-3-punti-deboli-tecnici-e-qualitativi">1.10.3 Punti deboli tecnici e qualitativi</a></li><li><a class="outline-link outline-h4-link" href="#1-10-4-rischi-principali-da-includere-nel-framework-di-governance" data-outline-id="1-10-4-rischi-principali-da-includere-nel-framework-di-governance">1.10.4 Rischi principali da includere nel framework di governance</a></li><li><a class="outline-link outline-h4-link" href="#1-10-5-strategie-chiave-per-usare-l-ia-generativa-e-i-gpt" data-outline-id="1-10-5-strategie-chiave-per-usare-l-ia-generativa-e-i-gpt">1.10.5 Strategie chiave per usare l&#x27;IA generativa e i GPT</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-1-11-esempio-negativo-ia-fine-a-se-stessa-caso-sanremo-2026">▾</button><a class="outline-link outline-h3-link" href="#1-11-esempio-negativo-ia-fine-a-se-stessa-caso-sanremo-2026" data-outline-id="1-11-esempio-negativo-ia-fine-a-se-stessa-caso-sanremo-2026">1.11 Esempio negativo: IA fine a sé stessa (caso Sanremo 2026)</a></div><ul class="outline-sublist" id="osub-1-11-esempio-negativo-ia-fine-a-se-stessa-caso-sanremo-2026" hidden><li><a class="outline-link outline-h4-link" href="#1-11-1-devo-usare-l-ia-generativa-o-i-gpt-per-operazioni-di-business-critiche" data-outline-id="1-11-1-devo-usare-l-ia-generativa-o-i-gpt-per-operazioni-di-business-critiche">1.11.1 Devo usare l&#x27;IA generativa o i GPT per operazioni di business critiche?</a></li><li><a class="outline-link outline-h4-link" href="#1-11-2-identificare-e-gestire-i-rischi-di-fallimento-nell-implementazione-della-strategia-ai" data-outline-id="1-11-2-identificare-e-gestire-i-rischi-di-fallimento-nell-implementazione-della-strategia-ai">1.11.2 Identificare e gestire i rischi di fallimento nell&#x27;implementazione della strategia AI</a></li><li><a class="outline-link outline-h4-link" href="#1-11-3-definire-la-responsabilita-per-i-sistemi-di-ia" data-outline-id="1-11-3-definire-la-responsabilita-per-i-sistemi-di-ia">1.11.3 Definire la responsabilità per i sistemi di IA</a></li><li><a class="outline-link outline-h4-link" href="#1-11-4-regola-di-impiego-nei-processi-critici" data-outline-id="1-11-4-regola-di-impiego-nei-processi-critici">1.11.4 Regola di impiego nei processi critici</a></li></ul></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-12-prioritizzazione-decidere-bene-con-criteri-espliciti" data-outline-id="1-12-prioritizzazione-decidere-bene-con-criteri-espliciti">1.12 Prioritizzazione: decidere bene con criteri espliciti</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-13-bilanciare-risultati-rapidi-e-investimenti-a-lungo-termine" data-outline-id="1-13-bilanciare-risultati-rapidi-e-investimenti-a-lungo-termine">1.13 Bilanciare risultati rapidi e investimenti a lungo termine</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-14-strategie-di-esecuzione-cauto-vs-rapido" data-outline-id="1-14-strategie-di-esecuzione-cauto-vs-rapido">1.14 Strategie di esecuzione: cauto vs rapido</a></li><li class="outline-root-item"><a class="outline-link outline-h3-link" href="#1-15-mappare-lo-spazio-della-soluzione-ai" data-outline-id="1-15-mappare-lo-spazio-della-soluzione-ai">1.15 Mappare lo spazio della soluzione AI</a></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="true" aria-controls="osub-1-dati-il-carburante-del-sistema-2">▾</button><a class="outline-link outline-h2-link" href="#1-dati-il-carburante-del-sistema-2" data-outline-id="1-dati-il-carburante-del-sistema-2">1. Dati: il carburante del sistema</a></div><ul class="outline-sublist" id="osub-1-dati-il-carburante-del-sistema-2"><li><a class="outline-link outline-h4-link" href="#1-1-1-la-modalita-dei-dati" data-outline-id="1-1-1-la-modalita-dei-dati">1.1.1 La modalità dei dati</a></li><li><a class="outline-link outline-h4-link" href="#1-1-2-dati-etichettati-vs-non-etichettati" data-outline-id="1-1-2-dati-etichettati-vs-non-etichettati">1.1.2 Dati etichettati vs Non etichettati</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="true" aria-controls="osub-2-tipi-di-intelligenza-dai-simboli-agli-agenti-2">▾</button><a class="outline-link outline-h2-link" href="#2-tipi-di-intelligenza-dai-simboli-agli-agenti-2" data-outline-id="2-tipi-di-intelligenza-dai-simboli-agli-agenti-2">2. Tipi di intelligenza: dai simboli agli agenti</a></div><ul class="outline-sublist" id="osub-2-tipi-di-intelligenza-dai-simboli-agli-agenti-2"><li><a class="outline-link outline-h4-link" href="#2-1-1-ia-basata-su-regole-simbolica" data-outline-id="2-1-1-ia-basata-su-regole-simbolica">2.1.1 IA basata su regole (simbolica)</a></li><li><a class="outline-link outline-h4-link" href="#2-1-2-apprendimento-automatico-ia-neurale" data-outline-id="2-1-2-apprendimento-automatico-ia-neurale">2.1.2 Apprendimento automatico (IA neurale)</a></li></ul></li><li class="outline-root-item"><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="true" aria-controls="osub-3-esperienza-utente-l-interfaccia-del-valore-2">▾</button><a class="outline-link outline-h2-link" href="#3-esperienza-utente-l-interfaccia-del-valore-2" data-outline-id="3-esperienza-utente-l-interfaccia-del-valore-2">3. Esperienza utente: l&#x27;interfaccia del valore</a></div><ul class="outline-sublist" id="osub-3-esperienza-utente-l-interfaccia-del-valore-2"><li><a class="outline-link outline-h4-link" href="#3-1-1-tipologie-di-interfacce-ai" data-outline-id="3-1-1-tipologie-di-interfacce-ai">3.1.1 Tipologie di interfacce AI</a></li><li><a class="outline-link outline-h4-link" href="#3-1-2-criteri-pratici-per-interfacce-ibride-e-generative" data-outline-id="3-1-2-criteri-pratici-per-interfacce-ibride-e-generative">3.1.2 Criteri pratici per interfacce ibride e generative</a></li><li><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-3-1-gradi-di-automazione-e-collaborazione-uomo-ia">▾</button><a class="outline-link outline-h3-link" href="#3-1-gradi-di-automazione-e-collaborazione-uomo-ia" data-outline-id="3-1-gradi-di-automazione-e-collaborazione-uomo-ia">3.1 Gradi di automazione e collaborazione Uomo-IA</a></div><ul class="outline-sublist" id="osub-3-1-gradi-di-automazione-e-collaborazione-uomo-ia" hidden><li><a class="outline-link outline-h4-link" href="#3-1-1-i-livelli-di-automazione" data-outline-id="3-1-1-i-livelli-di-automazione">3.1.1 I livelli di automazione</a></li><li><a class="outline-link outline-h4-link" href="#3-1-2-il-caso-guida-guida-autonoma-livelli-sae" data-outline-id="3-1-2-il-caso-guida-guida-autonoma-livelli-sae">3.1.2 Il caso guida: Guida Autonoma (Livelli SAE)</a></li></ul></li><li><a class="outline-link outline-h3-link" href="#3-2-distribuzione-ottimale-del-lavoro" data-outline-id="3-2-distribuzione-ottimale-del-lavoro">3.2 Distribuzione ottimale del lavoro</a></li><li><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-3-3-ia-predittiva-applicata-al-prodotto-quadro-operativo-completo">▾</button><a class="outline-link outline-h3-link" href="#3-3-ia-predittiva-applicata-al-prodotto-quadro-operativo-completo" data-outline-id="3-3-ia-predittiva-applicata-al-prodotto-quadro-operativo-completo">3.3 IA predittiva applicata al prodotto: quadro operativo completo</a></div><ul class="outline-sublist" id="osub-3-3-ia-predittiva-applicata-al-prodotto-quadro-operativo-completo" hidden><li><a class="outline-link outline-h4-link" href="#3-3-1-ciclo-iterativo-dal-problema-di-business-all-azione" data-outline-id="3-3-1-ciclo-iterativo-dal-problema-di-business-all-azione">3.3.1 Ciclo iterativo: dal problema di business all&#x27;azione</a></li><li><a class="outline-link outline-h4-link" href="#3-3-2-apprendimento-non-supervisionato-segmentazione-comportamentale" data-outline-id="3-3-2-apprendimento-non-supervisionato-segmentazione-comportamentale">3.3.2 Apprendimento non supervisionato: segmentazione comportamentale</a></li><li><a class="outline-link outline-h4-link" href="#3-3-3-dal-clustering-alla-classificazione-supervisionata" data-outline-id="3-3-3-dal-clustering-alla-classificazione-supervisionata">3.3.3 Dal clustering alla classificazione supervisionata</a></li><li><a class="outline-link outline-h4-link" href="#3-3-4-serie-temporali-trend-stagionalita-anomalie" data-outline-id="3-3-4-serie-temporali-trend-stagionalita-anomalie">3.3.4 Serie temporali: trend, stagionalità, anomalie</a></li><li><a class="outline-link outline-h4-link" href="#3-3-5-sistemi-di-raccomandazione-personalizzazione-ad-alta-conversione" data-outline-id="3-3-5-sistemi-di-raccomandazione-personalizzazione-ad-alta-conversione">3.3.5 Sistemi di raccomandazione: personalizzazione ad alta conversione</a></li><li><a class="outline-link outline-h4-link" href="#3-3-6-segmenti-azionabili-e-attivazioni-marketing-prodotto" data-outline-id="3-3-6-segmenti-azionabili-e-attivazioni-marketing-prodotto">3.3.6 Segmenti azionabili e attivazioni marketing/prodotto</a></li></ul></li><li><a class="outline-link outline-h3-link" href="#3-4-passi-di-implementazione-predittiva-da-usare-in-team" data-outline-id="3-4-passi-di-implementazione-predittiva-da-usare-in-team">3.4 Passi di implementazione (predittiva) da usare in team</a></li><li><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-3-5-casi-di-studio-aziendali-da-guardare-e-commentare">▾</button><a class="outline-link outline-h3-link" href="#3-5-casi-di-studio-aziendali-da-guardare-e-commentare" data-outline-id="3-5-casi-di-studio-aziendali-da-guardare-e-commentare">3.5 Casi di studio aziendali da guardare e commentare</a></div><ul class="outline-sublist" id="osub-3-5-casi-di-studio-aziendali-da-guardare-e-commentare" hidden><li><a class="outline-link outline-h4-link" href="#3-5-1-benetton-group-retail-moda-italia" data-outline-id="3-5-1-benetton-group-retail-moda-italia">3.5.1 Benetton Group (retail moda, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-2-e-on-italia-utilities-italia" data-outline-id="3-5-2-e-on-italia-utilities-italia">3.5.2 E.ON Italia (utilities, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-3-banca-alpi-marittime-banca-locale-italia" data-outline-id="3-5-3-banca-alpi-marittime-banca-locale-italia">3.5.3 Banca Alpi Marittime (banca locale, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-4-umbragroup-manifattura-di-precisione-italia" data-outline-id="3-5-4-umbragroup-manifattura-di-precisione-italia">3.5.4 UMBRAGROUP (manifattura di precisione, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-5-windtre-telco-italia" data-outline-id="3-5-5-windtre-telco-italia">3.5.5 WINDTRE (telco, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-6-unipol-assicurazioni-insurance-italia" data-outline-id="3-5-6-unipol-assicurazioni-insurance-italia">3.5.6 Unipol Assicurazioni (insurance, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-7-e-distribuzione-energia-rete-elettrica-italia" data-outline-id="3-5-7-e-distribuzione-energia-rete-elettrica-italia">3.5.7 e-distribuzione (energia/rete elettrica, Italia)</a></li><li><a class="outline-link outline-h4-link" href="#3-5-8-snam-energia-gas-italia" data-outline-id="3-5-8-snam-energia-gas-italia">3.5.8 Snam (energia/gas, Italia)</a></li></ul></li><li><a class="outline-link outline-h3-link" href="#3-6-traccia-di-commento-per-la-discussione" data-outline-id="3-6-traccia-di-commento-per-la-discussione">3.6 Traccia di commento per la discussione</a></li><li><div class="outline-item-row"><button class="outline-toggle-btn" aria-expanded="false" aria-controls="osub-3-7-come-gestire-un-progetto-con-ia-strategia-governance-ed-esecuzione">▾</button><a class="outline-link outline-h3-link" href="#3-7-come-gestire-un-progetto-con-ia-strategia-governance-ed-esecuzione" data-outline-id="3-7-come-gestire-un-progetto-con-ia-strategia-governance-ed-esecuzione">3.7 Come gestire un progetto con IA: strategia, governance ed esecuzione</a></div><ul class="outline-sublist" id="osub-3-7-come-gestire-un-progetto-con-ia-strategia-governance-ed-esecuzione" hidden><li><a class="outline-link outline-h4-link" href="#3-7-1-impostazione-iniziale-da-obiettivi-a-backlog-ia" data-outline-id="3-7-1-impostazione-iniziale-da-obiettivi-a-backlog-ia">3.7.1 Impostazione iniziale: da obiettivi a backlog IA</a></li><li><a class="outline-link outline-h4-link" href="#3-7-2-fase-1-ideazione-e-definizione" data-outline-id="3-7-2-fase-1-ideazione-e-definizione">3.7.2 Fase 1: Ideazione e definizione</a></li><li><a class="outline-link outline-h4-link" href="#3-7-3-fase-2-dati-e-preparazione" data-outline-id="3-7-3-fase-2-dati-e-preparazione">3.7.3 Fase 2: Dati e preparazione</a></li><li><a class="outline-link outline-h4-link" href="#3-7-4-fase-3-sviluppo-e-sperimentazione" data-outline-id="3-7-4-fase-3-sviluppo-e-sperimentazione">3.7.4 Fase 3: Sviluppo e sperimentazione</a></li><li><a class="outline-link outline-h4-link" href="#3-7-5-fase-4-operazionalizzazione-e-monitoraggio" data-outline-id="3-7-5-fase-4-operazionalizzazione-e-monitoraggio">3.7.5 Fase 4: Operazionalizzazione e monitoraggio</a></li><li><a class="outline-link outline-h4-link" href="#3-7-6-modalita-di-esecuzione-iterativa-ibrida-a-rilascio-progressivo" data-outline-id="3-7-6-modalita-di-esecuzione-iterativa-ibrida-a-rilascio-progressivo">3.7.6 Modalità di esecuzione: iterativa, ibrida, a rilascio progressivo</a></li><li><a class="outline-link outline-h4-link" href="#3-7-7-ruoli-chiave-nel-progetto" data-outline-id="3-7-7-ruoli-chiave-nel-progetto">3.7.7 Ruoli chiave nel progetto</a></li><li><a class="outline-link outline-h4-link" href="#3-7-8-kpi-da-presidiare-lungo-il-ciclo-di-vita" data-outline-id="3-7-8-kpi-da-presidiare-lungo-il-ciclo-di-vita">3.7.8 KPI da presidiare lungo il ciclo di vita</a></li><li><a class="outline-link outline-h4-link" href="#3-7-9-errori-ricorrenti-e-contromisure" data-outline-id="3-7-9-errori-ricorrenti-e-contromisure">3.7.9 Errori ricorrenti e contromisure</a></li><li><a class="outline-link outline-h4-link" href="#3-7-10-accountability-e-responsabilita-decisionale" data-outline-id="3-7-10-accountability-e-responsabilita-decisionale">3.7.10 Accountability e responsabilità decisionale</a></li><li><a class="outline-link outline-h4-link" href="#3-7-11-inclusione-impatto-sociale-e-comunicazione" data-outline-id="3-7-11-inclusione-impatto-sociale-e-comunicazione">3.7.11 Inclusione, impatto sociale e comunicazione</a></li><li><a class="outline-link outline-h4-link" href="#3-7-12-fattori-di-costo-da-pianificare-in-anticipo" data-outline-id="3-7-12-fattori-di-costo-da-pianificare-in-anticipo">3.7.12 Fattori di costo da pianificare in anticipo</a></li></ul></li><li><a class="outline-link outline-h3-link" href="#3-8-link-utili-del-modulo" data-outline-id="3-8-link-utili-del-modulo">3.8 Link utili del modulo</a></li><li><a class="outline-link outline-h3-link" href="#3-9-lab-consigliati-per-il-modulo-01" data-outline-id="3-9-lab-consigliati-per-il-modulo-01">3.9 Lab consigliati per il Modulo 01</a></li></ul></li></ul>
       </nav>
     </div>
   </aside>
@@ -1003,14 +1025,86 @@ h1 {
 
   <script>
   (() => {
-    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
-      summary.addEventListener('click', (event) => {
-        event.preventDefault();
-        const group = summary.parentElement;
-        if (!group) return;
-        group.open = !group.open;
+    // ── Toggle expand/collapse ───────────────────────
+    document.querySelectorAll('.outline-toggle-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        const subId = btn.getAttribute('aria-controls');
+        const sub = document.getElementById(subId);
+        if (sub) sub.hidden = expanded;
       });
     });
+
+    // ── Active-section tracking on scroll ──────────────
+    const headings = Array.from(
+      document.querySelectorAll('h2[id], h3[id], h4[id]')
+    );
+    const allLinks = document.querySelectorAll('[data-outline-id]');
+    if (!headings.length || !allLinks.length) return;
+
+    // Map: id → link element(s)
+    const idToLinks = {};
+    allLinks.forEach((link) => {
+      const id = link.dataset.outlineId;
+      if (!idToLinks[id]) idToLinks[id] = [];
+      idToLinks[id].push(link);
+    });
+
+    const clearActive = () =>
+      document.querySelectorAll('[data-outline-id].active')
+        .forEach((l) => l.classList.remove('active'));
+
+    const expandParents = (link) => {
+      let el = link.parentElement;
+      while (el) {
+        if (
+          el.classList.contains('outline-sublist') &&
+          el.hidden
+        ) {
+          el.hidden = false;
+          const subId = el.id;
+          const btn = document.querySelector(
+            `[aria-controls="${subId}"]`
+          );
+          if (btn) btn.setAttribute('aria-expanded', 'true');
+        }
+        el = el.parentElement;
+      }
+    };
+
+    const setActive = (id) => {
+      clearActive();
+      const links = idToLinks[id];
+      if (!links) return;
+      links.forEach((link) => {
+        link.classList.add('active');
+        expandParents(link);
+        // Keep link visible inside the scrollable panel
+        link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    };
+
+    // Use scroll position to find the topmost heading above midpoint
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const mid = window.scrollY + window.innerHeight * 0.28;
+        let best = headings[0];
+        for (const h of headings) {
+          if (h.offsetTop <= mid) best = h;
+          else break;
+        }
+        if (best) setActive(best.id);
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Initial call
+    onScroll();
   })();
   </script>
 
