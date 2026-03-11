@@ -292,46 +292,48 @@ h1 {
   top: 14px;
   right: 14px;
   z-index: 1100;
-  display: flex;
-  gap: 6px;
-}
-
-.lang-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: var(--text-color);
+  gap: 8px;
+  padding: 6px 10px;
   border: 1px solid var(--glass-border);
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.8rem;
-  background: rgba(0, 18, 40, 0.88);
-  line-height: 1;
+  background: rgba(0, 18, 40, 0.9);
+  backdrop-filter: blur(4px);
 }
 
-.lang-btn:hover {
+.lang-label {
+  font-size: 0.78rem;
+  color: #d8e5f3;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.lang-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-size: 0.82rem;
+  padding: 6px 28px 6px 10px;
+  line-height: 1.1;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #cfe5ff 50%),
+    linear-gradient(135deg, #cfe5ff 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) calc(50% - 2px),
+    calc(100% - 9px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.lang-select:focus {
+  outline: none;
   border-color: var(--accent-secondary);
-  background: rgba(0, 28, 62, 0.95);
-}
-
-.lang-btn.is-active {
-  border-color: var(--accent-primary);
-  background: rgba(255, 204, 0, 0.2);
-}
-
-.lang-flag-img {
-  width: 18px;
-  height: 12px;
-  border-radius: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  object-fit: cover;
-  line-height: 1;
-  flex: 0 0 auto;
-}
-
-.lang-code {
-  letter-spacing: 0.3px;
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
 }
 
 .to-top-btn {
@@ -361,10 +363,14 @@ h1 {
   .lang-switch {
     top: 10px;
     right: 10px;
+    padding: 6px 8px;
   }
-  .lang-btn {
-    font-size: 0.74rem;
-    padding: 6px 9px;
+  .lang-label {
+    font-size: 0.72rem;
+  }
+  .lang-select {
+    font-size: 0.76rem;
+    padding: 6px 24px 6px 8px;
   }
   h1 { font-size: 2.25rem; }
   .module-title { font-size: 1.55rem; }
@@ -387,8 +393,16 @@ h1 {
 <body class="">
 
   <div class="lang-switch" aria-label="Language switch">
-    <a class="lang-btn is-active" data-lang="it" href="#"><img class="lang-flag-img" src="assets/flags/it.svg" alt="Italian flag"><span class="lang-code">IT</span></a>
-    <a class="lang-btn" data-lang="en" href="#"><img class="lang-flag-img" src="assets/flags/gb.svg" alt="English flag"><span class="lang-code">EN</span></a>
+    <span class="lang-label">Lingua</span>
+    <select class="lang-select" data-lang-select>
+      <option value="it" selected>Italiano</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="pt">Português</option>
+      <option value="zh-CN">中文</option>
+    </select>
   </div>
 
 
@@ -715,27 +729,49 @@ h1 {
 
   <script>
   (() => {
+    const supported = new Set(['it', 'en', 'es', 'fr', 'de', 'pt', 'zh-CN']);
     const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
-    const page = window.location.pathname.split('/').pop() || '';
-    const customMap = {
-      'module-01.html': { it: 'module-01.html', en: 'module-01-en.html' },
-      'module-01-en.html': { it: 'module-01.html', en: 'module-01-en.html' },
+
+    const fromGoogleTranslatePage = () => {
+      try {
+        const url = new URL(window.location.href);
+        const translatedUrl = url.searchParams.get('u');
+        if (!translatedUrl) return null;
+        return decodeURIComponent(translatedUrl);
+      } catch (_) {
+        return null;
+      }
     };
 
-    document.querySelectorAll('.lang-switch').forEach((sw) => {
-      const itLink = sw.querySelector('[data-lang="it"]');
-      const enLink = sw.querySelector('[data-lang="en"]');
-      if (customMap[page]) {
-        const itUrl = new URL(customMap[page].it, window.location.href).toString();
-        const enUrl = new URL(customMap[page].en, window.location.href).toString();
-        if (itLink) itLink.href = itUrl;
-        if (enLink) enLink.href = enUrl;
+    const baseUrl = fromGoogleTranslatePage() || currentUrl;
+
+    const detectCurrentLang = () => {
+      try {
+        const url = new URL(window.location.href);
+        const tl = url.searchParams.get('tl') || url.searchParams.get('_x_tr_tl');
+        return supported.has(tl) ? tl : 'it';
+      } catch (_) {
+        return 'it';
+      }
+    };
+
+    const goToLanguage = (tl) => {
+      if (tl === 'it') {
+        window.location.href = baseUrl;
         return;
       }
+      const target = `https://translate.google.com/translate?sl=it&tl=${encodeURIComponent(tl)}&u=${encodeURIComponent(baseUrl)}`;
+      window.location.href = target;
+    };
 
-      const enUrl = `https://translate.google.com/translate?sl=it&tl=en&u=${encodeURIComponent(currentUrl)}`;
-      if (itLink) itLink.href = currentUrl;
-      if (enLink) enLink.href = enUrl;
+    document.querySelectorAll('[data-lang-select]').forEach((sel) => {
+      const active = detectCurrentLang();
+      if (supported.has(active)) sel.value = active;
+      sel.addEventListener('change', (event) => {
+        const tl = event.target.value;
+        if (!supported.has(tl)) return;
+        goToLanguage(tl);
+      });
     });
   })();
   </script>
