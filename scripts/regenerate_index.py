@@ -326,67 +326,27 @@ def body_to_html(body: str):
 
 
 def build_outline_tree(outline_items):
-    """Convert flat list of {level, text, id} to nested tree (h2→h3→h4)."""
-    tree = []
-    last_h2 = None
-    last_h3 = None
+    """
+    2-level tree: ### headings (level 2 or 3) as top-level sections,
+    #### headings (level 4) as children of the last section.
+    """
+    sections = []
+    current = None
 
     for item in outline_items:
         level = item['level']
-        node = {'level': level, 'text': item['text'], 'id': item['id'], 'children': []}
-
-        if level == 2:
-            tree.append(node)
-            last_h2 = node
-            last_h3 = None
-        elif level == 3:
-            if last_h2 is not None:
-                last_h2['children'].append(node)
-            else:
-                tree.append(node)
-            last_h3 = node
+        if level in (2, 3):
+            current = {'text': item['text'], 'id': item['id'], 'children': []}
+            sections.append(current)
         elif level == 4:
-            if last_h3 is not None:
-                last_h3['children'].append(node)
-            elif last_h2 is not None:
-                last_h2['children'].append(node)
+            if current is not None:
+                current['children'].append({'text': item['text'], 'id': item['id']})
             else:
-                tree.append(node)
+                # orphan h4 — promote to section
+                current = {'text': item['text'], 'id': item['id'], 'children': []}
+                sections.append(current)
 
-    return tree
-
-
-def _render_outline_node(node, depth=0):
-    """Render a single tree node recursively."""
-    node_id = node['id']
-    text = html.escape(node['text'])
-    has_children = bool(node.get('children'))
-    level = node['level']
-
-    link_cls = f'outline-link outline-h{level}-link'
-
-    if has_children:
-        sub_id = f'osub-{node_id}'
-        # h2 nodes open by default, deeper nodes closed
-        is_open = (level == 2)
-        aria = 'true' if is_open else 'false'
-        hidden_attr = '' if is_open else ' hidden'
-
-        children_html = ''.join(
-            f'<li>{_render_outline_node(child, depth + 1)}</li>'
-            for child in node['children']
-        )
-        return (
-            f'<div class="outline-item-row">'
-            f'<button class="outline-toggle-btn" aria-expanded="{aria}" aria-controls="{sub_id}">▾</button>'
-            f'<a class="{link_cls}" href="#{node_id}" data-outline-id="{node_id}">{text}</a>'
-            f'</div>'
-            f'<ul class="outline-sublist" id="{sub_id}"{hidden_attr}>'
-            f'{children_html}'
-            f'</ul>'
-        )
-    else:
-        return f'<a class="{link_cls}" href="#{node_id}" data-outline-id="{node_id}">{text}</a>'
+    return sections
 
 
 def build_outline_panel_html(outline_items, is_en=False):
@@ -394,11 +354,46 @@ def build_outline_panel_html(outline_items, is_en=False):
     if not outline_items:
         return ''
 
-    tree = build_outline_tree(outline_items)
-    items_html = ''.join(
-        f'<li class="outline-root-item">{_render_outline_node(node)}</li>'
-        for node in tree
-    )
+    sections = build_outline_tree(outline_items)
+    outline_items_html = []
+
+    for index, section in enumerate(sections):
+        sec_id = section['id']
+        sec_text = html.escape(section['text'])
+
+        if section['children']:
+            sub_items = (
+                '<ul class="outline-sublist">'
+                + ''.join(
+                    '<li>'
+                    f'<a class="outline-link" href="#{child["id"]}" data-outline-id="{child["id"]}">'
+                    f'{html.escape(child["text"])}'
+                    '</a>'
+                    '</li>'
+                    for child in section['children']
+                )
+                + '</ul>'
+            )
+            outline_items_html.append(
+                '<li>'
+                f'<details class="outline-group" {"open" if index == 0 else ""}>'
+                '<summary>'
+                f'<span class="outline-summary-label" data-outline-id="{sec_id}">'
+                f'<a class="outline-summary-link" href="#{sec_id}">{sec_text}</a>'
+                '</span>'
+                '</summary>'
+                f'{sub_items}'
+                '</details>'
+                '</li>'
+            )
+        else:
+            outline_items_html.append(
+                '<li>'
+                f'<a class="outline-link outline-section-link" href="#{sec_id}" data-outline-id="{sec_id}">'
+                f'{sec_text}'
+                '</a>'
+                '</li>'
+            )
 
     outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
     return (
@@ -406,7 +401,9 @@ def build_outline_panel_html(outline_items, is_en=False):
         '    <div class="outline-frame">\n'
         f'      <p class="outline-title">{outline_title}</p>\n'
         '      <nav class="outline-nav-tree">\n'
-        f'        <ul class="outline-root">{items_html}</ul>\n'
+        '        <ul class="outline-root">'
+        f'{"".join(outline_items_html)}'
+        '</ul>\n'
         '      </nav>\n'
         '    </div>\n'
         '  </aside>\n'
@@ -873,24 +870,23 @@ h1 {
 '''
 
 OUTLINE_STYLE = '''
-/* ── Outline panel ─────────────────────────────── */
 .outline-panel {
   position: fixed;
   top: 18px;
   left: 12px;
   bottom: 18px;
-  width: 296px;
+  width: 292px;
   z-index: 950;
   display: none;
 }
 
 .outline-frame {
   height: 100%;
-  background: rgba(0, 14, 32, 0.94);
+  background: rgba(0, 18, 40, 0.92);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -898,137 +894,137 @@ OUTLINE_STYLE = '''
 
 .outline-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.82rem;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 1rem;
   color: var(--accent-secondary);
-  padding: 12px 14px 10px;
+  padding: 12px 14px 8px;
   border-bottom: 1px solid var(--glass-border);
-  flex-shrink: 0;
 }
 
 .outline-nav-tree {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 8px 14px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.15) transparent;
+  padding: 10px 10px 12px;
+  overflow: auto;
 }
 
-.outline-nav-tree::-webkit-scrollbar { width: 4px; }
-.outline-nav-tree::-webkit-scrollbar-track { background: transparent; }
-.outline-nav-tree::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.15);
-  border-radius: 4px;
-}
-
-/* ── Root list ──────────────────────────────────── */
-.outline-root {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.outline-root-item {
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── Sublists (indented children) ────────────────── */
+.outline-root,
 .outline-sublist {
   list-style: none;
   margin: 0;
-  padding: 0 0 0 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  padding: 0;
 }
 
-.outline-sublist[hidden] { display: none; }
-
-/* ── Item rows (toggle button + link) ─────────────── */
-.outline-item-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 2px;
-  min-width: 0;
+.outline-root {
+  display: grid;
+  gap: 8px;
 }
 
-/* ── Toggle arrow button ────────────────────────── */
-.outline-toggle-btn {
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  color: var(--accent-primary);
+.outline-group {
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.outline-group > summary {
   cursor: pointer;
-  font-size: 0.7rem;
-  line-height: 1;
-  padding: 5px 3px 3px;
-  transition: transform 0.18s ease, color 0.15s ease;
-  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
 }
 
-.outline-toggle-btn[aria-expanded="false"] {
-  transform: rotate(-90deg);
+.outline-group > summary::-webkit-details-marker {
+  display: none;
 }
 
-.outline-toggle-btn:hover { color: #fff; }
-
-/* ── Links ──────────────────────────────────────── */
-.outline-link {
-  display: block;
-  flex: 1;
+.outline-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
+}
+
+.outline-summary-label::before {
+  content: '▸';
+  color: var(--accent-primary);
+  font-size: 0.82rem;
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.outline-group[open] .outline-summary-label::before {
+  transform: rotate(90deg) translateX(1px);
+}
+
+.outline-summary-link {
   text-decoration: none;
-  border-radius: 6px;
+  color: inherit;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.outline-summary-link:hover {
+  color: var(--accent-secondary);
+}
+
+.outline-sublist {
+  padding: 2px 8px 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.outline-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #d9e3ef;
+  border: 1px solid transparent;
+  border-radius: 8px;
   padding: 4px 8px;
-  line-height: 1.38;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  border-left: 2px solid transparent;
-  word-break: break-word;
-}
-
-/* h2 – major sections */
-.outline-h2-link {
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #ddeeff;
-}
-
-/* h3 – subsections */
-.outline-h3-link {
-  font-size: 0.81rem;
-  color: #b8cede;
-}
-
-/* h4 – sub-subsections */
-.outline-h4-link {
-  font-size: 0.76rem;
-  color: #8aa4b8;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .outline-link:hover {
   color: #ffffff;
-  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.12);
 }
 
-/* Active state */
+.outline-section-link {
+  font-size: 0.76rem;
+  color: #9eefff;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.08);
+}
+
+.outline-link.active,
+.outline-summary-label.active::before,
+.outline-group.active > summary .outline-summary-label {
+  color: #ffffff;
+}
+
 .outline-link.active {
-  color: #ffffff !important;
-  background: rgba(255, 204, 0, 0.13);
-  border-left-color: var(--accent-primary);
+  border-color: rgba(255, 204, 0, 0.55);
+  background: rgba(255, 204, 0, 0.14);
 }
 
-/* ── Show panel on wide screens ──────────────────── */
+.outline-summary-label.active {
+  color: var(--accent-primary);
+}
+
 @media (min-width: 1024px) {
   .has-outline .outline-panel {
     display: block;
   }
+
   .has-outline .container {
-    padding-left: 336px;
+    padding-left: 332px;
   }
 }
 '''
@@ -1036,14 +1032,14 @@ OUTLINE_STYLE = '''
 OUTLINE_SCRIPT = '''
   <script>
   (() => {
-    // ── Toggle expand/collapse ───────────────────────
-    document.querySelectorAll('.outline-toggle-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!expanded));
-        const subId = btn.getAttribute('aria-controls');
-        const sub = document.getElementById(subId);
-        if (sub) sub.hidden = expanded;
+    // ── Toggle <details> on summary click ───────────────
+    document.querySelectorAll('.outline-group > summary').forEach((summary) => {
+      summary.addEventListener('click', (event) => {
+        // Allow link clicks inside summary to navigate without toggling
+        if (event.target.closest('.outline-summary-link')) return;
+        event.preventDefault();
+        const group = summary.parentElement;
+        if (group) group.open = !group.open;
       });
     });
 
@@ -1054,59 +1050,48 @@ OUTLINE_SCRIPT = '''
     const allLinks = document.querySelectorAll('[data-outline-id]');
     if (!headings.length || !allLinks.length) return;
 
-    // Map: id → link element(s)
-    const idToLinks = {};
-    allLinks.forEach((link) => {
-      const id = link.dataset.outlineId;
-      if (!idToLinks[id]) idToLinks[id] = [];
-      idToLinks[id].push(link);
+    // Map: id → elements with data-outline-id
+    const idToEls = {};
+    allLinks.forEach((el) => {
+      const id = el.dataset.outlineId;
+      if (!idToEls[id]) idToEls[id] = [];
+      idToEls[id].push(el);
     });
 
     const clearActive = () =>
       document.querySelectorAll('[data-outline-id].active')
         .forEach((l) => l.classList.remove('active'));
 
-    const expandParents = (link) => {
-      let el = link.parentElement;
-      while (el) {
-        if (
-          el.classList.contains('outline-sublist') &&
-          el.hidden
-        ) {
-          el.hidden = false;
-          const subId = el.id;
-          const btn = document.querySelector(
-            `[aria-controls="${subId}"]`
-          );
-          if (btn) btn.setAttribute('aria-expanded', 'true');
-        }
-        el = el.parentElement;
+    const openParentDetails = (el) => {
+      let node = el.parentElement;
+      while (node) {
+        if (node.tagName === 'DETAILS' && !node.open) node.open = true;
+        node = node.parentElement;
       }
     };
 
     const setActive = (id) => {
       clearActive();
-      const links = idToLinks[id];
-      if (!links) return;
-      links.forEach((link) => {
-        link.classList.add('active');
-        expandParents(link);
-        // Keep link visible inside the scrollable panel
-        link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const els = idToEls[id];
+      if (!els) return;
+      els.forEach((el) => {
+        el.classList.add('active');
+        openParentDetails(el);
+        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       });
     };
 
-    // Use scroll position to find the topmost heading above midpoint
+    // Track topmost heading above 28% of viewport
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        const mid = window.scrollY + window.innerHeight * 0.28;
+        const threshold = window.scrollY + window.innerHeight * 0.28;
         let best = headings[0];
         for (const h of headings) {
-          if (h.offsetTop <= mid) best = h;
+          if (h.offsetTop <= threshold) best = h;
           else break;
         }
         if (best) setActive(best.id);
@@ -1114,7 +1099,6 @@ OUTLINE_SCRIPT = '''
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    // Initial call
     onScroll();
   })();
   </script>
