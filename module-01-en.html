@@ -401,6 +401,8 @@ h1 {
       <option value="fr">Français</option>
       <option value="de">Deutsch</option>
       <option value="pt">Português</option>
+      <option value="el">Ελληνικά</option>
+      <option value="ru">Русский</option>
       <option value="zh-CN">中文</option>
     </select>
   </div>
@@ -732,7 +734,7 @@ h1 {
 
   <script>
   (() => {
-    const supported = new Set(['it', 'en', 'es', 'fr', 'de', 'pt', 'zh-CN']);
+    const supported = new Set(['it', 'en', 'es', 'fr', 'de', 'pt', 'el', 'ru', 'zh-CN']);
     const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
 
     const fromGoogleTranslatePage = () => {
