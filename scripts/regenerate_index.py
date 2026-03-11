@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import html
 import re
+import unicodedata
 from pathlib import Path
 
 COURSE_MD = Path('course.md')
@@ -107,6 +108,19 @@ def body_to_html(body: str) -> str:
     lines = body.splitlines()
     out = []
     i = 0
+    slug_counter = {}
+
+    def _normalize_slug(value: str) -> str:
+        slug = unicodedata.normalize('NFD', value.lower())
+        slug = ''.join(ch for ch in slug if unicodedata.category(ch) != 'Mn')
+        slug = re.sub(r'[^a-z0-9]+', '-', slug).strip('-')
+        return slug or 'section'
+
+    def _heading_id(text: str) -> str:
+        base = _normalize_slug(text)
+        count = slug_counter.get(base, 0) + 1
+        slug_counter[base] = count
+        return base if count == 1 else f'{base}-{count}'
 
     while i < len(lines):
         line = lines[i].strip()
@@ -161,6 +175,7 @@ def body_to_html(body: str) -> str:
         h3_match = re.match(r'^###\s+(.+)$', line)
         if h3_match:
             heading_text = h3_match.group(1).strip()
+            heading_id = _heading_id(heading_text)
             heading_key = heading_text.lower()
             if heading_key in {
                 'scheda rapida del modulo',
@@ -188,19 +203,21 @@ def body_to_html(body: str) -> str:
                 card_class = 'quick-card' if heading_key == 'scheda rapida del modulo' else 'checklist-card'
                 out.append(
                     f'<section class="{card_class}">'
-                    f'<h3 class="module-subtitle">{format_inline(heading_text)}</h3>'
+                    f'<h3 id="{heading_id}" class="module-subtitle">{format_inline(heading_text)}</h3>'
                     f'{card_html}'
                     '</section>'
                 )
                 continue
 
-            out.append(f'<h3 class="module-subtitle">{format_inline(heading_text)}</h3>')
+            out.append(f'<h3 id="{heading_id}" class="module-subtitle">{format_inline(heading_text)}</h3>')
             i += 1
             continue
 
         h4_match = re.match(r'^####\s+(.+)$', line)
         if h4_match:
-            out.append(f'<h4 class="module-subtitle-small">{format_inline(h4_match.group(1).strip())}</h4>')
+            heading_text = h4_match.group(1).strip()
+            heading_id = _heading_id(heading_text)
+            out.append(f'<h4 id="{heading_id}" class="module-subtitle-small">{format_inline(heading_text)}</h4>')
             i += 1
             continue
 
@@ -283,6 +300,45 @@ def first_teaser(body: str) -> str:
             return line[:187] + '...'
         return line
     return ''
+
+
+def build_outline_structure(body: str):
+    sections = []
+    current = None
+    slug_counter = {}
+
+    def normalize_slug(value: str) -> str:
+        slug = unicodedata.normalize('NFD', value.lower())
+        slug = ''.join(ch for ch in slug if unicodedata.category(ch) != 'Mn')
+        slug = re.sub(r'[^a-z0-9]+', '-', slug).strip('-')
+        return slug or 'section'
+
+    def heading_id(text: str) -> str:
+        base = normalize_slug(text)
+        count = slug_counter.get(base, 0) + 1
+        slug_counter[base] = count
+        return base if count == 1 else f'{base}-{count}'
+
+    for raw in body.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        h3 = re.match(r'^###\s+(.+)$', line)
+        if h3:
+            text = h3.group(1).strip()
+            current = {'text': text, 'id': heading_id(text), 'children': []}
+            sections.append(current)
+            continue
+        h4 = re.match(r'^####\s+(.+)$', line)
+        if h4:
+            text = h4.group(1).strip()
+            item = {'text': text, 'id': heading_id(text)}
+            if current is None:
+                current = {'text': text, 'id': item['id'], 'children': []}
+                sections.append(current)
+            else:
+                current['children'].append(item)
+    return sections
 
 
 STYLE = '''
@@ -642,6 +698,28 @@ h1 {
   transform: translateY(-50%) scale(1.03);
 }
 
+.print-btn {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.9);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
 @media (max-width: 768px) {
   .lang-switch {
     top: 10px;
@@ -669,6 +747,32 @@ h1 {
   }
   .to-top-btn:hover {
     transform: scale(1.03);
+  }
+  .print-btn {
+    right: 12px;
+    bottom: 56px;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+}
+
+@media print {
+  .lang-switch,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav,
+  .outline-panel {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
   }
 }
 '''
@@ -801,7 +905,7 @@ OUTLINE_STYLE = '''
   background: rgba(255, 204, 0, 0.14);
 }
 
-@media (min-width: 1260px) {
+@media (min-width: 1024px) {
   .has-outline .outline-panel {
     display: block;
   }
@@ -1004,7 +1108,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     body_html = body_to_html(module['body'])
 
     is_en = lang == 'en'
-    has_outline = (num == 3) and (not is_en)
+    has_outline = num == 3
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
     next_link = module_filename(modules[idx + 1]['number']) if idx < len(modules) - 1 else None
     home_label = 'Home'
@@ -1039,167 +1143,55 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
         </section>
 '''
 
-    outline_html = '''
-  <aside class="outline-panel" aria-label="Struttura del modulo">
-    <div class="outline-frame">
-      <p class="outline-title">Struttura del modulo</p>
-      <nav id="outline-nav" class="outline-nav-tree"></nav>
-    </div>
-  </aside>
-''' if has_outline else ''
+    outline_sections = build_outline_structure(module['body']) if has_outline else []
+    outline_items = []
+    for index, section in enumerate(outline_sections):
+        section_link = (
+            f'<a class="outline-link outline-section-link" href="#{section["id"]}">'
+            f'{"Go" if is_en else "Vai"}'
+            '</a>'
+        )
+        sub_items = ''
+        if section['children']:
+            sub_items = (
+                '<ul class="outline-sublist">'
+                + ''.join(
+                    (
+                        '<li>'
+                        f'<a class="outline-link" href="#{child["id"]}">{html.escape(child["text"])}</a>'
+                        '</li>'
+                    )
+                    for child in section['children']
+                )
+                + '</ul>'
+            )
+        outline_items.append(
+            '<li>'
+            f'<details class="outline-group" {"open" if index == 0 else ""}>'
+            '<summary>'
+            f'<span class="outline-summary-label">{html.escape(section["text"])}</span>'
+            f'{section_link}'
+            '</summary>'
+            f'{sub_items}'
+            '</details>'
+            '</li>'
+        )
 
-    outline_script = '''
-  <script>
-  (() => {
-    const panel = document.querySelector('.outline-panel');
-    const host = document.getElementById('outline-nav');
-    const content = document.querySelector('.module-content');
-    if (!panel || !host || !content) return;
+    outline_title = 'Module Structure' if is_en else 'Struttura del modulo'
+    outline_html = (
+        '\n  <aside class="outline-panel" aria-label="Module outline">\n'
+        '    <div class="outline-frame">\n'
+        f'      <p class="outline-title">{outline_title}</p>\n'
+        '      <nav class="outline-nav-tree">\n'
+        '        <ul class="outline-root">'
+        f'{"".join(outline_items)}'
+        '</ul>\n'
+        '      </nav>\n'
+        '    </div>\n'
+        '  </aside>\n'
+    ) if has_outline else ''
 
-    const slugCounter = {};
-    const normalize = (value) => {
-      const slug = value
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\\u0300-\\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-      return slug || 'section';
-    };
-
-    const ensureId = (el) => {
-      if (el.id) return el.id;
-      const base = normalize(el.textContent.trim());
-      const count = (slugCounter[base] || 0) + 1;
-      slugCounter[base] = count;
-      el.id = count === 1 ? base : `${base}-${count}`;
-      return el.id;
-    };
-
-    const ordered = Array.from(content.querySelectorAll(
-      'h2.module-section-title, h3.module-subtitle, h4.module-subtitle-small'
-    ));
-    const sections = [];
-    const pendingChildren = [];
-
-    ordered.forEach((heading) => {
-      if (heading.matches('h2.module-section-title, h3.module-subtitle')) {
-        sections.push({ heading, children: [] });
-        return;
-      }
-      if (sections.length === 0) pendingChildren.push(heading);
-      else sections[sections.length - 1].children.push(heading);
-    });
-
-    if (sections.length === 0) {
-      const moduleTitle = document.querySelector('.module-title');
-      if (moduleTitle) {
-        sections.push({
-          heading: moduleTitle,
-          children: Array.from(content.querySelectorAll('h4.module-subtitle-small'))
-        });
-      }
-    } else if (pendingChildren.length > 0) {
-      sections[0].children.unshift(...pendingChildren);
-    }
-
-    if (sections.length === 0) {
-      panel.style.display = 'none';
-      return;
-    }
-
-    const root = document.createElement('ul');
-    root.className = 'outline-root';
-
-    const linkById = new Map();
-    const headingOrder = [];
-
-    sections.forEach((section, index) => {
-      const sectionId = ensureId(section.heading);
-      headingOrder.push(section.heading);
-
-      const item = document.createElement('li');
-      const details = document.createElement('details');
-      details.className = 'outline-group';
-      details.open = index === 0;
-
-      const summary = document.createElement('summary');
-      const label = document.createElement('span');
-      label.className = 'outline-summary-label';
-      label.textContent = section.heading.textContent.trim();
-
-      const jump = document.createElement('a');
-      jump.className = 'outline-link outline-section-link';
-      jump.href = `#${sectionId}`;
-      jump.textContent = 'Vai';
-      jump.addEventListener('click', (event) => event.stopPropagation());
-
-      summary.append(label, jump);
-      details.appendChild(summary);
-      linkById.set(sectionId, jump);
-
-      if (section.children.length > 0) {
-        const sub = document.createElement('ul');
-        sub.className = 'outline-sublist';
-
-        section.children.forEach((child) => {
-          const childId = ensureId(child);
-          headingOrder.push(child);
-
-          const li = document.createElement('li');
-          const link = document.createElement('a');
-          link.className = 'outline-link';
-          link.href = `#${childId}`;
-          link.textContent = child.textContent.trim();
-          li.appendChild(link);
-          sub.appendChild(li);
-          linkById.set(childId, link);
-        });
-
-        details.appendChild(sub);
-      }
-
-      item.appendChild(details);
-      root.appendChild(item);
-    });
-
-    host.replaceChildren(root);
-
-    let ticking = false;
-
-    const setActive = () => {
-      ticking = false;
-      if (headingOrder.length === 0) return;
-
-      let active = headingOrder[0];
-      for (const heading of headingOrder) {
-        if (heading.getBoundingClientRect().top - 120 <= 0) active = heading;
-        else break;
-      }
-
-      linkById.forEach((link) => link.classList.remove('active'));
-      const activeId = ensureId(active);
-      const activeLink = linkById.get(activeId);
-      if (activeLink) {
-        activeLink.classList.add('active');
-        const group = activeLink.closest('details.outline-group');
-        if (group) group.open = true;
-      }
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(setActive);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('hashchange', setActive);
-    setActive();
-  })();
-  </script>
-''' if has_outline else ''
+    outline_script = ''
     outline_style_tag = f'\n  <style>{OUTLINE_STYLE}</style>' if has_outline else ''
 
     return f'''<!DOCTYPE html>
@@ -1240,6 +1232,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑ Torna su</button>
+  <button class="print-btn" type="button" onclick="window.print()">{'Print' if is_en else 'Stampa'}</button>
 {LANG_SWITCH_SCRIPT}
 {outline_script}
 </body>

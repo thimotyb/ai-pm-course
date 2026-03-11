@@ -364,6 +364,28 @@ h1 {
   transform: translateY(-50%) scale(1.03);
 }
 
+.print-btn {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.9);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
 @media (max-width: 768px) {
   .lang-switch {
     top: 10px;
@@ -391,6 +413,32 @@ h1 {
   }
   .to-top-btn:hover {
     transform: scale(1.03);
+  }
+  .print-btn {
+    right: 12px;
+    bottom: 56px;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+}
+
+@media print {
+  .lang-switch,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav,
+  .outline-panel {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
   }
 }
 </style>
@@ -428,12 +476,12 @@ h1 {
         <h2 class="module-title">Esempi pratici - Laboratori</h2>
 
         <section class="module-content">
-          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> applicare in pratica i concetti dei moduli precedenti con laboratori guidati su strumenti reali.</li><li><strong>Focus:</strong> workflow operativi su Vertex AI, produttività con Copilot e tecniche di prompt engineering.</li><li><strong>Risultato atteso:</strong> capacità di impostare un flusso end-to-end dal prototipo all&#x27;uso quotidiano, con attenzione a monitoraggio e qualità.</li></ul></section>
+          <section class="quick-card"><h3 id="scheda-rapida-del-modulo" class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> applicare in pratica i concetti dei moduli precedenti con laboratori guidati su strumenti reali.</li><li><strong>Focus:</strong> workflow operativi su Vertex AI, produttività con Copilot e tecniche di prompt engineering.</li><li><strong>Risultato atteso:</strong> capacità di impostare un flusso end-to-end dal prototipo all&#x27;uso quotidiano, con attenzione a monitoraggio e qualità.</li></ul></section>
           <ul><li><strong>Google Vertex AI:</strong> Model Registry, Feature Engineering, Monitoring.</li><li><strong>Microsoft Copilot:</strong> Riassunti, minuting, tecniche di produttività.</li><li><strong>Prompt Engineering:</strong> Esercitazioni pratiche per il business.</li></ul>
-          <h3 class="module-subtitle">Labs</h3>
-          <h4 class="module-subtitle-small">Catalogo laboratori e percorsi</h4>
+          <h3 id="labs" class="module-subtitle">Labs</h3>
+          <h4 id="catalogo-laboratori-e-percorsi" class="module-subtitle-small">Catalogo laboratori e percorsi</h4>
           <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo e link</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/723?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Generative AI Explorer - Vertex AI</a></strong></td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568844" target="_blank" rel="noopener noreferrer">Introduction to Gemini 3</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568845" target="_blank" rel="noopener noreferrer">Generative AI with Vertex AI: Prompt Design</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/723/labs/568846" target="_blank" rel="noopener noreferrer">Get Started with Vertex AI Studio</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104690?catalog_rank=%7B%22rank%22%3A8%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73609565" target="_blank" rel="noopener noreferrer">Intro to Grounding with Gemini in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/118448?catalog_rank=%7B%22rank%22%3A12%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610087" target="_blank" rel="noopener noreferrer">Gmail Sentiment Analysis with Gemini and Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/85643?catalog_rank=%7B%22rank%22%3A19%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610121" target="_blank" rel="noopener noreferrer">Multimodal Retrieval Augmented Generation (RAG) using the Gemini API in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/117532?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=75402418" target="_blank" rel="noopener noreferrer">Create a RAG Application with BigQuery</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://docs.cloud.google.com/generative-ai-app-builder/docs/try-enterprise-search#create_a_data_store" target="_blank" rel="noopener noreferrer">Get started with custom search</a></strong></td><td>Tutorial</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/22020?catalog_rank=%7B%22rank%22%3A27%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610347" target="_blank" rel="noopener noreferrer">Identify Damaged Car Parts with Vertex AutoML</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/focuses/104687?catalog_rank=%7B%22rank%22%3A33%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;parent=catalog&amp;search_id=73610391" target="_blank" rel="noopener noreferrer">Build and Deploy an Agent with Agent Engine in Vertex AI</a></strong></td><td>Focus</td></tr><tr><td><strong><a href="https://www.skills.google/paths/1283?catalog_rank=%7B%22rank%22%3A51%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610456" target="_blank" rel="noopener noreferrer">Deploy and Manage Generative AI Models</a></strong></td><td>Path</td></tr></tbody></table></div>
-          <h4 class="module-subtitle-small">Important Agents</h4>
+          <h4 id="important-agents" class="module-subtitle-small">Important Agents</h4>
           <div class="table-wrap"><table class="content-table"><thead><tr><th>Titolo e link</th><th>Categoria</th></tr></thead><tbody><tr><td><strong><a href="https://www.skills.google/course_templates/1504?catalog_rank=%7B%22rank%22%3A66%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&amp;search_id=73610516" target="_blank" rel="noopener noreferrer">Understand Google Cloud Agents</a></strong></td><td>Course</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599599" target="_blank" rel="noopener noreferrer">Enable informed decision making with a conversational agent that uses generators and data stores</a></strong></td><td>Lab</td></tr><tr><td><strong><a href="https://www.skills.google/course_templates/1504/labs/599605" target="_blank" rel="noopener noreferrer">Get Started with Agent Development Kit (ADK)</a></strong></td><td>Lab</td></tr></tbody></table></div>
         </section>
 
@@ -443,6 +491,7 @@ h1 {
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+  <button class="print-btn" type="button" onclick="window.print()">Stampa</button>
 
   <script>
   (() => {

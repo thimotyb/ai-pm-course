@@ -364,6 +364,28 @@ h1 {
   transform: translateY(-50%) scale(1.03);
 }
 
+.print-btn {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 999;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 18, 40, 0.9);
+  color: var(--text-color);
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.print-btn:hover {
+  background: rgba(0, 28, 62, 0.95);
+  border-color: var(--accent-secondary);
+  transform: scale(1.03);
+}
+
 @media (max-width: 768px) {
   .lang-switch {
     top: 10px;
@@ -391,6 +413,32 @@ h1 {
   }
   .to-top-btn:hover {
     transform: scale(1.03);
+  }
+  .print-btn {
+    right: 12px;
+    bottom: 56px;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+}
+
+@media print {
+  .lang-switch,
+  .to-top-btn,
+  .print-btn,
+  .module-nav,
+  .jump-nav,
+  .outline-panel {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
   }
 }
 </style>
@@ -428,56 +476,56 @@ h1 {
         <h2 class="module-title">Presidio e manutenzione nel quotidiano</h2>
 
         <section class="module-content">
-          <section class="quick-card"><h3 class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> trasformare la governance AI in una pratica operativa continua, non in un documento statico.</li><li><strong>Focus:</strong> presidio quotidiano di rischi, processi, ruoli, metriche e aggiornamento delle policy.</li><li><strong>Risultato atteso:</strong> framework mantenibile che scala con nuovi casi d&#x27;uso e con l&#x27;evoluzione normativa.</li></ul></section>
-          <h3 class="module-subtitle">Presidio continuo: dal framework alla pratica</h3>
+          <section class="quick-card"><h3 id="scheda-rapida-del-modulo" class="module-subtitle">Scheda rapida del modulo</h3><ul><li><strong>Obiettivo:</strong> trasformare la governance AI in una pratica operativa continua, non in un documento statico.</li><li><strong>Focus:</strong> presidio quotidiano di rischi, processi, ruoli, metriche e aggiornamento delle policy.</li><li><strong>Risultato atteso:</strong> framework mantenibile che scala con nuovi casi d&#x27;uso e con l&#x27;evoluzione normativa.</li></ul></section>
+          <h3 id="presidio-continuo-dal-framework-alla-pratica" class="module-subtitle">Presidio continuo: dal framework alla pratica</h3>
           <p>Un sistema AI resta affidabile solo se governance e manutenzione sono integrate nelle attività ordinarie di team prodotto, engineering, risk e compliance. Il punto chiave è passare da interventi reattivi a un ciclo continuo di prevenzione, monitoraggio e miglioramento.</p>
           <p>Il framework efficace ha quattro caratteristiche:</p>
           <ol><li><strong>fondazione chiara</strong> (principi etici e sponsorship dirigenziale),</li><li><strong>processi applicabili</strong> (policy operative e checklist usabili),</li><li><strong>monitoraggio attivo</strong> (metriche, audit, segnalazioni),</li><li><strong>capacità evolutiva</strong> (revisioni periodiche e adattamento rapido).</li></ol>
           <figure class="module-image"><img src="assets/principles_ch06_images/pg_ch06_img01.jpg" alt="Modello di riferimento per framework di AI governance" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.1: struttura di riferimento per impostare e mantenere la governance AI nel tempo</figcaption></figure>
-          <h3 class="module-subtitle">Fase 1: avvio e allineamento organizzativo</h3>
+          <h3 id="fase-1-avvio-e-allineamento-organizzativo" class="module-subtitle">Fase 1: avvio e allineamento organizzativo</h3>
           <p>Il presidio quotidiano parte da decisioni iniziali corrette:</p>
           <ol><li><strong>Executive buy-in:</strong> sponsorship forte per priorità, budget e responsabilità.</li><li><strong>Team cross-funzionale:</strong> data science, IT, legale, risk, business owner.</li><li><strong>Baseline assessment:</strong> mappatura di use case AI, dati, controlli già esistenti.</li><li><strong>Principi guida:</strong> fairness, trasparenza, privacy, sicurezza, accountability.</li></ol>
           <p>Senza questi elementi la manutenzione diventa frammentata e dipendente da singole persone.</p>
-          <h3 class="module-subtitle">Fase 2: definire i componenti core di governance</h3>
+          <h3 id="fase-2-definire-i-componenti-core-di-governance" class="module-subtitle">Fase 2: definire i componenti core di governance</h3>
           <p>Per presidiare i sistemi AI servono policy concrete su aree ad alta esposizione:</p>
           <ul><li><strong>Data governance:</strong> qualità, accessi, retention, permessi, tracciabilità.</li><li><strong>Model governance:</strong> standard di sviluppo, validazione, documentazione, rilascio.</li><li><strong>Bias governance:</strong> test fairness, controlli pre e post deploy, remediation.</li><li><strong>Risk management:</strong> metodologia unica per identificare, quantificare e prioritizzare i rischi.</li><li><strong>Incident management:</strong> gestione escalation, contenimento, analisi causa radice.</li></ul>
           <p>La regola operativa è evitare policy astratte: ogni policy deve tradursi in compiti, owner, soglie e tempi.</p>
-          <h3 class="module-subtitle">Fase 3: trasformare il framework in operatività giornaliera</h3>
+          <h3 id="fase-3-trasformare-il-framework-in-operativita-giornaliera" class="module-subtitle">Fase 3: trasformare il framework in operatività giornaliera</h3>
           <p>Un framework diventa vivo quando entra nel flusso di lavoro:</p>
           <ol><li><strong>Pilot su progetto reale:</strong> applicare il framework a un caso rappresentativo.</li><li><strong>Training mirato:</strong> ruoli diversi ricevono istruzioni diverse, non formazione generica.</li><li><strong>Template e tool:</strong> checklist, modelli di report, playbook incidenti, dashboard.</li><li><strong>Ritmo di revisione:</strong> checkpoint periodici con evidence oggettive.</li></ol>
           <p>La scalabilità nasce da processi semplici e ripetibili, non da complessità documentale.</p>
-          <h3 class="module-subtitle">Presidio quotidiano del ciclo di vita AI</h3>
+          <h3 id="presidio-quotidiano-del-ciclo-di-vita-ai" class="module-subtitle">Presidio quotidiano del ciclo di vita AI</h3>
           <p>Nel day-by-day il team deve mantenere sotto controllo quattro fronti:</p>
           <ol><li><strong>Prestazioni modello:</strong> accuratezza, robustezza, degradazione nel tempo.</li><li><strong>Rischio operativo:</strong> errori critici, comportamenti inattesi, impatti downstream.</li><li><strong>Rischio etico/compliance:</strong> fairness, trasparenza, privacy, audit trail.</li><li><strong>Adozione utente:</strong> qualità percepita, fiducia, feedback e tasso di correzione manuale.</li></ol>
-          <h3 class="module-subtitle">Monitoraggio e manutenzione: regole pratiche</h3>
+          <h3 id="monitoraggio-e-manutenzione-regole-pratiche" class="module-subtitle">Monitoraggio e manutenzione: regole pratiche</h3>
           <p>Per evitare derive nel tempo:</p>
           <ul><li>monitorare data drift e model drift con soglie esplicite;</li><li>validare periodicamente output su casi reali ad alto impatto;</li><li>aggiornare dataset, prompt, regole di controllo e policy di rilascio;</li><li>rieseguire test di regressione prima di ogni modifica significativa;</li><li>mantenere log completi per audit e accountability.</li></ul>
-          <h3 class="module-subtitle">Governance come sistema evolutivo</h3>
+          <h3 id="governance-come-sistema-evolutivo" class="module-subtitle">Governance come sistema evolutivo</h3>
           <p>La manutenzione quotidiana richiede una mentalità iterativa:</p>
           <ul><li>raccogliere segnali deboli (feedback utenti, anomalie, quasi-incidenti),</li><li>tradurli in miglioramenti prioritizzati,</li><li>aggiornare framework, controlli e formazione,</li><li>verificare l&#x27;efficacia delle modifiche con metriche comparabili.</li></ul>
           <p>Così il framework resta allineato sia alla maturità interna sia al contesto esterno in cambiamento.</p>
-          <h3 class="module-subtitle">KPI essenziali del Modulo 05</h3>
+          <h3 id="kpi-essenziali-del-modulo-05" class="module-subtitle">KPI essenziali del Modulo 05</h3>
           <ol><li><strong>Copertura governance:</strong> percentuale di progetti AI sotto policy formalizzate.</li><li><strong>Tempo di rilevazione incidenti:</strong> velocità di individuazione anomalie.</li><li><strong>Tempo di remediation:</strong> rapidità di correzione dopo segnalazione.</li><li><strong>Drift rate:</strong> frequenza e severità di data/model drift.</li><li><strong>Fairness stability:</strong> variazione delle metriche fairness nel tempo.</li><li><strong>Audit readiness:</strong> completezza di evidenze, log e documentazione.</li></ol>
-          <h3 class="module-subtitle">Modello di governance e oversight: come strutturare il presidio</h3>
+          <h3 id="modello-di-governance-e-oversight-come-strutturare-il-presidio" class="module-subtitle">Modello di governance e oversight: come strutturare il presidio</h3>
           <p>Quando l&#x27;adozione AI cresce, il presidio quotidiano richiede una struttura organizzativa esplicita, con responsabilità distribuite tra livello strategico, tattico e operativo. L&#x27;obiettivo è evitare zone grigie decisionali e rallentamenti in approvazione, remediation e audit.</p>
           <p>Elementi indispensabili del modello di oversight:</p>
           <ol><li><strong>indirizzo strategico</strong> (priorità, risk appetite, investimenti);</li><li><strong>orchestrazione tattica</strong> (policy, standard, processi trasversali);</li><li><strong>esecuzione operativa</strong> (controlli su dati, modelli, rilasci e monitoraggio).</li></ol>
           <figure class="module-image"><img src="assets/principles_ch07_images/pg_ch07_p01_img01.jpg" alt="Schema di AI governance oversight su livelli strategico, tattico e operativo" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.2: modello di oversight con council, owners, CoE e team AI/Data Science</figcaption></figure>
-          <h3 class="module-subtitle">AI Governance CoE: quando conviene attivarlo</h3>
+          <h3 id="ai-governance-coe-quando-conviene-attivarlo" class="module-subtitle">AI Governance CoE: quando conviene attivarlo</h3>
           <p>Un Centro di Eccellenza di governance AI è utile quando i progetti diventano numerosi, eterogenei e ad alto impatto regolatorio.</p>
           <p>Vantaggi principali:</p>
           <ul><li>standardizzazione di metodi e controlli;</li><li>riduzione rework e tempi di remediation;</li><li>presidio centralizzato di rischio e compliance;</li><li>supporto metodologico ai team di delivery;</li><li>maggiore fiducia di clienti, partner e audit.</li></ul>
           <p>Quando partire in modalità leggera:</p>
           <ul><li>organizzazione in fase iniziale di adozione AI;</li><li>pochi casi d&#x27;uso e bassa esposizione regolatoria;</li><li>risorse specialistiche ancora limitate.</li></ul>
-          <h3 class="module-subtitle">Componenti core di una strategia CoE</h3>
+          <h3 id="componenti-core-di-una-strategia-coe" class="module-subtitle">Componenti core di una strategia CoE</h3>
           <p>Per funzionare, il CoE deve avere mandato chiaro e strumenti pratici:</p>
           <ol><li><strong>Visione e perimetro:</strong> advisory o decisionale, aree coperte, criteri di escalation.</li><li><strong>Policy e standard:</strong> dati, sviluppo modello, validazione, fairness, sicurezza, privacy.</li><li><strong>Workflow:</strong> processi di design review, go/no-go, monitoraggio e incident handling.</li><li><strong>Tooling:</strong> piattaforme per testing, explainability, drift detection, reporting.</li><li><strong>Regulatory watch:</strong> monitoraggio continuo norme e impatti operativi.</li><li><strong>Formazione diffusa:</strong> training per tecnici, business owner, risk/legal e leadership.</li></ol>
-          <h3 class="module-subtitle">Ruoli e responsabilità del modello operativo</h3>
+          <h3 id="ruoli-e-responsabilita-del-modello-operativo" class="module-subtitle">Ruoli e responsabilità del modello operativo</h3>
           <p>Un presidio robusto richiede ruoli distinti e coordinati:</p>
           <ul><li><strong>Steering Committee:</strong> definisce direzione, risorse e priorità.</li><li><strong>CoE Lead:</strong> governa operatività quotidiana e qualità dei processi.</li><li><strong>Team cross-funzionale:</strong> data science, IT/cyber, risk, legal/compliance, business.</li><li><strong>Advisor indipendenti (opzionali):</strong> supporto su casi ad alta complessità.</li></ul>
           <p>Responsabilità minime da formalizzare:</p>
           <ol><li>sviluppo/aggiornamento policy;</li><li>revisione progetti ad alto rischio;</li><li>monitoraggio KPI e indicatori rischio;</li><li>audit trail e evidence management;</li><li>gestione incidenti e lesson learned.</li></ol>
-          <h3 class="module-subtitle">RACI: rendere il presidio eseguibile</h3>
+          <h3 id="raci-rendere-il-presidio-eseguibile" class="module-subtitle">RACI: rendere il presidio eseguibile</h3>
           <p>Per il mantenimento quotidiano conviene adottare una matrice RACI su attività chiave.</p>
           <p>Esempi di attività da mappare:</p>
           <ul><li>approvazione modello prima del rilascio;</li><li>monitoraggio drift e fairness;</li><li>gestione incidenti e comunicazioni;</li><li>revisione periodica policy;</li><li>aggiornamento documentazione e inventario modelli.</li></ul>
@@ -485,67 +533,67 @@ h1 {
           <ol><li>un solo <strong>Accountable</strong> per attività;</li><li>ownership chiara anche su task trasversali;</li><li>revisione periodica della matrice in base all&#x27;evoluzione dei processi;</li><li>uso operativo della matrice in CAB, review e audit.</li></ol>
           <p>Qui <strong>CAB</strong> è l&#x27;acronimo di <strong>Change Advisory Board</strong>: il momento o gruppo formale in cui si valutano le modifiche prima del rilascio, chiarendo chi propone il cambiamento, chi lo approva, chi deve essere consultato e chi va informato.</p>
           <figure class="module-image"><img src="assets/principles_ch07_images/pg_ch07_p16_img01.jpg" alt="Esempio di matrice RACI ad alto livello per governance AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.3: esempio pratico di attribuzione responsabilità Responsible, Accountable, Consulted, Informed</figcaption></figure>
-          <h3 class="module-subtitle">Board oversight e governance ad alta direzione</h3>
+          <h3 id="board-oversight-e-governance-ad-alta-direzione" class="module-subtitle">Board oversight e governance ad alta direzione</h3>
           <p>Nei contesti a rischio elevato, il board deve avere visibilità strutturata sui sistemi AI, con cadenza regolare e indicatori comparabili.</p>
           <p>Pratiche consigliate:</p>
           <ul><li>review trimestrale del rischio AI (legale, operativo, reputazionale, etico);</li><li>reporting sintetico su incidenti, near-miss e remediation;</li><li>verifica allineamento tra strategia AI e valori aziendali;</li><li>valutazione periodica di competenze AI nel board.</li></ul>
-          <h3 class="module-subtitle">Subcommittee e scalabilità del modello</h3>
+          <h3 id="subcommittee-e-scalabilita-del-modello" class="module-subtitle">Subcommittee e scalabilità del modello</h3>
           <p>Quando volume e complessità aumentano, è utile creare sottocomitati tematici:</p>
           <ul><li>etica e impatto;</li><li>cyber e resilienza tecnica;</li><li>data governance e privacy;</li><li>model risk e validazione.</li></ul>
           <p>Linee guida:</p>
           <ol><li>partire con 1-2 subcommittee prioritari;</li><li>evitare duplicazioni di mandato;</li><li>stabilire meccanismi di coordinamento inter-subcommittee;</li><li>mantenere supervisione centralizzata del chair.</li></ol>
-          <h3 class="module-subtitle">Punti operativi su Oversight e CoE</h3>
+          <h3 id="punti-operativi-su-oversight-e-coe" class="module-subtitle">Punti operativi su Oversight e CoE</h3>
           <ol><li>Definire modello di oversight su tre livelli (strategico, tattico, operativo).</li><li>Valutare attivazione CoE in base a maturità, rischio e scala dei casi d&#x27;uso.</li><li>Formalizzare ruoli, deleghe e responsabilità con RACI aggiornabile.</li><li>Stabilire cadenze di steering committee, review tecniche e audit.</li><li>Introdurre reporting board-level con KPI rischio e qualità comparabili.</li><li>Pianificare revisione periodica della struttura di governance e dei subcommittee.</li></ol>
-          <h3 class="module-subtitle">Assetto organizzativo avanzato: council, CoE e accountability</h3>
+          <h3 id="assetto-organizzativo-avanzato-council-coe-e-accountability" class="module-subtitle">Assetto organizzativo avanzato: council, CoE e accountability</h3>
           <p>Per mantenere la governance efficace nel medio periodo serve un&#x27;architettura organizzativa stabile che chiarisca chi decide, chi esegue e chi controlla. L&#x27;assetto consigliato combina:</p>
           <ol><li><strong>AI Governance Council</strong> per indirizzo strategico e decisioni finali su temi critici.</li><li><strong>AI Owners</strong> per traduzione delle policy in standard tecnici e operativi.</li><li><strong>AI/Data Science Team</strong> per esecuzione, monitoraggio e miglioramento continuo.</li><li><strong>CoE</strong> come motore di standardizzazione, supporto metodologico e diffusione competenze.</li></ol>
           <figure class="module-image"><img src="assets/principles_ch12_images/pg_ch12_img01.jpg" alt="Modello di AI governance oversight con livelli e responsabilità" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.4: schema integrato di governance con ruoli strategici, tattici e operativi</figcaption></figure>
-          <h3 class="module-subtitle">Governance CoE: dalla teoria all&#x27;operatività quotidiana</h3>
+          <h3 id="governance-coe-dalla-teoria-all-operativita-quotidiana" class="module-subtitle">Governance CoE: dalla teoria all&#x27;operatività quotidiana</h3>
           <p>Per essere realmente utile, il CoE deve produrre risultati misurabili:</p>
           <ul><li>ridurre disallineamenti tra business, risk, legal e data team;</li><li>accelerare review e approvazioni dei modelli ad alto rischio;</li><li>uniformare controlli di qualità, fairness e sicurezza tra business unit;</li><li>migliorare la prontezza audit con evidenze standardizzate.</li></ul>
           <p>Le leve operative del CoE:</p>
           <ol><li>playbook e template obbligatori per sviluppo/validazione/rilascio;</li><li>tassonomia rischio condivisa con funzioni di controllo;</li><li>libreria centralizzata di controlli e test riusabili;</li><li>reporting periodico su KPI governance e trend di incidenti.</li></ol>
-          <h3 class="module-subtitle">Struttura di gestione: ruoli chiave e meccanismi decisionali</h3>
+          <h3 id="struttura-di-gestione-ruoli-chiave-e-meccanismi-decisionali" class="module-subtitle">Struttura di gestione: ruoli chiave e meccanismi decisionali</h3>
           <p>Un modello maturo distingue chiaramente:</p>
           <ul><li><strong>Steering Committee:</strong> priorità, risorse, escalation e conflitti interfunzionali.</li><li><strong>CoE Lead:</strong> esecuzione del piano governance e presidio end-to-end dei processi.</li><li><strong>Esperti cross-funzionali:</strong> data science, cyber, compliance, risk, business domain.</li><li><strong>Advisor indipendenti (quando necessari):</strong> supporto su scenari regolatori o ad alta criticità.</li></ul>
           <p>Per evitare blocchi decisionali conviene definire fin da subito:</p>
           <ol><li>frequenza meeting (ordinari + straordinari per incidenti),</li><li>criteri di escalation,</li><li>soglie di rischio che attivano revisione aggiuntiva,</li><li>tempi massimi per approvazione/rifiuto dei cambi.</li></ol>
-          <h3 class="module-subtitle">RACI evoluto: chiarezza esecutiva nei processi critici</h3>
+          <h3 id="raci-evoluto-chiarezza-esecutiva-nei-processi-critici" class="module-subtitle">RACI evoluto: chiarezza esecutiva nei processi critici</h3>
           <p>La matrice RACI rimane uno strumento centrale per manutenzione quotidiana, soprattutto nelle attività ad alta esposizione:</p>
           <ul><li>policy update,</li><li>review rischio progetto,</li><li>gestione incidente,</li><li>go-live di modelli ad alto impatto,</li><li>audit e compliance reporting.</li></ul>
           <figure class="module-image"><img src="assets/principles_ch12_images/pg_ch12_img02.jpg" alt="Esempio di RACI per policy, risk review e incident response" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.5: assegnazione operativa di Responsible, Accountable, Consulted, Informed</figcaption></figure>
           <p>Regole pratiche da applicare:</p>
           <ol><li>un solo accountable per attività, sempre esplicitato;</li><li>ownership condivisa solo dove necessario e con confini chiari;</li><li>revisione periodica del RACI in base a crescita organizzativa;</li><li>integrazione del RACI nei flussi reali (CAB, incident review, audit).</li></ol>
-          <h3 class="module-subtitle">Board e leadership: presidio strategico continuativo</h3>
+          <h3 id="board-e-leadership-presidio-strategico-continuativo" class="module-subtitle">Board e leadership: presidio strategico continuativo</h3>
           <p>Quando l&#x27;AI impatta processi core, il board deve esercitare una supervisione attiva:</p>
           <ul><li>ricevere update regolari su rischi, incidenti, remediation e trend;</li><li>validare coerenza tra strategia AI, rischio accettabile e valori aziendali;</li><li>sostenere formazione continua su AI governance per dirigenti e comitati.</li></ul>
           <p>La qualità del presidio dipende anche dalla composizione: competenze su rischio, sicurezza, etica e regolazione devono convivere con esperienza business e capacità di execution.</p>
-          <h3 class="module-subtitle">Punti operativi su assetto organizzativo e RACI</h3>
+          <h3 id="punti-operativi-su-assetto-organizzativo-e-raci" class="module-subtitle">Punti operativi su assetto organizzativo e RACI</h3>
           <ol><li>Formalizzare il modello council + CoE + team operativi con mandato documentato.</li><li>Definire governance cadence (meeting, escalation, decision log, audit log).</li><li>Implementare un RACI completo per policy, review, incidenti e go-live.</li><li>Collegare KPI governance a obiettivi di business e rischio accettabile.</li><li>Attivare reporting board-level con sintesi decisionale e stato remediation.</li><li>Revisionare periodicamente struttura, ruoli e responsabilità in base alla maturità AI.</li></ol>
-          <h3 class="module-subtitle">AI Auditing: presidio tecnico-controllo nel ciclo di vita</h3>
+          <h3 id="ai-auditing-presidio-tecnico-controllo-nel-ciclo-di-vita" class="module-subtitle">AI Auditing: presidio tecnico-controllo nel ciclo di vita</h3>
           <p>La manutenzione quotidiana dei sistemi AI richiede una funzione di audit specifica, distinta dai controlli IT tradizionali. L&#x27;audit AI verifica non solo sicurezza e conformità tecnica, ma anche qualità dati, bias, robustezza, trasparenza e impatto operativo.</p>
           <p>A differenza dell&#x27;audit IT classico, l&#x27;audit AI deve gestire modelli che evolvono nel tempo, dataset dinamici e decisioni probabilistiche. Per questo il presidio va impostato come programma continuo, non come verifica una tantum.</p>
-          <h3 class="module-subtitle">Perimetro minimo di un programma di audit AI</h3>
+          <h3 id="perimetro-minimo-di-un-programma-di-audit-ai" class="module-subtitle">Perimetro minimo di un programma di audit AI</h3>
           <p>Un programma efficace copre almeno questi ambiti:</p>
           <ol><li><strong>Dati:</strong> provenienza, qualità, completezza, bias, privacy e lineage.</li><li><strong>Modelli:</strong> performance, stabilità, explainability, comportamento anomalo.</li><li><strong>Sicurezza:</strong> vulnerabilità specifiche AI, abuso input, hardening controlli.</li><li><strong>Governance:</strong> ruoli, policy, evidence, processi decisionali e tracciabilità.</li><li><strong>Compliance:</strong> allineamento a requisiti normativi e policy interne.</li></ol>
-          <h3 class="module-subtitle">Skillset essenziali dell&#x27;AI auditor</h3>
+          <h3 id="skillset-essenziali-dell-ai-auditor" class="module-subtitle">Skillset essenziali dell&#x27;AI auditor</h3>
           <p>Per operare con efficacia, il team audit deve combinare:</p>
           <ul><li>competenze tecniche (ML, data engineering, software lifecycle),</li><li>competenze risk/compliance,</li><li>capacità di analisi statistica e investigativa,</li><li>conoscenza del dominio business dove il modello è usato.</li></ul>
           <p>Senza questo mix, l&#x27;audit rischia di fermarsi a checklist formali e non intercetta i rischi reali.</p>
-          <h3 class="module-subtitle">Audit process: rischio, controlli, evidenze</h3>
+          <h3 id="audit-process-rischio-controlli-evidenze" class="module-subtitle">Audit process: rischio, controlli, evidenze</h3>
           <p>Il flusso operativo consigliato è:</p>
           <ol><li>identificare i rischi AI specifici per caso d&#x27;uso;</li><li>valutare controlli esistenti (design + effectiveness);</li><li>mappare gap e priorità in una matrice rischio-controlli;</li><li>assegnare ownership e timeline di remediation;</li><li>verificare l&#x27;efficacia post-remediation con follow-up audit.</li></ol>
           <p>La severità delle verifiche deve essere proporzionale all&#x27;impatto del sistema: maggiore è il rischio potenziale, maggiore dev&#x27;essere profondità di audit e frequenza dei controlli.</p>
-          <h3 class="module-subtitle">Audit committee e governance di supervisione</h3>
+          <h3 id="audit-committee-e-governance-di-supervisione" class="module-subtitle">Audit committee e governance di supervisione</h3>
           <p>Il comitato audit deve avere visibilità strutturata sui sistemi AI ad alto impatto, con reporting periodico su:</p>
           <ul><li>rischi aperti e trend,</li><li>incidenti e near-miss,</li><li>avanzamento remediation,</li><li>stato compliance e audit readiness.</li></ul>
           <p>Integrare gli audit AI nel piano ordinario del comitato evita approcci emergenziali e migliora la qualità delle decisioni di investimento e priorità.</p>
-          <h3 class="module-subtitle">Cicli di audit e risk assessment</h3>
+          <h3 id="cicli-di-audit-e-risk-assessment" class="module-subtitle">Cicli di audit e risk assessment</h3>
           <p>La frequenza non è uguale per tutti i sistemi: va definita con criterio risk-based.</p>
           <p>Fattori principali:</p>
           <ol><li>criticità del caso d&#x27;uso,</li><li>frequenza cambi modello/dati,</li><li>esposizione regolatoria,</li><li>maturità dei controlli interni,</li><li>capacità di monitoraggio continuo.</li></ol>
           <p>Nei sistemi ad alto rischio è utile combinare monitoraggio continuo con audit periodici approfonditi.</p>
-          <h3 class="module-subtitle">AI readiness per pianificare governance e audit</h3>
+          <h3 id="ai-readiness-per-pianificare-governance-e-audit" class="module-subtitle">AI readiness per pianificare governance e audit</h3>
           <p>Prima di estendere l&#x27;audit AI in modo strutturato e continuativo, è utile valutare la readiness organizzativa su quattro pilastri:</p>
           <ul><li>readiness organizzativa,</li><li>readiness valore business,</li><li>readiness dati,</li><li>readiness infrastruttura.</li></ul>
           <p>Una modalità pratica per usare AIRI è tradurre i pilastri in una tabella di assessment con dimensioni osservabili e domande di verifica:</p>
@@ -558,13 +606,13 @@ h1 {
           <p>Per rendere il framework più concreto, può essere utile anche vedere un esempio interattivo come <strong>AIRI Sample</strong>: aiuta a capire come i pilastri e le dimensioni possano essere presentati in un assessment pratico, leggibile anche da stakeholder non tecnici.</p>
           <figure class="module-image"><img src="assets/principles_ch18_images/pg_ch18_img01.jpg" alt="AI Readiness Index (AIRI): framework a 4 pilastri e 9 dimensioni" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.6: modello AIRI per valutare capacità di adozione e presidio AI</figcaption></figure>
           <figure class="module-image"><img src="assets/principles_ch18_images/pg_ch18_img02.jpg" alt="Matrice di scoring AIRI per livello di maturità AI" onclick="this.classList.toggle('zoomed')"><figcaption class="figure-caption">Figura M5.7: classificazione della maturità da iniziale a competente per guidare priorità di intervento</figcaption></figure>
-          <h3 class="module-subtitle">Gestione findings, eccezioni e remediation</h3>
+          <h3 id="gestione-findings-eccezioni-e-remediation" class="module-subtitle">Gestione findings, eccezioni e remediation</h3>
           <p>Per trasformare audit in miglioramento reale:</p>
           <ol><li>triage per gravità e impatto;</li><li>analisi causa radice (non solo sintomi);</li><li>piani correttivi con owner, scadenze e metriche;</li><li>comunicazione trasparente tra audit, team tecnici e management;</li><li>verifica post-intervento e aggiornamento dei controlli.</li></ol>
           <p>Le azioni più frequenti includono riequilibrio dati, miglioramento controlli qualità, rafforzamento sicurezza, introduzione strumenti di explainability e maggiore supervisione umana nei punti critici.</p>
-          <h3 class="module-subtitle">Link utili del modulo</h3>
+          <h3 id="link-utili-del-modulo" class="module-subtitle">Link utili del modulo</h3>
           <div class="table-wrap"><table class="content-table"><thead><tr><th>Risorsa</th><th>Perché è utile</th><th>Link</th></tr></thead><tbody><tr><td>AIRI Sample</td><td>Esempio interattivo utile per visualizzare come un assessment AIRI può essere presentato e discusso in modo operativo con team e stakeholder.</td><td><a href="https://sample.airi.sg/" target="_blank" rel="noopener noreferrer">AIRI Sample</a></td></tr></tbody></table></div>
-          <section class="checklist-card"><h3 class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Mantenere un framework di governance vivo, con policy applicabili e ownership esplicita.</li><li>Presidiare il ciclo quotidiano con KPI su drift, incidenti, fairness, qualità e audit readiness.</li><li>Strutturare oversight su livelli strategico, tattico e operativo con RACI aggiornabile.</li><li>Coordinare CoE, team tecnici e funzioni di controllo con playbook e standard condivisi.</li><li>Attivare audit AI continuativo con pianificazione risk-based e reporting verso la direzione.</li><li>Chiudere ogni finding con remediation tracciata, verifica di efficacia e aggiornamento dei controlli.</li></ol></section>
+          <section class="checklist-card"><h3 id="checklist-dei-concetti-principali" class="module-subtitle">Checklist dei concetti principali</h3><ol><li>Mantenere un framework di governance vivo, con policy applicabili e ownership esplicita.</li><li>Presidiare il ciclo quotidiano con KPI su drift, incidenti, fairness, qualità e audit readiness.</li><li>Strutturare oversight su livelli strategico, tattico e operativo con RACI aggiornabile.</li><li>Coordinare CoE, team tecnici e funzioni di controllo con playbook e standard condivisi.</li><li>Attivare audit AI continuativo con pianificazione risk-based e reporting verso la direzione.</li><li>Chiudere ogni finding con remediation tracciata, verifica di efficacia e aggiornamento dei controlli.</li></ol></section>
         </section>
 
 
@@ -573,6 +621,7 @@ h1 {
     </main>
   </div>
   <button class="to-top-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Torna su</button>
+  <button class="print-btn" type="button" onclick="window.print()">Stampa</button>
 
   <script>
   (() => {
