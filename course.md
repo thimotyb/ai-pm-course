@@ -2656,7 +2656,6 @@ Le azioni più frequenti includono riequilibrio dati, miglioramento controlli qu
 ## Nota Home
 Contenuto strutturato e selezionato editorialmente dal docente, generato con assistenza AI e revisionato da un editore umano
 
-
 ## Traduzioni EN
 
 ### Module 01: AI in projects: levers and critical issues

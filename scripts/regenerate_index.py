@@ -109,6 +109,10 @@ def body_to_html(body: str) -> str:
     out = []
     i = 0
     slug_counter = {}
+    current_major = 1
+    current_minor = 0
+    current_subminor = 0
+    seen_major_heading = False
 
     def _normalize_slug(value: str) -> str:
         slug = unicodedata.normalize('NFD', value.lower())
@@ -174,7 +178,8 @@ def body_to_html(body: str) -> str:
 
         h3_match = re.match(r'^###\s+(.+)$', line)
         if h3_match:
-            heading_text = h3_match.group(1).strip()
+            heading_text_raw = h3_match.group(1).strip()
+            heading_text = heading_text_raw
             heading_id = _heading_id(heading_text)
             heading_key = heading_text.lower()
             if heading_key in {
@@ -209,13 +214,44 @@ def body_to_html(body: str) -> str:
                 )
                 continue
 
+            major_match = re.match(r'^(\d+)\.\s+(.+)$', heading_text_raw)
+            sub_match = re.match(r'^(\d+)\.(\d+)\s+(.+)$', heading_text_raw)
+            if major_match:
+                current_major = int(major_match.group(1))
+                current_minor = 0
+                current_subminor = 0
+                seen_major_heading = True
+                heading_text = heading_text_raw
+                heading_id = _heading_id(heading_text)
+                out.append(f'<h2 id="{heading_id}" class="module-section-title">{format_inline(heading_text)}</h2>')
+                i += 1
+                continue
+            if sub_match:
+                current_major = int(sub_match.group(1))
+                current_minor = int(sub_match.group(2))
+                current_subminor = 0
+                heading_text = heading_text_raw
+            else:
+                if not seen_major_heading:
+                    current_major = 1
+                current_minor += 1
+                current_subminor = 0
+                heading_text = f'{current_major}.{current_minor} {heading_text_raw}'
+
+            heading_id = _heading_id(heading_text)
             out.append(f'<h3 id="{heading_id}" class="module-subtitle">{format_inline(heading_text)}</h3>')
             i += 1
             continue
 
         h4_match = re.match(r'^####\s+(.+)$', line)
         if h4_match:
-            heading_text = h4_match.group(1).strip()
+            heading_text_raw = h4_match.group(1).strip()
+            numbered_h4 = re.match(r'^(\d+)\.(\d+)\.(\d+)\s+(.+)$', heading_text_raw)
+            if numbered_h4:
+                heading_text = heading_text_raw
+            else:
+                current_subminor += 1
+                heading_text = f'{current_major}.{max(current_minor, 1)}.{current_subminor} {heading_text_raw}'
             heading_id = _heading_id(heading_text)
             out.append(f'<h4 id="{heading_id}" class="module-subtitle-small">{format_inline(heading_text)}</h4>')
             i += 1
@@ -1108,7 +1144,7 @@ def build_module_page(course_title: str, modules, idx: int, labs_body: str, lang
     body_html = body_to_html(module['body'])
 
     is_en = lang == 'en'
-    has_outline = num == 3
+    has_outline = True
     prev_link = module_filename(modules[idx - 1]['number']) if idx > 0 else None
     next_link = module_filename(modules[idx + 1]['number']) if idx < len(modules) - 1 else None
     home_label = 'Home'
